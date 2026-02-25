@@ -449,9 +449,9 @@
                     streams: makeEirpStreams(),
                     usesAntennaGain: true,
                     usesMimo: true,
-                    confidence: "High",
+                    confidence: "Low", // Normally high, but needs to be validated
                     confidenceSources:
-                        "Aruba Networks Technical Whitepapers, Instant AP Configuration Guide",
+                        "Aruba Networks Technical Whitepapers, Instant AP Configuration Guide (Not validated)",
                 },
 
                 juniper: {
@@ -473,9 +473,9 @@
                     streams: makeEirpStreams(),
                     usesAntennaGain: true,
                     usesMimo: true,
-                    confidence: "Medium",
+                    confidence: "Low", // Medium after validation
                     confidenceSources:
-                        "Fortinet FortiAP Datasheets, Limited UI Documentation",
+                        "Fortinet FortiAP Datasheets, Limited UI Documentation (Not validated)",
                 },
 
                 extreme: {
@@ -485,9 +485,9 @@
                     streams: makeConductedStreams(),
                     usesAntennaGain: true,
                     usesMimo: true,
-                    confidence: "High",
+                    confidence: "Low", // High after validation
                     confidenceSources:
-                        "Extreme Networks WiNG and Cloud IQ Documentation",
+                        "Extreme Networks WiNG and Cloud IQ Documentation (Not validated)",
                 },
 
                 huawei: {
@@ -497,9 +497,9 @@
                     streams: makeEirpStreams(),
                     usesAntennaGain: true,
                     usesMimo: true,
-                    confidence: "High",
+                    confidence: "Low", // High after validation
                     confidenceSources:
-                        "Huawei WLAN Product Documentation, CLI Guides",
+                        "Huawei WLAN Product Documentation, CLI Guides (Not validated)",
                 },
 
                 ruckus: {
@@ -509,9 +509,9 @@
                     streams: makeConductedStreams(),
                     usesAntennaGain: true,
                     usesMimo: true,
-                    confidence: "Medium",
+                    confidence: "Low", // Medium after validation
                     confidenceSources:
-                        "Ruckus Technical Guides, Limited Beamforming Details",
+                        "Ruckus Technical Guides, Limited Beamforming Details (Not validated)",
                 },
 
                 ubiquiti: {
@@ -521,9 +521,9 @@
                     streams: makeConductedStreams(),
                     usesAntennaGain: true,
                     usesMimo: true,
-                    confidence: "High",
+                    confidence: "Low", // High after validation
                     confidenceSources:
-                        "Ubiquiti UniFi Controller Documentation, Community Guides",
+                        "Ubiquiti UniFi Controller Documentation, Community Guides (Not validated)",
                 },
 
                 cambium: {
@@ -533,9 +533,9 @@
                     streams: makeConductedStreams(),
                     usesAntennaGain: true,
                     usesMimo: true,
-                    confidence: "Medium",
+                    confidence: "Low", // Medium after validation
                     confidenceSources:
-                        "Cambium cnMaestro Documentation, Partial Regulatory Details",
+                        "Cambium cnMaestro Documentation, Partial Regulatory Details (Not validated)",
                 },
 
                 alcatel: {
@@ -545,9 +545,9 @@
                     streams: makeConductedStreams(),
                     usesAntennaGain: true,
                     usesMimo: true,
-                    confidence: "Low",
+                    confidence: "Low", // Low after validation
                     confidenceSources:
-                        "Limited Public Documentation, Datasheets Only",
+                        "Limited Public Documentation, Datasheets Only (Not validated)",
                 },
 
                 hamina: {
@@ -568,11 +568,11 @@
             // =========================================================================
             let state = {
                 inputVendor: "hamina",
-                outputVendor: "cisco",
-                inputStreams: "2x2",
-                outputStreams: "2x2",
+                outputVendor: "juniper",
+                inputStreams: "4x4",
+                outputStreams: "4x4",
                 inputPower: 10,
-                antennaGain: 4,
+                antennaGain: 0,
             };
 
             // =========================================================================
@@ -617,8 +617,9 @@
                 buildStreamButtons("input");
                 buildStreamButtons("output");
 
-                // Set input power
+                // Set input values from state
                 dom.inputPower.value = state.inputPower;
+                dom.antennaGain.value = state.antennaGain;
 
                 // Event listeners
                 dom.inputVendor.addEventListener("change", (e) => {
