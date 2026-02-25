@@ -283,7 +283,7 @@
         <div class="panel-header">Input Vendor</div>
         <select id="input-vendor"></select>
 
-        <div>
+        <div id="input-streams-wrapper">
           <div class="panel-header" style="margin-bottom: 6px;">Spatial Streams</div>
           <div class="stream-select" id="input-streams"></div>
         </div>
@@ -314,7 +314,7 @@
         <div class="panel-header">Output Vendor</div>
         <select id="output-vendor"></select>
 
-        <div>
+        <div id="output-streams-wrapper">
           <div class="panel-header" style="margin-bottom: 6px;">Spatial Streams</div>
           <div class="stream-select" id="output-streams"></div>
         </div>
@@ -416,6 +416,7 @@
         eirpMath: "Conducted + Antenna Gain + MIMO Gain (10log(Ntx))",
         streams: makeConductedStreams(),
         usesAntennaGain: true,
+        usesMimo: true,
         confidence: "High",
         confidenceSources: "Cisco Wireless Controller Configuration Guide, Meraki Documentation",
       },
@@ -426,6 +427,7 @@
         eirpMath: "Conducted + Antenna Gain + MIMO Gain",
         streams: makeEirpStreams(),
         usesAntennaGain: true,
+        usesMimo: true,
         confidence: "High",
         confidenceSources: "Aruba Networks Technical Whitepapers, Instant AP Configuration Guide",
       },
@@ -436,6 +438,7 @@
         eirpMath: "Per-Chain Conducted + 10log(N) + Antenna Gain",
         streams: makeConductedStreams(),
         usesAntennaGain: true,
+        usesMimo: true,
         confidence: "High",
         confidenceSources: "Juniper Mist Wi-Fi 6E Documentation, Technical Blogs",
       },
@@ -446,6 +449,7 @@
         eirpMath: "Conducted + Antenna Gain + MIMO Gain",
         streams: makeEirpStreams(),
         usesAntennaGain: true,
+        usesMimo: true,
         confidence: "Medium",
         confidenceSources: "Fortinet FortiAP Datasheets, Limited UI Documentation",
       },
@@ -456,6 +460,7 @@
         eirpMath: "Conducted + Antenna Gain + MIMO Gain (10log(N))",
         streams: makeConductedStreams(),
         usesAntennaGain: true,
+        usesMimo: true,
         confidence: "High",
         confidenceSources: "Extreme Networks WiNG and Cloud IQ Documentation",
       },
@@ -466,6 +471,7 @@
         eirpMath: "Conducted + Antenna Gain + MIMO Gain",
         streams: makeEirpStreams(),
         usesAntennaGain: true,
+        usesMimo: true,
         confidence: "High",
         confidenceSources: "Huawei WLAN Product Documentation, CLI Guides",
       },
@@ -476,6 +482,7 @@
         eirpMath: "Conducted + Antenna Gain + MIMO Gain",
         streams: makeConductedStreams(),
         usesAntennaGain: true,
+        usesMimo: true,
         confidence: "Medium",
         confidenceSources: "Ruckus Technical Guides, Limited Beamforming Details",
       },
@@ -486,6 +493,7 @@
         eirpMath: "Conducted + Antenna Gain + MIMO Gain",
         streams: makeConductedStreams(),
         usesAntennaGain: true,
+        usesMimo: true,
         confidence: "High",
         confidenceSources: "Ubiquiti UniFi Controller Documentation, Community Guides",
       },
@@ -496,6 +504,7 @@
         eirpMath: "Conducted + Antenna Gain + MIMO Gain",
         streams: makeConductedStreams(),
         usesAntennaGain: true,
+        usesMimo: true,
         confidence: "Medium",
         confidenceSources: "Cambium cnMaestro Documentation, Partial Regulatory Details",
       },
@@ -506,6 +515,7 @@
         eirpMath: "Conducted + Antenna Gain + MIMO Gain",
         streams: makeConductedStreams(),
         usesAntennaGain: true,
+        usesMimo: true,
         confidence: "Low",
         confidenceSources: "Limited Public Documentation, Datasheets Only",
       },
@@ -513,9 +523,10 @@
       hamina: {
         name: "Hamina",
         uiInputType: "Conducted",
-        eirpMath: "Conducted (no antenna gain, no MIMO gain)",
+        eirpMath: "Conducted only (models beacon TxPower; no antenna gain, no MIMO gain)",
         streams: makeHaminaStreams(),
         usesAntennaGain: false,
+        usesMimo: false,
         confidence: "High",
         confidenceSources: "Hamina Network Planner documentation",
       },
@@ -525,8 +536,8 @@
     // STATE
     // =========================================================================
     let state = {
-      inputVendor: "cisco",
-      outputVendor: "hamina",
+      inputVendor: "hamina",
+      outputVendor: "cisco",
       inputStreams: "2x2",
       outputStreams: "2x2",
       inputPower: 10,
@@ -550,6 +561,8 @@
       inputConfidence: document.getElementById("input-confidence"),
       outputConfidence:document.getElementById("output-confidence"),
       antennaGain:     document.getElementById("antenna-gain"),
+      inputStreamsWrap: document.getElementById("input-streams-wrapper"),
+      outputStreamsWrap:document.getElementById("output-streams-wrapper"),
     };
 
     // =========================================================================
@@ -597,9 +610,17 @@
 
     function buildStreamButtons(side) {
       const container = side === "input" ? dom.inputStreams : dom.outputStreams;
+      const wrapper   = side === "input" ? dom.inputStreamsWrap : dom.outputStreamsWrap;
       const vendorKey = side === "input" ? state.inputVendor : state.outputVendor;
       const vendor = vendors[vendorKey];
       const currentStream = side === "input" ? state.inputStreams : state.outputStreams;
+
+      // Hide streams selector for vendors that don't use MIMO
+      if (!vendor.usesMimo) {
+        wrapper.style.display = "none";
+        return;
+      }
+      wrapper.style.display = "";
 
       container.innerHTML = "";
       for (const streamKey of Object.keys(vendor.streams)) {
