@@ -1,691 +1,740 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Power Calculator</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Power Calculator</title>
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f5f5f5;
-      color: #333;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    sans-serif;
+                background: #f5f5f5;
+                color: #333;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
 
-    header {
-      width: 100%;
-      background: #1a73e8;
-      color: white;
-      padding: 16px 24px;
-      text-align: center;
-    }
+            header {
+                width: 100%;
+                background: #f5f5f5;
+                color: #333;
+                padding: 16px 24px;
+                text-align: left;
+            }
 
-    header h1 {
-      font-size: 22px;
-      font-weight: 500;
-    }
+            header h1 {
+                font-size: 22px;
+                font-weight: 500;
+            }
 
-    header p {
-      font-size: 13px;
-      opacity: 0.85;
-      margin-top: 4px;
-    }
+            header p {
+                font-size: 13px;
+                opacity: 0.85;
+                margin-top: 4px;
+            }
 
-    .container {
-      max-width: 960px;
-      width: 100%;
-      padding: 32px 16px;
-    }
+            .container {
+                max-width: 960px;
+                width: 100%;
+                padding: 32px 16px;
+            }
 
-    .translator {
-      display: flex;
-      gap: 16px;
-      align-items: stretch;
-    }
+            .translator {
+                display: flex;
+                gap: 16px;
+                align-items: stretch;
+            }
 
-    .panel {
-      flex: 1;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+            .panel {
+                flex: 1;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
 
-    .panel-header {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #888;
-      font-weight: 600;
-    }
+            .panel-header {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: #888;
+                font-weight: 600;
+            }
 
-    select {
-      width: 100%;
-      padding: 10px 12px;
-      font-size: 15px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      background: white;
-      color: #333;
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-    }
+            select {
+                width: 100%;
+                padding: 10px 12px;
+                font-size: 15px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                background: white;
+                color: #333;
+                cursor: pointer;
+                appearance: none;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 12px center;
+            }
 
-    select:focus {
-      outline: none;
-      border-color: #1a73e8;
-    }
+            select:focus {
+                outline: none;
+                border-color: #1a73e8;
+            }
 
-    .power-input-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+            .power-input-group {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
 
-    .power-input-group label {
-      font-size: 13px;
-      color: #666;
-      white-space: nowrap;
-    }
+            .power-input-group label {
+                font-size: 13px;
+                color: #666;
+                white-space: nowrap;
+            }
 
-    input[type="number"] {
-      width: 100%;
-      padding: 12px;
-      font-size: 28px;
-      font-weight: 300;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      text-align: center;
-    }
+            input[type="number"] {
+                width: 100%;
+                padding: 12px;
+                font-size: 28px;
+                font-weight: 300;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                text-align: center;
+            }
 
-    input[type="number"]:focus {
-      outline: none;
-      border-color: #1a73e8;
-    }
+            input[type="number"]:focus {
+                outline: none;
+                border-color: #1a73e8;
+            }
 
-    .output-value {
-      width: 100%;
-      padding: 12px;
-      font-size: 28px;
-      font-weight: 300;
-      background: #f8f9fa;
-      border: 1px solid #e8e8e8;
-      border-radius: 6px;
-      text-align: center;
-      color: #333;
-      min-height: 58px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+            .output-value {
+                width: 100%;
+                padding: 12px;
+                font-size: 28px;
+                font-weight: 300;
+                background: #f8f9fa;
+                border: 1px solid #e8e8e8;
+                border-radius: 6px;
+                text-align: center;
+                color: #333;
+                min-height: 58px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
 
-    .stream-select {
-      display: flex;
-      gap: 6px;
-    }
+            .stream-select {
+                display: flex;
+                gap: 6px;
+            }
 
-    .stream-btn {
-      flex: 1;
-      padding: 8px 4px;
-      font-size: 13px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      background: white;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.15s;
-    }
+            .stream-btn {
+                flex: 1;
+                padding: 8px 4px;
+                font-size: 13px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                background: white;
+                cursor: pointer;
+                text-align: center;
+                transition: all 0.15s;
+            }
 
-    .stream-btn:hover {
-      background: #f0f0f0;
-    }
+            .stream-btn:hover {
+                background: #f0f0f0;
+            }
 
-    .stream-btn.active {
-      background: #1a73e8;
-      color: white;
-      border-color: #1a73e8;
-    }
+            .stream-btn.active {
+                background: #1a73e8;
+                color: white;
+                border-color: #1a73e8;
+            }
 
-    .info-section {
-      border-top: 1px solid #eee;
-      padding-top: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+            .info-section {
+                border-top: 1px solid #eee;
+                padding-top: 14px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
 
-    .info-row {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
+            .info-row {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
 
-    .info-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #999;
-      font-weight: 600;
-    }
+            .info-label {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: #999;
+                font-weight: 600;
+            }
 
-    .info-value {
-      font-size: 13px;
-      color: #555;
-      line-height: 1.4;
-    }
+            .info-value {
+                font-size: 13px;
+                color: #555;
+                line-height: 1.4;
+            }
 
-    .confidence-high {
-      color: #1e8e3e;
-      font-weight: 500;
-    }
+            .confidence-high {
+                color: #1e8e3e;
+                font-weight: 500;
+            }
 
-    .confidence-medium {
-      color: #e8710a;
-      font-weight: 500;
-    }
+            .confidence-medium {
+                color: #e8710a;
+                font-weight: 500;
+            }
 
-    .confidence-low {
-      color: #d93025;
-      font-weight: 500;
-    }
+            .confidence-low {
+                color: #d93025;
+                font-weight: 500;
+            }
 
-    .arrow-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      color: #bbb;
-      padding: 0 4px;
-      align-self: center;
-    }
+            .arrow-divider {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                color: #bbb;
+                padding: 0 4px;
+                align-self: center;
+            }
 
-    .unit-label {
-      font-size: 14px;
-      color: #999;
-      text-align: center;
-    }
+            .unit-label {
+                font-size: 14px;
+                color: #999;
+                text-align: center;
+            }
 
-    .antenna-gain-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      padding: 12px 16px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-    }
+            .antenna-gain-bar {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                margin-bottom: 20px;
+                padding: 12px 16px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+            }
 
-    .antenna-gain-bar label {
-      font-size: 13px;
-      font-weight: 500;
-      color: #555;
-    }
+            .antenna-gain-bar label {
+                font-size: 13px;
+                font-weight: 500;
+                color: #555;
+            }
 
-    .antenna-gain-bar input[type="number"] {
-      width: 80px;
-      padding: 6px 8px;
-      font-size: 15px;
-      font-weight: 400;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      text-align: center;
-    }
+            .antenna-gain-bar input[type="number"] {
+                width: 80px;
+                padding: 6px 8px;
+                font-size: 15px;
+                font-weight: 400;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                text-align: center;
+            }
 
-    .antenna-gain-bar .unit {
-      font-size: 13px;
-      color: #888;
-    }
+            .antenna-gain-bar .unit {
+                font-size: 13px;
+                color: #888;
+            }
 
-    @media (max-width: 700px) {
-      .translator {
-        flex-direction: column;
-      }
-      .arrow-divider {
-        transform: rotate(90deg);
-        padding: 8px 0;
-      }
-    }
-  </style>
-</head>
-<body>
+            @media (max-width: 700px) {
+                .translator {
+                    flex-direction: column;
+                }
+                .arrow-divider {
+                    transform: rotate(90deg);
+                    padding: 8px 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Transmit Power Calculator</h1>
+        </header>
 
-  <header>
-    <h1>Power Calculator</h1>
-    <p>Translate transmit power settings between wireless vendors</p>
-  </header>
+        <div class="container">
+            <div class="antenna-gain-bar">
+                <label for="antenna-gain">Antenna Gain</label>
+                <input type="number" id="antenna-gain" value="4" step="0.5" />
+                <span class="unit">dBi</span>
+            </div>
+            <div class="translator">
+                <!-- Left panel: Input -->
+                <div class="panel">
+                    <div class="panel-header">Input Vendor</div>
+                    <select id="input-vendor"></select>
 
-  <div class="container">
-    <div class="antenna-gain-bar">
-      <label for="antenna-gain">Antenna Gain</label>
-      <input type="number" id="antenna-gain" value="4" step="0.5">
-      <span class="unit">dBi</span>
-    </div>
-    <div class="translator">
-      <!-- Left panel: Input -->
-      <div class="panel">
-        <div class="panel-header">Input Vendor</div>
-        <select id="input-vendor"></select>
+                    <div id="input-streams-wrapper">
+                        <div class="panel-header" style="margin-bottom: 6px">
+                            Spatial Streams
+                        </div>
+                        <div class="stream-select" id="input-streams"></div>
+                    </div>
 
-        <div id="input-streams-wrapper">
-          <div class="panel-header" style="margin-bottom: 6px;">Spatial Streams</div>
-          <div class="stream-select" id="input-streams"></div>
+                    <div>
+                        <div class="panel-header" style="margin-bottom: 6px">
+                            Vendor UI Power (dBm)
+                        </div>
+                        <input
+                            type="number"
+                            id="input-power"
+                            value="10"
+                            step="1"
+                        />
+                    </div>
+                    <div class="unit-label" id="input-type-label"></div>
+
+                    <div class="info-section">
+                        <div class="info-row">
+                            <div class="info-label">EIRP Math</div>
+                            <div class="info-value" id="input-eirp-math">—</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Confidence</div>
+                            <div class="info-value" id="input-confidence">
+                                —
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="arrow-divider">&rarr;</div>
+
+                <!-- Right panel: Output -->
+                <div class="panel">
+                    <div class="panel-header">Output Vendor</div>
+                    <select id="output-vendor"></select>
+
+                    <div id="output-streams-wrapper">
+                        <div class="panel-header" style="margin-bottom: 6px">
+                            Spatial Streams
+                        </div>
+                        <div class="stream-select" id="output-streams"></div>
+                    </div>
+
+                    <div>
+                        <div class="panel-header" style="margin-bottom: 6px">
+                            Vendor UI Power (dBm)
+                        </div>
+                        <div class="output-value" id="output-power">—</div>
+                    </div>
+                    <div class="unit-label" id="output-type-label"></div>
+
+                    <div class="info-section">
+                        <div class="info-row">
+                            <div class="info-label">EIRP Math</div>
+                            <div class="info-value" id="output-eirp-math">
+                                —
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Confidence</div>
+                            <div class="info-value" id="output-confidence">
+                                —
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div>
-          <div class="panel-header" style="margin-bottom: 6px;">Vendor UI Power (dBm)</div>
-          <input type="number" id="input-power" value="10" step="1">
-        </div>
-        <div class="unit-label" id="input-type-label"></div>
+        <script>
+            // =========================================================================
+            // VENDOR DATA — Edit this object to add or modify vendors
+            // =========================================================================
+            //
+            // How it works:
+            //   - "Conducted" vendors: The user sets conducted power in the UI.
+            //     EIRP = Conducted + Antenna Gain + MIMO Gain
+            //     toEirp:   (uiValue, antennaGain) => EIRP
+            //     fromEirp: (eirp, antennaGain)    => uiValue (conducted)
+            //
+            //   - "EIRP" vendors: The user sets EIRP directly in the UI.
+            //     The EIRP value already includes Conducted + Antenna Gain + MIMO Gain.
+            //     toEirp:   (uiValue) => EIRP  (identity — the UI value IS the EIRP)
+            //     fromEirp: (eirp)    => uiValue (identity)
+            //
+            //   - Hamina (planning tool): UI = Conducted power.
+            //     No antenna gain, no MIMO gain — pure conducted value.
+            //
+            // MIMO Gain values: 1x1=0, 2x2=3, 3x3=4.77, 4x4=6 dB
+            //
+            const MIMO_GAIN = {
+                "1x1": 0, // 10*log10(1)
+                "2x2": 3, // 10*log10(2)
+                "3x3": 4.77, // 10*log10(3)
+                "4x4": 6, // 10*log10(4)
+            };
 
-        <div class="info-section">
-          <div class="info-row">
-            <div class="info-label">EIRP Math</div>
-            <div class="info-value" id="input-eirp-math">—</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Confidence</div>
-            <div class="info-value" id="input-confidence">—</div>
-          </div>
-        </div>
-      </div>
+            function makeConductedStreams() {
+                // Conducted vendors: UI = conducted power
+                // EIRP = conducted + antennaGain + mimoGain
+                const streams = {};
+                for (const [key, mg] of Object.entries(MIMO_GAIN)) {
+                    streams[key] = {
+                        mimoGain: mg,
+                        toEirp: (ui, antGain) => ui + antGain + mg,
+                        fromEirp: (eirp, antGain) => eirp - antGain - mg,
+                    };
+                }
+                return streams;
+            }
 
-      <!-- Arrow -->
-      <div class="arrow-divider">&rarr;</div>
+            function makeEirpStreams() {
+                // EIRP vendors: UI = EIRP (includes conducted + antenna gain + MIMO gain)
+                // The UI value IS the EIRP, so toEirp/fromEirp are identity
+                const streams = {};
+                for (const [key, mg] of Object.entries(MIMO_GAIN)) {
+                    streams[key] = {
+                        mimoGain: mg,
+                        toEirp: (ui) => ui,
+                        fromEirp: (eirp) => eirp,
+                    };
+                }
+                return streams;
+            }
 
-      <!-- Right panel: Output -->
-      <div class="panel">
-        <div class="panel-header">Output Vendor</div>
-        <select id="output-vendor"></select>
+            function makeHaminaStreams() {
+                // Hamina: UI = Conducted power (no antenna gain, no MIMO gain)
+                // The UI value is just the conducted power — identity
+                const streams = {};
+                for (const [key, mg] of Object.entries(MIMO_GAIN)) {
+                    streams[key] = {
+                        mimoGain: 0,
+                        toEirp: (ui) => ui,
+                        fromEirp: (eirp) => eirp,
+                    };
+                }
+                return streams;
+            }
 
-        <div id="output-streams-wrapper">
-          <div class="panel-header" style="margin-bottom: 6px;">Spatial Streams</div>
-          <div class="stream-select" id="output-streams"></div>
-        </div>
+            const vendors = {
+                cisco: {
+                    name: "Cisco",
+                    uiInputType: "Conducted",
+                    eirpMath:
+                        "Conducted + Antenna Gain + MIMO Gain (10log(Ntx))",
+                    streams: makeConductedStreams(),
+                    usesAntennaGain: true,
+                    usesMimo: true,
+                    confidence: "High",
+                    confidenceSources:
+                        "Cisco Wireless Controller Configuration Guide, Meraki Documentation",
+                },
 
-        <div>
-          <div class="panel-header" style="margin-bottom: 6px;">Vendor UI Power (dBm)</div>
-          <div class="output-value" id="output-power">—</div>
-        </div>
-        <div class="unit-label" id="output-type-label"></div>
+                aruba: {
+                    name: "HPE Aruba",
+                    uiInputType: "EIRP",
+                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
+                    streams: makeEirpStreams(),
+                    usesAntennaGain: true,
+                    usesMimo: true,
+                    confidence: "High",
+                    confidenceSources:
+                        "Aruba Networks Technical Whitepapers, Instant AP Configuration Guide",
+                },
 
-        <div class="info-section">
-          <div class="info-row">
-            <div class="info-label">EIRP Math</div>
-            <div class="info-value" id="output-eirp-math">—</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Confidence</div>
-            <div class="info-value" id="output-confidence">—</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                juniper: {
+                    name: "Juniper Networks (Mist)",
+                    uiInputType: "Conducted",
+                    eirpMath: "Per-Chain Conducted + 10log(N) + Antenna Gain",
+                    streams: makeConductedStreams(),
+                    usesAntennaGain: true,
+                    usesMimo: true,
+                    confidence: "High",
+                    confidenceSources:
+                        "Juniper Mist Wi-Fi 6E Documentation, Technical Blogs",
+                },
 
-  <script>
-    // =========================================================================
-    // VENDOR DATA — Edit this object to add or modify vendors
-    // =========================================================================
-    //
-    // How it works:
-    //   - "Conducted" vendors: The user sets conducted power in the UI.
-    //     EIRP = Conducted + Antenna Gain + MIMO Gain
-    //     toEirp:   (uiValue, antennaGain) => EIRP
-    //     fromEirp: (eirp, antennaGain)    => uiValue (conducted)
-    //
-    //   - "EIRP" vendors: The user sets EIRP directly in the UI.
-    //     The EIRP value already includes Conducted + Antenna Gain + MIMO Gain.
-    //     toEirp:   (uiValue) => EIRP  (identity — the UI value IS the EIRP)
-    //     fromEirp: (eirp)    => uiValue (identity)
-    //
-    //   - Hamina (planning tool): UI = Conducted power.
-    //     No antenna gain, no MIMO gain — pure conducted value.
-    //
-    // MIMO Gain values: 1x1=0, 2x2=3, 3x3=4.77, 4x4=6 dB
-    //
-    const MIMO_GAIN = {
-      "1x1": 0,            // 10*log10(1)
-      "2x2": 3,            // 10*log10(2)
-      "3x3": 4.77,         // 10*log10(3)
-      "4x4": 6,            // 10*log10(4)
-    };
+                fortinet: {
+                    name: "Fortinet (FortiAP)",
+                    uiInputType: "EIRP",
+                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
+                    streams: makeEirpStreams(),
+                    usesAntennaGain: true,
+                    usesMimo: true,
+                    confidence: "Medium",
+                    confidenceSources:
+                        "Fortinet FortiAP Datasheets, Limited UI Documentation",
+                },
 
-    function makeConductedStreams() {
-      // Conducted vendors: UI = conducted power
-      // EIRP = conducted + antennaGain + mimoGain
-      const streams = {};
-      for (const [key, mg] of Object.entries(MIMO_GAIN)) {
-        streams[key] = {
-          mimoGain: mg,
-          toEirp:   (ui, antGain) => ui + antGain + mg,
-          fromEirp: (eirp, antGain) => eirp - antGain - mg,
-        };
-      }
-      return streams;
-    }
+                extreme: {
+                    name: "Extreme Networks",
+                    uiInputType: "Conducted",
+                    eirpMath: "Conducted + Antenna Gain + MIMO Gain (10log(N))",
+                    streams: makeConductedStreams(),
+                    usesAntennaGain: true,
+                    usesMimo: true,
+                    confidence: "High",
+                    confidenceSources:
+                        "Extreme Networks WiNG and Cloud IQ Documentation",
+                },
 
-    function makeEirpStreams() {
-      // EIRP vendors: UI = EIRP (includes conducted + antenna gain + MIMO gain)
-      // The UI value IS the EIRP, so toEirp/fromEirp are identity
-      const streams = {};
-      for (const [key, mg] of Object.entries(MIMO_GAIN)) {
-        streams[key] = {
-          mimoGain: mg,
-          toEirp:   (ui) => ui,
-          fromEirp: (eirp) => eirp,
-        };
-      }
-      return streams;
-    }
+                huawei: {
+                    name: "Huawei",
+                    uiInputType: "EIRP",
+                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
+                    streams: makeEirpStreams(),
+                    usesAntennaGain: true,
+                    usesMimo: true,
+                    confidence: "High",
+                    confidenceSources:
+                        "Huawei WLAN Product Documentation, CLI Guides",
+                },
 
-    function makeHaminaStreams() {
-      // Hamina: UI = Conducted power (no antenna gain, no MIMO gain)
-      // The UI value is just the conducted power — identity
-      const streams = {};
-      for (const [key, mg] of Object.entries(MIMO_GAIN)) {
-        streams[key] = {
-          mimoGain: 0,
-          toEirp:   (ui) => ui,
-          fromEirp: (eirp) => eirp,
-        };
-      }
-      return streams;
-    }
+                ruckus: {
+                    name: "Ruckus (CommScope)",
+                    uiInputType: "Conducted",
+                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
+                    streams: makeConductedStreams(),
+                    usesAntennaGain: true,
+                    usesMimo: true,
+                    confidence: "Medium",
+                    confidenceSources:
+                        "Ruckus Technical Guides, Limited Beamforming Details",
+                },
 
-    const vendors = {
-      cisco: {
-        name: "Cisco",
-        uiInputType: "Conducted",
-        eirpMath: "Conducted + Antenna Gain + MIMO Gain (10log(Ntx))",
-        streams: makeConductedStreams(),
-        usesAntennaGain: true,
-        usesMimo: true,
-        confidence: "High",
-        confidenceSources: "Cisco Wireless Controller Configuration Guide, Meraki Documentation",
-      },
+                ubiquiti: {
+                    name: "Ubiquiti (UniFi)",
+                    uiInputType: "Conducted",
+                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
+                    streams: makeConductedStreams(),
+                    usesAntennaGain: true,
+                    usesMimo: true,
+                    confidence: "High",
+                    confidenceSources:
+                        "Ubiquiti UniFi Controller Documentation, Community Guides",
+                },
 
-      aruba: {
-        name: "HPE Aruba",
-        uiInputType: "EIRP",
-        eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-        streams: makeEirpStreams(),
-        usesAntennaGain: true,
-        usesMimo: true,
-        confidence: "High",
-        confidenceSources: "Aruba Networks Technical Whitepapers, Instant AP Configuration Guide",
-      },
+                cambium: {
+                    name: "Cambium Networks",
+                    uiInputType: "Conducted",
+                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
+                    streams: makeConductedStreams(),
+                    usesAntennaGain: true,
+                    usesMimo: true,
+                    confidence: "Medium",
+                    confidenceSources:
+                        "Cambium cnMaestro Documentation, Partial Regulatory Details",
+                },
 
-      juniper: {
-        name: "Juniper Networks (Mist)",
-        uiInputType: "Conducted",
-        eirpMath: "Per-Chain Conducted + 10log(N) + Antenna Gain",
-        streams: makeConductedStreams(),
-        usesAntennaGain: true,
-        usesMimo: true,
-        confidence: "High",
-        confidenceSources: "Juniper Mist Wi-Fi 6E Documentation, Technical Blogs",
-      },
+                alcatel: {
+                    name: "Alcatel-Lucent Enterprise",
+                    uiInputType: "Conducted",
+                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
+                    streams: makeConductedStreams(),
+                    usesAntennaGain: true,
+                    usesMimo: true,
+                    confidence: "Low",
+                    confidenceSources:
+                        "Limited Public Documentation, Datasheets Only",
+                },
 
-      fortinet: {
-        name: "Fortinet (FortiAP)",
-        uiInputType: "EIRP",
-        eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-        streams: makeEirpStreams(),
-        usesAntennaGain: true,
-        usesMimo: true,
-        confidence: "Medium",
-        confidenceSources: "Fortinet FortiAP Datasheets, Limited UI Documentation",
-      },
+                hamina: {
+                    name: "Hamina",
+                    uiInputType: "Conducted",
+                    eirpMath:
+                        "Conducted only (models beacon TxPower; no antenna gain, no MIMO gain)",
+                    streams: makeHaminaStreams(),
+                    usesAntennaGain: false,
+                    usesMimo: false,
+                    confidence: "High",
+                    confidenceSources: "Hamina Network Planner documentation",
+                },
+            };
 
-      extreme: {
-        name: "Extreme Networks",
-        uiInputType: "Conducted",
-        eirpMath: "Conducted + Antenna Gain + MIMO Gain (10log(N))",
-        streams: makeConductedStreams(),
-        usesAntennaGain: true,
-        usesMimo: true,
-        confidence: "High",
-        confidenceSources: "Extreme Networks WiNG and Cloud IQ Documentation",
-      },
+            // =========================================================================
+            // STATE
+            // =========================================================================
+            let state = {
+                inputVendor: "hamina",
+                outputVendor: "cisco",
+                inputStreams: "2x2",
+                outputStreams: "2x2",
+                inputPower: 10,
+                antennaGain: 4,
+            };
 
-      huawei: {
-        name: "Huawei",
-        uiInputType: "EIRP",
-        eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-        streams: makeEirpStreams(),
-        usesAntennaGain: true,
-        usesMimo: true,
-        confidence: "High",
-        confidenceSources: "Huawei WLAN Product Documentation, CLI Guides",
-      },
+            // =========================================================================
+            // DOM REFS
+            // =========================================================================
+            const dom = {
+                inputVendor: document.getElementById("input-vendor"),
+                outputVendor: document.getElementById("output-vendor"),
+                inputStreams: document.getElementById("input-streams"),
+                outputStreams: document.getElementById("output-streams"),
+                inputPower: document.getElementById("input-power"),
+                outputPower: document.getElementById("output-power"),
+                inputTypeLabel: document.getElementById("input-type-label"),
+                outputTypeLabel: document.getElementById("output-type-label"),
+                inputEirpMath: document.getElementById("input-eirp-math"),
+                outputEirpMath: document.getElementById("output-eirp-math"),
+                inputConfidence: document.getElementById("input-confidence"),
+                outputConfidence: document.getElementById("output-confidence"),
+                antennaGain: document.getElementById("antenna-gain"),
+                inputStreamsWrap: document.getElementById(
+                    "input-streams-wrapper",
+                ),
+                outputStreamsWrap: document.getElementById(
+                    "output-streams-wrapper",
+                ),
+            };
 
-      ruckus: {
-        name: "Ruckus (CommScope)",
-        uiInputType: "Conducted",
-        eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-        streams: makeConductedStreams(),
-        usesAntennaGain: true,
-        usesMimo: true,
-        confidence: "Medium",
-        confidenceSources: "Ruckus Technical Guides, Limited Beamforming Details",
-      },
+            // =========================================================================
+            // INIT
+            // =========================================================================
+            function init() {
+                // Populate vendor dropdowns
+                for (const key of Object.keys(vendors)) {
+                    const v = vendors[key];
+                    dom.inputVendor.appendChild(new Option(v.name, key));
+                    dom.outputVendor.appendChild(new Option(v.name, key));
+                }
+                dom.inputVendor.value = state.inputVendor;
+                dom.outputVendor.value = state.outputVendor;
 
-      ubiquiti: {
-        name: "Ubiquiti (UniFi)",
-        uiInputType: "Conducted",
-        eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-        streams: makeConductedStreams(),
-        usesAntennaGain: true,
-        usesMimo: true,
-        confidence: "High",
-        confidenceSources: "Ubiquiti UniFi Controller Documentation, Community Guides",
-      },
+                // Build stream buttons
+                buildStreamButtons("input");
+                buildStreamButtons("output");
 
-      cambium: {
-        name: "Cambium Networks",
-        uiInputType: "Conducted",
-        eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-        streams: makeConductedStreams(),
-        usesAntennaGain: true,
-        usesMimo: true,
-        confidence: "Medium",
-        confidenceSources: "Cambium cnMaestro Documentation, Partial Regulatory Details",
-      },
+                // Set input power
+                dom.inputPower.value = state.inputPower;
 
-      alcatel: {
-        name: "Alcatel-Lucent Enterprise",
-        uiInputType: "Conducted",
-        eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-        streams: makeConductedStreams(),
-        usesAntennaGain: true,
-        usesMimo: true,
-        confidence: "Low",
-        confidenceSources: "Limited Public Documentation, Datasheets Only",
-      },
+                // Event listeners
+                dom.inputVendor.addEventListener("change", (e) => {
+                    state.inputVendor = e.target.value;
+                    buildStreamButtons("input");
+                    calculate();
+                });
+                dom.outputVendor.addEventListener("change", (e) => {
+                    state.outputVendor = e.target.value;
+                    buildStreamButtons("output");
+                    calculate();
+                });
+                dom.inputPower.addEventListener("input", (e) => {
+                    state.inputPower = parseFloat(e.target.value) || 0;
+                    calculate();
+                });
+                dom.antennaGain.addEventListener("input", (e) => {
+                    state.antennaGain = parseFloat(e.target.value) || 0;
+                    calculate();
+                });
 
-      hamina: {
-        name: "Hamina",
-        uiInputType: "Conducted",
-        eirpMath: "Conducted only (models beacon TxPower; no antenna gain, no MIMO gain)",
-        streams: makeHaminaStreams(),
-        usesAntennaGain: false,
-        usesMimo: false,
-        confidence: "High",
-        confidenceSources: "Hamina Network Planner documentation",
-      },
-    };
+                calculate();
+            }
 
-    // =========================================================================
-    // STATE
-    // =========================================================================
-    let state = {
-      inputVendor: "hamina",
-      outputVendor: "cisco",
-      inputStreams: "2x2",
-      outputStreams: "2x2",
-      inputPower: 10,
-      antennaGain: 4,
-    };
+            function buildStreamButtons(side) {
+                const container =
+                    side === "input" ? dom.inputStreams : dom.outputStreams;
+                const wrapper =
+                    side === "input"
+                        ? dom.inputStreamsWrap
+                        : dom.outputStreamsWrap;
+                const vendorKey =
+                    side === "input" ? state.inputVendor : state.outputVendor;
+                const vendor = vendors[vendorKey];
+                const currentStream =
+                    side === "input" ? state.inputStreams : state.outputStreams;
 
-    // =========================================================================
-    // DOM REFS
-    // =========================================================================
-    const dom = {
-      inputVendor:     document.getElementById("input-vendor"),
-      outputVendor:    document.getElementById("output-vendor"),
-      inputStreams:     document.getElementById("input-streams"),
-      outputStreams:    document.getElementById("output-streams"),
-      inputPower:      document.getElementById("input-power"),
-      outputPower:     document.getElementById("output-power"),
-      inputTypeLabel:  document.getElementById("input-type-label"),
-      outputTypeLabel: document.getElementById("output-type-label"),
-      inputEirpMath:   document.getElementById("input-eirp-math"),
-      outputEirpMath:  document.getElementById("output-eirp-math"),
-      inputConfidence: document.getElementById("input-confidence"),
-      outputConfidence:document.getElementById("output-confidence"),
-      antennaGain:     document.getElementById("antenna-gain"),
-      inputStreamsWrap: document.getElementById("input-streams-wrapper"),
-      outputStreamsWrap:document.getElementById("output-streams-wrapper"),
-    };
+                // Hide streams selector for vendors that don't use MIMO
+                if (!vendor.usesMimo) {
+                    wrapper.style.display = "none";
+                    return;
+                }
+                wrapper.style.display = "";
 
-    // =========================================================================
-    // INIT
-    // =========================================================================
-    function init() {
-      // Populate vendor dropdowns
-      for (const key of Object.keys(vendors)) {
-        const v = vendors[key];
-        dom.inputVendor.appendChild(new Option(v.name, key));
-        dom.outputVendor.appendChild(new Option(v.name, key));
-      }
-      dom.inputVendor.value = state.inputVendor;
-      dom.outputVendor.value = state.outputVendor;
+                container.innerHTML = "";
+                for (const streamKey of Object.keys(vendor.streams)) {
+                    const btn = document.createElement("button");
+                    btn.className =
+                        "stream-btn" +
+                        (streamKey === currentStream ? " active" : "");
+                    btn.textContent = streamKey;
+                    btn.addEventListener("click", () => {
+                        if (side === "input") state.inputStreams = streamKey;
+                        else state.outputStreams = streamKey;
+                        buildStreamButtons(side);
+                        calculate();
+                    });
+                    container.appendChild(btn);
+                }
+            }
 
-      // Build stream buttons
-      buildStreamButtons("input");
-      buildStreamButtons("output");
+            // =========================================================================
+            // CONVERSION LOGIC
+            // =========================================================================
+            function calculate() {
+                const inVendor = vendors[state.inputVendor];
+                const outVendor = vendors[state.outputVendor];
+                const inStream = inVendor.streams[state.inputStreams];
+                const outStream = outVendor.streams[state.outputStreams];
 
-      // Set input power
-      dom.inputPower.value = state.inputPower;
+                const inAntGain = inVendor.usesAntennaGain
+                    ? state.antennaGain
+                    : 0;
+                const outAntGain = outVendor.usesAntennaGain
+                    ? state.antennaGain
+                    : 0;
 
-      // Event listeners
-      dom.inputVendor.addEventListener("change", (e) => {
-        state.inputVendor = e.target.value;
-        buildStreamButtons("input");
-        calculate();
-      });
-      dom.outputVendor.addEventListener("change", (e) => {
-        state.outputVendor = e.target.value;
-        buildStreamButtons("output");
-        calculate();
-      });
-      dom.inputPower.addEventListener("input", (e) => {
-        state.inputPower = parseFloat(e.target.value) || 0;
-        calculate();
-      });
-      dom.antennaGain.addEventListener("input", (e) => {
-        state.antennaGain = parseFloat(e.target.value) || 0;
-        calculate();
-      });
+                // Step 1: Convert input vendor UI value -> EIRP
+                const eirp = inStream.toEirp(state.inputPower, inAntGain);
 
-      calculate();
-    }
+                // Step 2: Convert EIRP -> output vendor UI value
+                const outputPower = outStream.fromEirp(eirp, outAntGain);
 
-    function buildStreamButtons(side) {
-      const container = side === "input" ? dom.inputStreams : dom.outputStreams;
-      const wrapper   = side === "input" ? dom.inputStreamsWrap : dom.outputStreamsWrap;
-      const vendorKey = side === "input" ? state.inputVendor : state.outputVendor;
-      const vendor = vendors[vendorKey];
-      const currentStream = side === "input" ? state.inputStreams : state.outputStreams;
+                // Update output display
+                dom.outputPower.textContent = round(outputPower) + " dBm";
 
-      // Hide streams selector for vendors that don't use MIMO
-      if (!vendor.usesMimo) {
-        wrapper.style.display = "none";
-        return;
-      }
-      wrapper.style.display = "";
+                // Update type labels
+                dom.inputTypeLabel.textContent =
+                    "Type: " + inVendor.uiInputType;
+                dom.outputTypeLabel.textContent =
+                    "Type: " + outVendor.uiInputType;
 
-      container.innerHTML = "";
-      for (const streamKey of Object.keys(vendor.streams)) {
-        const btn = document.createElement("button");
-        btn.className = "stream-btn" + (streamKey === currentStream ? " active" : "");
-        btn.textContent = streamKey;
-        btn.addEventListener("click", () => {
-          if (side === "input") state.inputStreams = streamKey;
-          else state.outputStreams = streamKey;
-          buildStreamButtons(side);
-          calculate();
-        });
-        container.appendChild(btn);
-      }
-    }
+                // Update EIRP math
+                dom.inputEirpMath.textContent = inVendor.eirpMath;
+                dom.outputEirpMath.textContent = outVendor.eirpMath;
 
-    // =========================================================================
-    // CONVERSION LOGIC
-    // =========================================================================
-    function calculate() {
-      const inVendor  = vendors[state.inputVendor];
-      const outVendor = vendors[state.outputVendor];
-      const inStream  = inVendor.streams[state.inputStreams];
-      const outStream = outVendor.streams[state.outputStreams];
+                // Update confidence
+                setConfidence(dom.inputConfidence, inVendor);
+                setConfidence(dom.outputConfidence, outVendor);
+            }
 
-      const inAntGain  = inVendor.usesAntennaGain  ? state.antennaGain : 0;
-      const outAntGain = outVendor.usesAntennaGain ? state.antennaGain : 0;
+            function setConfidence(el, vendor) {
+                const level = vendor.confidence.toLowerCase();
+                el.className = "info-value confidence-" + level;
+                el.textContent =
+                    vendor.confidence + " (" + vendor.confidenceSources + ")";
+            }
 
-      // Step 1: Convert input vendor UI value -> EIRP
-      const eirp = inStream.toEirp(state.inputPower, inAntGain);
+            function round(val) {
+                return Math.round(val * 100) / 100;
+            }
 
-      // Step 2: Convert EIRP -> output vendor UI value
-      const outputPower = outStream.fromEirp(eirp, outAntGain);
-
-      // Update output display
-      dom.outputPower.textContent = round(outputPower) + " dBm";
-
-      // Update type labels
-      dom.inputTypeLabel.textContent = "Type: " + inVendor.uiInputType;
-      dom.outputTypeLabel.textContent = "Type: " + outVendor.uiInputType;
-
-      // Update EIRP math
-      dom.inputEirpMath.textContent = inVendor.eirpMath;
-      dom.outputEirpMath.textContent = outVendor.eirpMath;
-
-      // Update confidence
-      setConfidence(dom.inputConfidence, inVendor);
-      setConfidence(dom.outputConfidence, outVendor);
-    }
-
-    function setConfidence(el, vendor) {
-      const level = vendor.confidence.toLowerCase();
-      el.className = "info-value confidence-" + level;
-      el.textContent = vendor.confidence + " (" + vendor.confidenceSources + ")";
-    }
-
-    function round(val) {
-      return Math.round(val * 100) / 100;
-    }
-
-    // =========================================================================
-    // GO
-    // =========================================================================
-    init();
-  </script>
-
-</body>
+            // =========================================================================
+            // GO
+            // =========================================================================
+            init();
+        </script>
+    </body>
 </html>
