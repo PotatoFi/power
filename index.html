@@ -68,8 +68,12 @@
                 width: 100%;
                 background: var(--bg);
                 color: var(--text);
-                padding: 16px 24px;
-                text-align: left;
+            }
+
+            header .header-inner {
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 16px 16px;
             }
 
             header h1 {
@@ -80,51 +84,17 @@
             .container {
                 max-width: 960px;
                 width: 100%;
-                padding: 32px 16px;
+                padding: 16px 16px;
             }
 
-            .global-bar {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
-                margin-bottom: 20px;
-                padding: 12px 16px;
-                background: var(--surface);
-                border-radius: 8px;
-                box-shadow: 0 1px 3px var(--shadow);
-            }
-
-            .global-bar label {
-                font-size: 13px;
-                font-weight: 500;
-                color: var(--text-secondary);
-            }
-
-            .stream-select {
-                display: flex;
-                gap: 6px;
-            }
-
-            .stream-btn {
-                padding: 6px 12px;
-                font-size: 13px;
-                border: 1px solid var(--border);
+            select.chain-select {
+                width: 84px;
+                padding: 7px 28px 7px 8px;
+                font-size: 15px;
+                border: 2px solid var(--accent);
                 border-radius: 6px;
-                background: var(--btn-bg);
-                color: var(--text);
-                cursor: pointer;
-                transition: all 0.15s;
-            }
-
-            .stream-btn:hover {
-                background: var(--btn-hover);
-            }
-
-            .stream-btn.active {
-                background: var(--accent);
-                color: white;
-                border-color: var(--accent);
+                background-position: right 8px center;
+                text-align-last: right;
             }
 
             .translator {
@@ -216,9 +186,11 @@
             .chain-display {
                 font-size: 20px;
                 font-weight: 300;
-                min-width: 52px;
+                width: 84px;
                 text-align: right;
                 color: var(--text);
+                border: 2px solid transparent;
+                padding: 4px 8px;
             }
 
             .active-row .chain-display {
@@ -233,7 +205,7 @@
                 font-weight: 300;
                 border: 2px solid var(--accent);
                 border-radius: 6px;
-                text-align: center;
+                text-align: right;
                 background: var(--input-bg);
                 color: var(--input-color);
             }
@@ -257,7 +229,26 @@
                 font-size: 24px;
                 color: var(--arrow);
                 padding: 0 4px;
-                align-self: center;
+                align-self: stretch;
+                position: relative;
+            }
+
+            .swap-btn {
+                position: absolute;
+                top: 20px;
+                background: none;
+                border: none;
+                font-size: 20px;
+                color: var(--arrow);
+                cursor: pointer;
+                padding: 4px;
+                line-height: 1;
+                border-radius: 4px;
+                transition: color 0.15s;
+            }
+
+            .swap-btn:hover {
+                color: var(--text);
             }
 
             /* Info section */
@@ -289,6 +280,54 @@
                 line-height: 1.4;
             }
 
+            .warning-banner {
+                position: relative;
+                background: #fef9c3;
+                border: 1px solid #fde047;
+                border-radius: 8px;
+                padding: 12px 40px 12px 16px;
+                margin-bottom: 20px;
+                font-size: 13px;
+                color: #713f12;
+                line-height: 1.5;
+            }
+
+            .warning-banner a {
+                color: #713f12;
+            }
+
+            .warning-dismiss {
+                position: absolute;
+                top: 10px;
+                right: 12px;
+                background: none;
+                border: none;
+                font-size: 16px;
+                color: #713f12;
+                cursor: pointer;
+                line-height: 1;
+                padding: 0;
+                opacity: 0.6;
+            }
+
+            .warning-dismiss:hover {
+                opacity: 1;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                .warning-banner {
+                    background: #422006;
+                    border-color: #854d0e;
+                    color: #fef08a;
+                }
+                .warning-banner a {
+                    color: #fef08a;
+                }
+                .warning-dismiss {
+                    color: #fef08a;
+                }
+            }
+
             .confidence-high {
                 color: #1e8e3e;
                 font-weight: 500;
@@ -310,6 +349,7 @@
                 }
                 .arrow-divider {
                     transform: rotate(90deg);
+                    align-self: center;
                     padding: 8px 0;
                 }
             }
@@ -317,14 +357,15 @@
     </head>
     <body>
         <header>
-            <h1>Transmit Power Calculator</h1>
+            <div class="header-inner">
+                <h1>Transmit Power Calculator</h1>
+            </div>
         </header>
 
         <div class="container">
-            <!-- Global stream selector (shared between both panels) -->
-            <div class="global-bar">
-                <label>Spatial Streams</label>
-                <div class="stream-select" id="streams"></div>
+            <div class="warning-banner" id="warning-banner">
+                <button class="warning-dismiss" id="warning-dismiss">&times;</button>
+                This calculator is currently under development, and is very likely to be wrong. Don't trust it. You can send feedback to <a href="mailto:joel@potatofi.com">joel@potatofi.com</a>.
             </div>
 
             <div class="translator">
@@ -340,6 +381,13 @@
                                 <input type="number" id="in-perchain-input" class="chain-input" value="10" step="1" style="display:none" />
                                 <div id="in-perchain-display" class="chain-display">—</div>
                                 <span class="chain-unit">dBm</span>
+                            </div>
+                        </div>
+                        <div class="chain-row" id="in-row-streams">
+                            <div class="chain-row-label">Spatial Streams</div>
+                            <div class="chain-row-right">
+                                <select id="streams-select" class="chain-select"></select>
+                                <span class="chain-unit" style="visibility:hidden">dBm</span>
                             </div>
                         </div>
                         <div class="chain-row" id="in-row-mimo">
@@ -390,8 +438,11 @@
                     </div>
                 </div>
 
-                <!-- Arrow -->
-                <div class="arrow-divider">&rarr;</div>
+                <!-- Arrow + Swap -->
+                <div class="arrow-divider">
+                    &rarr;
+                    <button class="swap-btn" id="swap-btn">&#x21C4;</button>
+                </div>
 
                 <!-- Right panel: Output -->
                 <div class="panel">
@@ -404,6 +455,13 @@
                             <div class="chain-row-right">
                                 <div id="out-perchain-display" class="chain-display">—</div>
                                 <span class="chain-unit">dBm</span>
+                            </div>
+                        </div>
+                        <div class="chain-row" id="out-row-streams">
+                            <div class="chain-row-label">Spatial Streams</div>
+                            <div class="chain-row-right">
+                                <div id="out-streams-display" class="chain-display">—</div>
+                                <span class="chain-unit" style="visibility:hidden">dBm</span>
                             </div>
                         </div>
                         <div class="chain-row" id="out-row-mimo">
@@ -455,9 +513,7 @@
         </div>
 
         <script>
-            // =========================================================================
-            // VENDOR DATA — Edit this object to add or modify vendors
-            // =========================================================================
+            // Vendor data
             //
             // How it works:
             //   - "Per-Chain Conducted" / "Total Conducted" vendors: UI = conducted power.
@@ -612,9 +668,7 @@
                 },
             };
 
-            // =========================================================================
-            // STATE
-            // =========================================================================
+            // State
             let state = {
                 inputVendor: "hamina",
                 outputVendor: "juniper",
@@ -623,13 +677,12 @@
                 antennaGain: 0,
             };
 
-            // =========================================================================
-            // DOM REFS
-            // =========================================================================
+            // DOM refs
             const dom = {
                 inputVendor: document.getElementById("input-vendor"),
                 outputVendor: document.getElementById("output-vendor"),
-                streams: document.getElementById("streams"),
+                streamsSelect: document.getElementById("streams-select"),
+                outStreamsDisplay: document.getElementById("out-streams-display"),
                 antennaGain: document.getElementById("antenna-gain"),
 
                 // Input chain rows
@@ -673,9 +726,7 @@
                 outputConfidence: document.getElementById("output-confidence"),
             };
 
-            // =========================================================================
-            // INIT
-            // =========================================================================
+            // Init
             function init() {
                 // Populate vendor dropdowns
                 for (const key of Object.keys(vendors)) {
@@ -686,8 +737,15 @@
                 dom.inputVendor.value = state.inputVendor;
                 dom.outputVendor.value = state.outputVendor;
 
-                // Build shared stream buttons
-                buildStreamButtons();
+                // Populate streams dropdown
+                for (const key of Object.keys(MIMO_GAIN)) {
+                    dom.streamsSelect.appendChild(new Option(key, key));
+                }
+                dom.streamsSelect.value = state.streams;
+                dom.streamsSelect.addEventListener("change", (e) => {
+                    state.streams = e.target.value;
+                    calculate();
+                });
 
                 // Set antenna gain from state
                 dom.antennaGain.value = state.antennaGain;
@@ -709,6 +767,14 @@
                     calculate();
                 });
 
+                // Warning dismiss
+                document.getElementById("warning-dismiss").addEventListener("click", () => {
+                    document.getElementById("warning-banner").style.display = "none";
+                });
+
+                // Swap button
+                document.getElementById("swap-btn").addEventListener("click", swap);
+
                 // Power input listeners (only one is visible at a time)
                 for (const inputEl of [dom.inPerchainInput, dom.inTotalInput, dom.inEirpInput]) {
                     inputEl.addEventListener("input", (e) => {
@@ -723,24 +789,7 @@
                 calculate();
             }
 
-            function buildStreamButtons() {
-                dom.streams.innerHTML = "";
-                for (const key of Object.keys(MIMO_GAIN)) {
-                    const btn = document.createElement("button");
-                    btn.className = "stream-btn" + (key === state.streams ? " active" : "");
-                    btn.textContent = key;
-                    btn.addEventListener("click", () => {
-                        state.streams = key;
-                        buildStreamButtons();
-                        calculate();
-                    });
-                    dom.streams.appendChild(btn);
-                }
-            }
-
-            // =========================================================================
-            // ROW VISIBILITY
-            // =========================================================================
+            // Row visibility
             function updateInputRows() {
                 const vendor = vendors[state.inputVendor];
                 const uiType = vendor.uiInputType;
@@ -802,9 +851,49 @@
                 dom.outRowMimo.classList.toggle("muted-row", !vendor.usesMimo);
             }
 
-            // =========================================================================
-            // CONVERSION LOGIC
-            // =========================================================================
+            // Swap
+            function swap() {
+                const inVendor = vendors[state.inputVendor];
+                const outVendor = vendors[state.outputVendor];
+                const mimoGain = MIMO_GAIN[state.streams];
+
+                // Compute EIRP from current input
+                const inMimo = inVendor.usesMimo ? mimoGain : 0;
+                const inAg = inVendor.usesAntennaGain ? state.antennaGain : 0;
+                let eirp;
+                if (inVendor.uiInputType === "Per-Chain Conducted") {
+                    eirp = state.inputPower + inMimo + inAg;
+                } else if (inVendor.uiInputType === "Total Conducted") {
+                    eirp = state.inputPower + inAg;
+                } else {
+                    eirp = state.inputPower;
+                }
+
+                // Derive what the output vendor's UI value is — this becomes the new input
+                const outMimo = outVendor.usesMimo ? mimoGain : 0;
+                const outAg = outVendor.usesAntennaGain ? state.antennaGain : 0;
+                let newInputPower;
+                if (outVendor.uiInputType === "Per-Chain Conducted") {
+                    newInputPower = eirp - outAg - outMimo;
+                } else if (outVendor.uiInputType === "Total Conducted") {
+                    newInputPower = eirp - outAg;
+                } else {
+                    newInputPower = eirp;
+                }
+
+                // Swap vendors and apply new input power
+                [state.inputVendor, state.outputVendor] = [state.outputVendor, state.inputVendor];
+                state.inputPower = round(newInputPower);
+
+                dom.inputVendor.value = state.inputVendor;
+                dom.outputVendor.value = state.outputVendor;
+
+                updateInputRows();
+                updateOutputRows();
+                calculate();
+            }
+
+            // Conversion logic
             function calculate() {
                 const inVendor = vendors[state.inputVendor];
                 const outVendor = vendors[state.outputVendor];
@@ -843,6 +932,7 @@
                 dom.inEirpDisplay.textContent = round(inEirp);
 
                 // Update output panel displays
+                dom.outStreamsDisplay.textContent = state.streams;
                 dom.outPerchainDisplay.textContent = round(outPerChain);
                 dom.outMimoDisplay.textContent = outVendor.usesMimo ? round(outMimo) : "N/A";
                 dom.outTotalDisplay.textContent = round(outTotal);
@@ -869,9 +959,7 @@
                 return Math.round(val * 100) / 100;
             }
 
-            // =========================================================================
-            // GO
-            // =========================================================================
+            // Go
             init();
         </script>
     </body>
