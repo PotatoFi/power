@@ -20,7 +20,8 @@ There should be a JavaScript object that defines everything for each vendor that
 
 * Vendor name
 * UI Input type (Conducted, EIRP)
-* Vendor EIRP math (for example, "Conducted + Antenna Gain + MIMO Gain (10log(Ntx))")
+* Vendor UI Power math (for example, "Conducted + Antenna Gain + MIMO Gain (10log(Ntx))")
+* Vendor EIRP math (either the whole equation, or "UI Power + antenna gain")
 * Vendor UI setting for 1x1
 * Vendor UI setting for 2x2
 * Vendor UI setting for 3x3
@@ -56,3 +57,9 @@ Set conducted to 10 dBm (EIRP = 10 + 4 + 6 = 20 dBm)
 Set conducted to 10 dBm (EIRP = 10 + 4 = 14 dBm; Difference: Vendor EIRP includes MIMO, so 17 dBm (2x2) or 20 dBm (4x4) exceeds Hamina’s 14 dBm)
 
 High (Cisco Wireless Controller Configuration Guide, Meraki Documentation)
+
+# EIRP
+
+In most cases, the vendor UI transmit power does not include EIRP. In other cases, the vendor transmit power is EIRP.
+
+All vendors should display EIRP (in addtion to the UI Vendor Power) as a non-editable field, except for Aruba, which should do the reverse. This should be defined in const vendors.
