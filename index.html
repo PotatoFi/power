@@ -5,6 +5,47 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Power Calculator</title>
         <style>
+            :root {
+                --bg: #f5f5f5;
+                --surface: #ffffff;
+                --text: #333333;
+                --text-secondary: #555555;
+                --text-muted: #888888;
+                --text-faint: #999999;
+                --border: #dddddd;
+                --border-subtle: #eeeeee;
+                --input-bg: #ffffff;
+                --input-color: #333333;
+                --btn-bg: #ffffff;
+                --btn-hover: #f0f0f0;
+                --arrow: #bbbbbb;
+                --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+                --shadow: rgba(0, 0, 0, 0.12);
+                --accent: #1a73e8;
+                --accent-bg: rgba(26, 115, 232, 0.06);
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg: #1c1c1e;
+                    --surface: #2c2c2e;
+                    --text: #e0e0e0;
+                    --text-secondary: #aaaaaa;
+                    --text-muted: #888888;
+                    --text-faint: #777777;
+                    --border: #3a3a3c;
+                    --border-subtle: #3a3a3c;
+                    --input-bg: #3a3a3c;
+                    --input-color: #e0e0e0;
+                    --btn-bg: #3a3a3c;
+                    --btn-hover: #4a4a4c;
+                    --arrow: #555555;
+                    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+                    --shadow: rgba(0, 0, 0, 0.4);
+                    --accent-bg: rgba(26, 115, 232, 0.12);
+                }
+            }
+
             * {
                 box-sizing: border-box;
                 margin: 0;
@@ -15,8 +56,8 @@
                 font-family:
                     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
                     sans-serif;
-                background: #f5f5f5;
-                color: #333;
+                background: var(--bg);
+                color: var(--text);
                 min-height: 100vh;
                 display: flex;
                 flex-direction: column;
@@ -25,10 +66,14 @@
 
             header {
                 width: 100%;
-                background: #f5f5f5;
-                color: #333;
-                padding: 16px 24px;
-                text-align: left;
+                background: var(--bg);
+                color: var(--text);
+            }
+
+            header .header-inner {
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 16px 16px;
             }
 
             header h1 {
@@ -36,16 +81,20 @@
                 font-weight: 500;
             }
 
-            header p {
-                font-size: 13px;
-                opacity: 0.85;
-                margin-top: 4px;
-            }
-
             .container {
                 max-width: 960px;
                 width: 100%;
-                padding: 32px 16px;
+                padding: 16px 16px;
+            }
+
+            select.chain-select {
+                width: 84px;
+                padding: 7px 28px 7px 8px;
+                font-size: 15px;
+                border: 2px solid var(--accent);
+                border-radius: 6px;
+                background-position: right 8px center;
+                text-align-last: right;
             }
 
             .translator {
@@ -56,9 +105,9 @@
 
             .panel {
                 flex: 1;
-                background: white;
+                background: var(--surface);
                 border-radius: 8px;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+                box-shadow: 0 1px 3px var(--shadow);
                 padding: 20px;
                 display: flex;
                 flex-direction: column;
@@ -69,7 +118,7 @@
                 font-size: 11px;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
-                color: #888;
+                color: var(--text-muted);
                 font-weight: 600;
             }
 
@@ -77,94 +126,134 @@
                 width: 100%;
                 padding: 10px 12px;
                 font-size: 15px;
-                border: 1px solid #ddd;
+                border: 1px solid var(--border);
                 border-radius: 6px;
-                background: white;
-                color: #333;
+                background: var(--input-bg);
+                color: var(--input-color);
                 cursor: pointer;
                 appearance: none;
-                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+                background-image: var(--select-arrow);
                 background-repeat: no-repeat;
                 background-position: right 12px center;
             }
 
             select:focus {
                 outline: none;
-                border-color: #1a73e8;
+                border-color: var(--accent);
             }
 
-            .power-input-group {
+            /* Chain */
+            .chain {
                 display: flex;
-                align-items: center;
-                gap: 8px;
+                flex-direction: column;
+                border: 1px solid var(--border-subtle);
+                border-radius: 8px;
+                overflow: hidden;
             }
 
-            .power-input-group label {
+            .chain-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--border-subtle);
+                transition: background 0.1s;
+            }
+
+            .chain-row:last-child {
+                border-bottom: none;
+            }
+
+            .chain-row.active-row {
+                background: var(--accent-bg);
+            }
+
+            .chain-row.muted-row {
+                opacity: 0.35;
+            }
+
+            .chain-row-label {
                 font-size: 13px;
-                color: #666;
-                white-space: nowrap;
+                color: var(--text-secondary);
             }
 
-            input[type="number"] {
-                width: 100%;
-                padding: 12px;
-                font-size: 28px;
-                font-weight: 300;
-                border: 1px solid #ddd;
-                border-radius: 6px;
-                text-align: center;
-            }
-
-            input[type="number"]:focus {
-                outline: none;
-                border-color: #1a73e8;
-            }
-
-            .output-value {
-                width: 100%;
-                padding: 12px;
-                font-size: 28px;
-                font-weight: 300;
-                background: #f8f9fa;
-                border: 1px solid #e8e8e8;
-                border-radius: 6px;
-                text-align: center;
-                color: #333;
-                min-height: 58px;
+            .chain-row-right {
                 display: flex;
                 align-items: center;
-                justify-content: center;
-            }
-
-            .stream-select {
-                display: flex;
                 gap: 6px;
             }
 
-            .stream-btn {
-                flex: 1;
-                padding: 8px 4px;
-                font-size: 13px;
-                border: 1px solid #ddd;
+            .chain-display {
+                font-size: 20px;
+                font-weight: 300;
+                width: 84px;
+                text-align: right;
+                color: var(--text);
+                border: 2px solid transparent;
+                padding: 4px 8px;
+            }
+
+            .active-row .chain-display {
+                color: var(--accent);
+                font-weight: 400;
+            }
+
+            input[type="number"].chain-input {
+                width: 84px;
+                padding: 4px 8px;
+                font-size: 20px;
+                font-weight: 300;
+                border: 2px solid var(--accent);
                 border-radius: 6px;
-                background: white;
+                text-align: right;
+                background: var(--input-bg);
+                color: var(--input-color);
+            }
+
+            input[type="number"].chain-input:focus {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+            }
+
+            .chain-unit {
+                font-size: 12px;
+                color: var(--text-muted);
+                min-width: 24px;
+            }
+
+            /* Arrow */
+            .arrow-divider {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                color: var(--arrow);
+                padding: 0 4px;
+                align-self: stretch;
+                position: relative;
+            }
+
+            .swap-btn {
+                position: absolute;
+                top: 20px;
+                background: none;
+                border: none;
+                font-size: 20px;
+                color: var(--arrow);
                 cursor: pointer;
-                text-align: center;
-                transition: all 0.15s;
+                padding: 4px;
+                line-height: 1;
+                border-radius: 4px;
+                transition: color 0.15s;
             }
 
-            .stream-btn:hover {
-                background: #f0f0f0;
+            .swap-btn:hover {
+                color: var(--text);
             }
 
-            .stream-btn.active {
-                background: #1a73e8;
-                color: white;
-                border-color: #1a73e8;
-            }
-
+            /* Info section */
             .info-section {
-                border-top: 1px solid #eee;
+                border-top: 1px solid var(--border-subtle);
                 padding-top: 14px;
                 display: flex;
                 flex-direction: column;
@@ -181,14 +270,62 @@
                 font-size: 11px;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
-                color: #999;
+                color: var(--text-faint);
                 font-weight: 600;
             }
 
             .info-value {
                 font-size: 13px;
-                color: #555;
+                color: var(--text-secondary);
                 line-height: 1.4;
+            }
+
+            .warning-banner {
+                position: relative;
+                background: #fef9c3;
+                border: 1px solid #fde047;
+                border-radius: 8px;
+                padding: 12px 40px 12px 16px;
+                margin-bottom: 20px;
+                font-size: 13px;
+                color: #713f12;
+                line-height: 1.5;
+            }
+
+            .warning-banner a {
+                color: #713f12;
+            }
+
+            .warning-dismiss {
+                position: absolute;
+                top: 10px;
+                right: 12px;
+                background: none;
+                border: none;
+                font-size: 16px;
+                color: #713f12;
+                cursor: pointer;
+                line-height: 1;
+                padding: 0;
+                opacity: 0.6;
+            }
+
+            .warning-dismiss:hover {
+                opacity: 1;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                .warning-banner {
+                    background: #422006;
+                    border-color: #854d0e;
+                    color: #fef08a;
+                }
+                .warning-banner a {
+                    color: #fef08a;
+                }
+                .warning-dismiss {
+                    color: #fef08a;
+                }
             }
 
             .confidence-high {
@@ -206,61 +343,13 @@
                 font-weight: 500;
             }
 
-            .arrow-divider {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 24px;
-                color: #bbb;
-                padding: 0 4px;
-                align-self: center;
-            }
-
-            .unit-label {
-                font-size: 14px;
-                color: #999;
-                text-align: center;
-            }
-
-            .antenna-gain-bar {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
-                margin-bottom: 20px;
-                padding: 12px 16px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-            }
-
-            .antenna-gain-bar label {
-                font-size: 13px;
-                font-weight: 500;
-                color: #555;
-            }
-
-            .antenna-gain-bar input[type="number"] {
-                width: 80px;
-                padding: 6px 8px;
-                font-size: 15px;
-                font-weight: 400;
-                border: 1px solid #ddd;
-                border-radius: 6px;
-                text-align: center;
-            }
-
-            .antenna-gain-bar .unit {
-                font-size: 13px;
-                color: #888;
-            }
-
             @media (max-width: 700px) {
                 .translator {
                     flex-direction: column;
                 }
                 .arrow-divider {
                     transform: rotate(90deg);
+                    align-self: center;
                     padding: 8px 0;
                 }
             }
@@ -268,90 +357,155 @@
     </head>
     <body>
         <header>
-            <h1>Transmit Power Calculator</h1>
+            <div class="header-inner">
+                <h1>Transmit Power Calculator</h1>
+            </div>
         </header>
 
         <div class="container">
-            <div class="antenna-gain-bar">
-                <label for="antenna-gain">Antenna Gain</label>
-                <input type="number" id="antenna-gain" value="4" step="0.5" />
-                <span class="unit">dBi</span>
+            <div class="warning-banner" id="warning-banner">
+                <button class="warning-dismiss" id="warning-dismiss">&times;</button>
+                This calculator is currently under development, and is very likely to be wrong. Don't trust it. You can send feedback to <a href="mailto:joel@potatofi.com">joel@potatofi.com</a>.
             </div>
+
             <div class="translator">
                 <!-- Left panel: Input -->
                 <div class="panel">
                     <div class="panel-header">Input Vendor</div>
                     <select id="input-vendor"></select>
 
-                    <div id="input-streams-wrapper">
-                        <div class="panel-header" style="margin-bottom: 6px">
-                            Spatial Streams
+                    <div class="chain">
+                        <div class="chain-row" id="in-row-perchain">
+                            <div class="chain-row-label">Per-Chain Conducted</div>
+                            <div class="chain-row-right">
+                                <input type="number" id="in-perchain-input" class="chain-input" value="10" step="1" style="display:none" />
+                                <div id="in-perchain-display" class="chain-display">—</div>
+                                <span class="chain-unit">dBm</span>
+                            </div>
                         </div>
-                        <div class="stream-select" id="input-streams"></div>
-                    </div>
-
-                    <div>
-                        <div class="panel-header" style="margin-bottom: 6px">
-                            Vendor UI Power (dBm)
+                        <div class="chain-row" id="in-row-streams">
+                            <div class="chain-row-label">Spatial Streams</div>
+                            <div class="chain-row-right">
+                                <select id="streams-select" class="chain-select"></select>
+                                <span class="chain-unit" style="visibility:hidden">dBm</span>
+                            </div>
                         </div>
-                        <input
-                            type="number"
-                            id="input-power"
-                            value="10"
-                            step="1"
-                        />
+                        <div class="chain-row" id="in-row-mimo">
+                            <div class="chain-row-label">MIMO Gain</div>
+                            <div class="chain-row-right">
+                                <div id="in-mimo-display" class="chain-display">—</div>
+                                <span class="chain-unit">dB</span>
+                            </div>
+                        </div>
+                        <div class="chain-row" id="in-row-total">
+                            <div class="chain-row-label">Total Conducted</div>
+                            <div class="chain-row-right">
+                                <input type="number" id="in-total-input" class="chain-input" value="10" step="1" style="display:none" />
+                                <div id="in-total-display" class="chain-display">—</div>
+                                <span class="chain-unit">dBm</span>
+                            </div>
+                        </div>
+                        <div class="chain-row" id="in-row-antenna">
+                            <div class="chain-row-label">Antenna Gain</div>
+                            <div class="chain-row-right">
+                                <input type="number" id="antenna-gain" class="chain-input" value="0" step="0.5" />
+                                <span class="chain-unit">dBi</span>
+                            </div>
+                        </div>
+                        <div class="chain-row" id="in-row-eirp">
+                            <div class="chain-row-label">EIRP</div>
+                            <div class="chain-row-right">
+                                <input type="number" id="in-eirp-input" class="chain-input" value="10" step="1" style="display:none" />
+                                <div id="in-eirp-display" class="chain-display">—</div>
+                                <span class="chain-unit">dBm</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="unit-label" id="input-type-label"></div>
 
                     <div class="info-section">
+                        <div class="info-row">
+                            <div class="info-label">UI Math</div>
+                            <div class="info-value" id="input-ui-math">—</div>
+                        </div>
                         <div class="info-row">
                             <div class="info-label">EIRP Math</div>
                             <div class="info-value" id="input-eirp-math">—</div>
                         </div>
                         <div class="info-row">
                             <div class="info-label">Confidence</div>
-                            <div class="info-value" id="input-confidence">
-                                —
-                            </div>
+                            <div class="info-value" id="input-confidence">—</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Arrow -->
-                <div class="arrow-divider">&rarr;</div>
+                <!-- Arrow + Swap -->
+                <div class="arrow-divider">
+                    &rarr;
+                    <button class="swap-btn" id="swap-btn">&#x21C4;</button>
+                </div>
 
                 <!-- Right panel: Output -->
                 <div class="panel">
                     <div class="panel-header">Output Vendor</div>
                     <select id="output-vendor"></select>
 
-                    <div id="output-streams-wrapper">
-                        <div class="panel-header" style="margin-bottom: 6px">
-                            Spatial Streams
+                    <div class="chain">
+                        <div class="chain-row" id="out-row-perchain">
+                            <div class="chain-row-label">Per-Chain Conducted</div>
+                            <div class="chain-row-right">
+                                <div id="out-perchain-display" class="chain-display">—</div>
+                                <span class="chain-unit">dBm</span>
+                            </div>
                         </div>
-                        <div class="stream-select" id="output-streams"></div>
-                    </div>
-
-                    <div>
-                        <div class="panel-header" style="margin-bottom: 6px">
-                            Vendor UI Power (dBm)
+                        <div class="chain-row" id="out-row-streams">
+                            <div class="chain-row-label">Spatial Streams</div>
+                            <div class="chain-row-right">
+                                <div id="out-streams-display" class="chain-display">—</div>
+                                <span class="chain-unit" style="visibility:hidden">dBm</span>
+                            </div>
                         </div>
-                        <div class="output-value" id="output-power">—</div>
+                        <div class="chain-row" id="out-row-mimo">
+                            <div class="chain-row-label">MIMO Gain</div>
+                            <div class="chain-row-right">
+                                <div id="out-mimo-display" class="chain-display">—</div>
+                                <span class="chain-unit">dB</span>
+                            </div>
+                        </div>
+                        <div class="chain-row" id="out-row-total">
+                            <div class="chain-row-label">Total Conducted</div>
+                            <div class="chain-row-right">
+                                <div id="out-total-display" class="chain-display">—</div>
+                                <span class="chain-unit">dBm</span>
+                            </div>
+                        </div>
+                        <div class="chain-row" id="out-row-antenna">
+                            <div class="chain-row-label">Antenna Gain</div>
+                            <div class="chain-row-right">
+                                <div id="out-antenna-display" class="chain-display">—</div>
+                                <span class="chain-unit">dBi</span>
+                            </div>
+                        </div>
+                        <div class="chain-row" id="out-row-eirp">
+                            <div class="chain-row-label">EIRP</div>
+                            <div class="chain-row-right">
+                                <div id="out-eirp-display" class="chain-display">—</div>
+                                <span class="chain-unit">dBm</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="unit-label" id="output-type-label"></div>
 
                     <div class="info-section">
                         <div class="info-row">
+                            <div class="info-label">UI Math</div>
+                            <div class="info-value" id="output-ui-math">—</div>
+                        </div>
+                        <div class="info-row">
                             <div class="info-label">EIRP Math</div>
-                            <div class="info-value" id="output-eirp-math">
-                                —
-                            </div>
+                            <div class="info-value" id="output-eirp-math">—</div>
                         </div>
                         <div class="info-row">
                             <div class="info-label">Confidence</div>
-                            <div class="info-value" id="output-confidence">
-                                —
-                            </div>
+                            <div class="info-value" id="output-confidence">—</div>
                         </div>
                     </div>
                 </div>
@@ -359,82 +513,34 @@
         </div>
 
         <script>
-            // =========================================================================
-            // VENDOR DATA — Edit this object to add or modify vendors
-            // =========================================================================
+            // Vendor data
             //
             // How it works:
-            //   - "Conducted" vendors: The user sets conducted power in the UI.
-            //     EIRP = Conducted + Antenna Gain + MIMO Gain
-            //     toEirp:   (uiValue, antennaGain) => EIRP
-            //     fromEirp: (eirp, antennaGain)    => uiValue (conducted)
+            //   - "Per-Chain Conducted" / "Total Conducted" vendors: UI = conducted power.
+            //     EIRP = Total Conducted + Antenna Gain
+            //     Total Conducted = Per-Chain Conducted + MIMO Gain (10·log(N))
             //
             //   - "EIRP" vendors: The user sets EIRP directly in the UI.
-            //     The EIRP value already includes Conducted + Antenna Gain + MIMO Gain.
-            //     toEirp:   (uiValue) => EIRP  (identity — the UI value IS the EIRP)
-            //     fromEirp: (eirp)    => uiValue (identity)
+            //     The EIRP value already includes Total Conducted + Antenna Gain + MIMO Gain.
             //
-            //   - Hamina (planning tool): UI = Conducted power.
-            //     No antenna gain, no MIMO gain — pure conducted value.
+            //   - Hamina (planning tool): UI = Total Conducted power.
+            //     EIRP = Total Conducted + Antenna Gain. No MIMO gain.
             //
             // MIMO Gain values: 1x1=0, 2x2=3, 3x3=4.77, 4x4=6 dB
             //
             const MIMO_GAIN = {
-                "1x1": 0, // 10*log10(1)
-                "2x2": 3, // 10*log10(2)
+                "1x1": 0,    // 10*log10(1)
+                "2x2": 3,    // 10*log10(2)
                 "3x3": 4.77, // 10*log10(3)
-                "4x4": 6, // 10*log10(4)
+                "4x4": 6,    // 10*log10(4)
             };
-
-            function makeConductedStreams() {
-                // Conducted vendors: UI = conducted power
-                // EIRP = conducted + antennaGain + mimoGain
-                const streams = {};
-                for (const [key, mg] of Object.entries(MIMO_GAIN)) {
-                    streams[key] = {
-                        mimoGain: mg,
-                        toEirp: (ui, antGain) => ui + antGain + mg,
-                        fromEirp: (eirp, antGain) => eirp - antGain - mg,
-                    };
-                }
-                return streams;
-            }
-
-            function makeEirpStreams() {
-                // EIRP vendors: UI = EIRP (includes conducted + antenna gain + MIMO gain)
-                // The UI value IS the EIRP, so toEirp/fromEirp are identity
-                const streams = {};
-                for (const [key, mg] of Object.entries(MIMO_GAIN)) {
-                    streams[key] = {
-                        mimoGain: mg,
-                        toEirp: (ui) => ui,
-                        fromEirp: (eirp) => eirp,
-                    };
-                }
-                return streams;
-            }
-
-            function makeHaminaStreams() {
-                // Hamina: UI = Conducted power (no antenna gain, no MIMO gain)
-                // The UI value is just the conducted power — identity
-                const streams = {};
-                for (const [key, mg] of Object.entries(MIMO_GAIN)) {
-                    streams[key] = {
-                        mimoGain: 0,
-                        toEirp: (ui) => ui,
-                        fromEirp: (eirp) => eirp,
-                    };
-                }
-                return streams;
-            }
 
             const vendors = {
                 cisco: {
                     name: "Cisco",
-                    uiInputType: "Conducted",
-                    eirpMath:
-                        "Conducted + Antenna Gain + MIMO Gain (10log(Ntx))",
-                    streams: makeConductedStreams(),
+                    uiInputType: "Per-Chain Conducted",
+                    uiMath: "Per-Chain Conducted Power",
+                    eirpMath: "Per-Chain Conducted + Antenna Gain + MIMO Gain (10·log(Ntx))",
                     usesAntennaGain: true,
                     usesMimo: true,
                     confidence: "High",
@@ -445,8 +551,8 @@
                 aruba: {
                     name: "HPE Aruba",
                     uiInputType: "EIRP",
-                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-                    streams: makeEirpStreams(),
+                    uiMath: "Total Conducted + Antenna Gain + MIMO Gain (UI value is EIRP)",
+                    eirpMath: "UI Value (already EIRP)",
                     usesAntennaGain: true,
                     usesMimo: true,
                     confidence: "Low", // Normally high, but needs to be validated
@@ -456,9 +562,9 @@
 
                 juniper: {
                     name: "Juniper Networks (Mist)",
-                    uiInputType: "Conducted",
-                    eirpMath: "Per-Chain Conducted + 10log(N) + Antenna Gain",
-                    streams: makeConductedStreams(),
+                    uiInputType: "Per-Chain Conducted",
+                    uiMath: "Per-Chain Conducted Power",
+                    eirpMath: "Per-Chain Conducted + Antenna Gain + MIMO Gain (10·log(N))",
                     usesAntennaGain: true,
                     usesMimo: true,
                     confidence: "High",
@@ -469,8 +575,8 @@
                 fortinet: {
                     name: "Fortinet (FortiAP)",
                     uiInputType: "EIRP",
-                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-                    streams: makeEirpStreams(),
+                    uiMath: "Total Conducted + Antenna Gain + MIMO Gain (UI value is EIRP)",
+                    eirpMath: "UI Value (already EIRP)",
                     usesAntennaGain: true,
                     usesMimo: true,
                     confidence: "Low", // Medium after validation
@@ -480,9 +586,9 @@
 
                 extreme: {
                     name: "Extreme Networks",
-                    uiInputType: "Conducted",
-                    eirpMath: "Conducted + Antenna Gain + MIMO Gain (10log(N))",
-                    streams: makeConductedStreams(),
+                    uiInputType: "Total Conducted",
+                    uiMath: "Total Conducted Power",
+                    eirpMath: "Total Conducted + Antenna Gain + MIMO Gain (10·log(N))",
                     usesAntennaGain: true,
                     usesMimo: true,
                     confidence: "Low", // High after validation
@@ -493,8 +599,8 @@
                 huawei: {
                     name: "Huawei",
                     uiInputType: "EIRP",
-                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-                    streams: makeEirpStreams(),
+                    uiMath: "Total Conducted + Antenna Gain + MIMO Gain (UI value is EIRP)",
+                    eirpMath: "UI Value (already EIRP)",
                     usesAntennaGain: true,
                     usesMimo: true,
                     confidence: "Low", // High after validation
@@ -504,9 +610,9 @@
 
                 ruckus: {
                     name: "Ruckus (CommScope)",
-                    uiInputType: "Conducted",
-                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-                    streams: makeConductedStreams(),
+                    uiInputType: "Total Conducted",
+                    uiMath: "Total Conducted Power",
+                    eirpMath: "Total Conducted + Antenna Gain + MIMO Gain",
                     usesAntennaGain: true,
                     usesMimo: true,
                     confidence: "Low", // Medium after validation
@@ -516,9 +622,9 @@
 
                 ubiquiti: {
                     name: "Ubiquiti (UniFi)",
-                    uiInputType: "Conducted",
-                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-                    streams: makeConductedStreams(),
+                    uiInputType: "Total Conducted",
+                    uiMath: "Total Conducted Power",
+                    eirpMath: "Total Conducted + Antenna Gain + MIMO Gain",
                     usesAntennaGain: true,
                     usesMimo: true,
                     confidence: "Low", // High after validation
@@ -528,9 +634,9 @@
 
                 cambium: {
                     name: "Cambium Networks",
-                    uiInputType: "Conducted",
-                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-                    streams: makeConductedStreams(),
+                    uiInputType: "Total Conducted",
+                    uiMath: "Total Conducted Power",
+                    eirpMath: "Total Conducted + Antenna Gain + MIMO Gain",
                     usesAntennaGain: true,
                     usesMimo: true,
                     confidence: "Low", // Medium after validation
@@ -540,9 +646,9 @@
 
                 alcatel: {
                     name: "Alcatel-Lucent Enterprise",
-                    uiInputType: "Conducted",
-                    eirpMath: "Conducted + Antenna Gain + MIMO Gain",
-                    streams: makeConductedStreams(),
+                    uiInputType: "Total Conducted",
+                    uiMath: "Total Conducted Power",
+                    eirpMath: "Total Conducted + Antenna Gain + MIMO Gain",
                     usesAntennaGain: true,
                     usesMimo: true,
                     confidence: "Low", // Low after validation
@@ -552,57 +658,75 @@
 
                 hamina: {
                     name: "Hamina",
-                    uiInputType: "Conducted",
-                    eirpMath:
-                        "Conducted only (models beacon TxPower; no antenna gain, no MIMO gain)",
-                    streams: makeHaminaStreams(),
-                    usesAntennaGain: false,
+                    uiInputType: "Total Conducted",
+                    uiMath: "Total Conducted Power (beacon TxPower; no MIMO gain)",
+                    eirpMath: "Total Conducted + Antenna Gain",
+                    usesAntennaGain: true,
                     usesMimo: false,
                     confidence: "High",
                     confidenceSources: "Hamina Network Planner documentation",
                 },
             };
 
-            // =========================================================================
-            // STATE
-            // =========================================================================
+            // State
             let state = {
                 inputVendor: "hamina",
                 outputVendor: "juniper",
-                inputStreams: "4x4",
-                outputStreams: "4x4",
+                streams: "4x4",
                 inputPower: 10,
                 antennaGain: 0,
             };
 
-            // =========================================================================
-            // DOM REFS
-            // =========================================================================
+            // DOM refs
             const dom = {
                 inputVendor: document.getElementById("input-vendor"),
                 outputVendor: document.getElementById("output-vendor"),
-                inputStreams: document.getElementById("input-streams"),
-                outputStreams: document.getElementById("output-streams"),
-                inputPower: document.getElementById("input-power"),
-                outputPower: document.getElementById("output-power"),
-                inputTypeLabel: document.getElementById("input-type-label"),
-                outputTypeLabel: document.getElementById("output-type-label"),
+                streamsSelect: document.getElementById("streams-select"),
+                outStreamsDisplay: document.getElementById("out-streams-display"),
+                antennaGain: document.getElementById("antenna-gain"),
+
+                // Input chain rows
+                inRowPerchain: document.getElementById("in-row-perchain"),
+                inRowMimo: document.getElementById("in-row-mimo"),
+                inRowTotal: document.getElementById("in-row-total"),
+                inRowAntenna: document.getElementById("in-row-antenna"),
+                inRowEirp: document.getElementById("in-row-eirp"),
+
+                // Input chain inputs (shown for the active vendor UI row)
+                inPerchainInput: document.getElementById("in-perchain-input"),
+                inTotalInput: document.getElementById("in-total-input"),
+                inEirpInput: document.getElementById("in-eirp-input"),
+
+                // Input chain displays (shown for non-active rows)
+                inPerchainDisplay: document.getElementById("in-perchain-display"),
+                inMimoDisplay: document.getElementById("in-mimo-display"),
+                inTotalDisplay: document.getElementById("in-total-display"),
+                inEirpDisplay: document.getElementById("in-eirp-display"),
+
+                // Output chain rows
+                outRowPerchain: document.getElementById("out-row-perchain"),
+                outRowMimo: document.getElementById("out-row-mimo"),
+                outRowTotal: document.getElementById("out-row-total"),
+                outRowAntenna: document.getElementById("out-row-antenna"),
+                outRowEirp: document.getElementById("out-row-eirp"),
+
+                // Output chain displays (all read-only)
+                outPerchainDisplay: document.getElementById("out-perchain-display"),
+                outMimoDisplay: document.getElementById("out-mimo-display"),
+                outTotalDisplay: document.getElementById("out-total-display"),
+                outAntennaDisplay: document.getElementById("out-antenna-display"),
+                outEirpDisplay: document.getElementById("out-eirp-display"),
+
+                // Info sections
+                inputUiMath: document.getElementById("input-ui-math"),
+                outputUiMath: document.getElementById("output-ui-math"),
                 inputEirpMath: document.getElementById("input-eirp-math"),
                 outputEirpMath: document.getElementById("output-eirp-math"),
                 inputConfidence: document.getElementById("input-confidence"),
                 outputConfidence: document.getElementById("output-confidence"),
-                antennaGain: document.getElementById("antenna-gain"),
-                inputStreamsWrap: document.getElementById(
-                    "input-streams-wrapper",
-                ),
-                outputStreamsWrap: document.getElementById(
-                    "output-streams-wrapper",
-                ),
             };
 
-            // =========================================================================
-            // INIT
-            // =========================================================================
+            // Init
             function init() {
                 // Populate vendor dropdowns
                 for (const key of Object.keys(vendors)) {
@@ -613,27 +737,29 @@
                 dom.inputVendor.value = state.inputVendor;
                 dom.outputVendor.value = state.outputVendor;
 
-                // Build stream buttons
-                buildStreamButtons("input");
-                buildStreamButtons("output");
+                // Populate streams dropdown
+                for (const key of Object.keys(MIMO_GAIN)) {
+                    dom.streamsSelect.appendChild(new Option(key, key));
+                }
+                dom.streamsSelect.value = state.streams;
+                dom.streamsSelect.addEventListener("change", (e) => {
+                    state.streams = e.target.value;
+                    calculate();
+                });
 
-                // Set input values from state
-                dom.inputPower.value = state.inputPower;
+                // Set antenna gain from state
                 dom.antennaGain.value = state.antennaGain;
 
                 // Event listeners
                 dom.inputVendor.addEventListener("change", (e) => {
                     state.inputVendor = e.target.value;
-                    buildStreamButtons("input");
+                    updateInputRows();
+                    updateOutputRows();
                     calculate();
                 });
                 dom.outputVendor.addEventListener("change", (e) => {
                     state.outputVendor = e.target.value;
-                    buildStreamButtons("output");
-                    calculate();
-                });
-                dom.inputPower.addEventListener("input", (e) => {
-                    state.inputPower = parseFloat(e.target.value) || 0;
+                    updateOutputRows();
                     calculate();
                 });
                 dom.antennaGain.addEventListener("input", (e) => {
@@ -641,82 +767,183 @@
                     calculate();
                 });
 
+                // Warning dismiss
+                document.getElementById("warning-dismiss").addEventListener("click", () => {
+                    document.getElementById("warning-banner").style.display = "none";
+                });
+
+                // Swap button
+                document.getElementById("swap-btn").addEventListener("click", swap);
+
+                // Power input listeners (only one is visible at a time)
+                for (const inputEl of [dom.inPerchainInput, dom.inTotalInput, dom.inEirpInput]) {
+                    inputEl.addEventListener("input", (e) => {
+                        state.inputPower = parseFloat(e.target.value) || 0;
+                        calculate();
+                    });
+                }
+
+                // Initial row setup and calculation
+                updateInputRows();
+                updateOutputRows();
                 calculate();
             }
 
-            function buildStreamButtons(side) {
-                const container =
-                    side === "input" ? dom.inputStreams : dom.outputStreams;
-                const wrapper =
-                    side === "input"
-                        ? dom.inputStreamsWrap
-                        : dom.outputStreamsWrap;
-                const vendorKey =
-                    side === "input" ? state.inputVendor : state.outputVendor;
-                const vendor = vendors[vendorKey];
-                const currentStream =
-                    side === "input" ? state.inputStreams : state.outputStreams;
+            // Row visibility
+            function updateInputRows() {
+                const vendor = vendors[state.inputVendor];
+                const uiType = vendor.uiInputType;
 
-                // Hide streams selector for vendors that don't use MIMO
-                if (!vendor.usesMimo) {
-                    wrapper.style.display = "none";
-                    return;
-                }
-                wrapper.style.display = "";
+                // Hide all power inputs, show all power displays
+                dom.inPerchainInput.style.display = "none";
+                dom.inTotalInput.style.display = "none";
+                dom.inEirpInput.style.display = "none";
+                dom.inPerchainDisplay.style.display = "";
+                dom.inTotalDisplay.style.display = "";
+                dom.inEirpDisplay.style.display = "";
 
-                container.innerHTML = "";
-                for (const streamKey of Object.keys(vendor.streams)) {
-                    const btn = document.createElement("button");
-                    btn.className =
-                        "stream-btn" +
-                        (streamKey === currentStream ? " active" : "");
-                    btn.textContent = streamKey;
-                    btn.addEventListener("click", () => {
-                        if (side === "input") state.inputStreams = streamKey;
-                        else state.outputStreams = streamKey;
-                        buildStreamButtons(side);
-                        calculate();
-                    });
-                    container.appendChild(btn);
+                // Remove active-row from power rows
+                dom.inRowPerchain.classList.remove("active-row");
+                dom.inRowTotal.classList.remove("active-row");
+                dom.inRowEirp.classList.remove("active-row");
+
+                // Show the active input, hide its display, mark row active
+                let activeInput;
+                if (uiType === "Per-Chain Conducted") {
+                    activeInput = dom.inPerchainInput;
+                    dom.inPerchainDisplay.style.display = "none";
+                    dom.inRowPerchain.classList.add("active-row");
+                } else if (uiType === "Total Conducted") {
+                    activeInput = dom.inTotalInput;
+                    dom.inTotalDisplay.style.display = "none";
+                    dom.inRowTotal.classList.add("active-row");
+                } else { // EIRP
+                    activeInput = dom.inEirpInput;
+                    dom.inEirpDisplay.style.display = "none";
+                    dom.inRowEirp.classList.add("active-row");
                 }
+                activeInput.style.display = "";
+                activeInput.value = state.inputPower;
+
+                // Grey out MIMO row if vendor doesn't use MIMO
+                dom.inRowMimo.classList.toggle("muted-row", !vendor.usesMimo);
             }
 
-            // =========================================================================
-            // CONVERSION LOGIC
-            // =========================================================================
+            function updateOutputRows() {
+                const vendor = vendors[state.outputVendor];
+                const uiType = vendor.uiInputType;
+
+                // Remove active-row from power rows
+                dom.outRowPerchain.classList.remove("active-row");
+                dom.outRowTotal.classList.remove("active-row");
+                dom.outRowEirp.classList.remove("active-row");
+
+                // Mark the vendor UI row as active
+                if (uiType === "Per-Chain Conducted") {
+                    dom.outRowPerchain.classList.add("active-row");
+                } else if (uiType === "Total Conducted") {
+                    dom.outRowTotal.classList.add("active-row");
+                } else { // EIRP
+                    dom.outRowEirp.classList.add("active-row");
+                }
+
+                // Grey out MIMO row if vendor doesn't use MIMO
+                dom.outRowMimo.classList.toggle("muted-row", !vendor.usesMimo);
+            }
+
+            // Swap
+            function swap() {
+                const inVendor = vendors[state.inputVendor];
+                const outVendor = vendors[state.outputVendor];
+                const mimoGain = MIMO_GAIN[state.streams];
+
+                // Compute EIRP from current input
+                const inMimo = inVendor.usesMimo ? mimoGain : 0;
+                const inAg = inVendor.usesAntennaGain ? state.antennaGain : 0;
+                let eirp;
+                if (inVendor.uiInputType === "Per-Chain Conducted") {
+                    eirp = state.inputPower + inMimo + inAg;
+                } else if (inVendor.uiInputType === "Total Conducted") {
+                    eirp = state.inputPower + inAg;
+                } else {
+                    eirp = state.inputPower;
+                }
+
+                // Derive what the output vendor's UI value is — this becomes the new input
+                const outMimo = outVendor.usesMimo ? mimoGain : 0;
+                const outAg = outVendor.usesAntennaGain ? state.antennaGain : 0;
+                let newInputPower;
+                if (outVendor.uiInputType === "Per-Chain Conducted") {
+                    newInputPower = eirp - outAg - outMimo;
+                } else if (outVendor.uiInputType === "Total Conducted") {
+                    newInputPower = eirp - outAg;
+                } else {
+                    newInputPower = eirp;
+                }
+
+                // Swap vendors and apply new input power
+                [state.inputVendor, state.outputVendor] = [state.outputVendor, state.inputVendor];
+                state.inputPower = round(newInputPower);
+
+                dom.inputVendor.value = state.inputVendor;
+                dom.outputVendor.value = state.outputVendor;
+
+                updateInputRows();
+                updateOutputRows();
+                calculate();
+            }
+
+            // Conversion logic
             function calculate() {
                 const inVendor = vendors[state.inputVendor];
                 const outVendor = vendors[state.outputVendor];
-                const inStream = inVendor.streams[state.inputStreams];
-                const outStream = outVendor.streams[state.outputStreams];
+                const mimoGain = MIMO_GAIN[state.streams];
 
-                const inAntGain = inVendor.usesAntennaGain
-                    ? state.antennaGain
-                    : 0;
-                const outAntGain = outVendor.usesAntennaGain
-                    ? state.antennaGain
-                    : 0;
+                // Compute input chain
+                const inMimo = inVendor.usesMimo ? mimoGain : 0;
+                const inAg = inVendor.usesAntennaGain ? state.antennaGain : 0;
+                let inPerChain, inTotal, inEirp;
 
-                // Step 1: Convert input vendor UI value -> EIRP
-                const eirp = inStream.toEirp(state.inputPower, inAntGain);
+                if (inVendor.uiInputType === "Per-Chain Conducted") {
+                    inPerChain = state.inputPower;
+                    inTotal = inPerChain + inMimo;
+                    inEirp = inTotal + inAg;
+                } else if (inVendor.uiInputType === "Total Conducted") {
+                    inTotal = state.inputPower;
+                    inPerChain = inTotal - inMimo;
+                    inEirp = inTotal + inAg;
+                } else { // EIRP
+                    inEirp = state.inputPower;
+                    inTotal = inEirp - inAg;
+                    inPerChain = inTotal - inMimo;
+                }
 
-                // Step 2: Convert EIRP -> output vendor UI value
-                const outputPower = outStream.fromEirp(eirp, outAntGain);
+                // Compute output chain (EIRP is the common currency)
+                const outMimo = outVendor.usesMimo ? mimoGain : 0;
+                const outAg = outVendor.usesAntennaGain ? state.antennaGain : 0;
+                const outEirp = inEirp;
+                const outTotal = outEirp - outAg;
+                const outPerChain = outTotal - outMimo;
 
-                // Update output display
-                dom.outputPower.textContent = round(outputPower) + " dBm";
+                // Update input panel displays
+                dom.inPerchainDisplay.textContent = round(inPerChain);
+                dom.inMimoDisplay.textContent = inVendor.usesMimo ? round(inMimo) : "N/A";
+                dom.inTotalDisplay.textContent = round(inTotal);
+                dom.inEirpDisplay.textContent = round(inEirp);
 
-                // Update type labels
-                dom.inputTypeLabel.textContent =
-                    "Type: " + inVendor.uiInputType;
-                dom.outputTypeLabel.textContent =
-                    "Type: " + outVendor.uiInputType;
+                // Update output panel displays
+                dom.outStreamsDisplay.textContent = state.streams;
+                dom.outPerchainDisplay.textContent = round(outPerChain);
+                dom.outMimoDisplay.textContent = outVendor.usesMimo ? round(outMimo) : "N/A";
+                dom.outTotalDisplay.textContent = round(outTotal);
+                dom.outAntennaDisplay.textContent = state.antennaGain;
+                dom.outEirpDisplay.textContent = round(outEirp);
 
-                // Update EIRP math
+                // Update info sections
+                dom.inputUiMath.textContent = inVendor.uiMath;
+                dom.outputUiMath.textContent = outVendor.uiMath;
                 dom.inputEirpMath.textContent = inVendor.eirpMath;
                 dom.outputEirpMath.textContent = outVendor.eirpMath;
-
-                // Update confidence
                 setConfidence(dom.inputConfidence, inVendor);
                 setConfidence(dom.outputConfidence, outVendor);
             }
@@ -732,9 +959,7 @@
                 return Math.round(val * 100) / 100;
             }
 
-            // =========================================================================
-            // GO
-            // =========================================================================
+            // Go
             init();
         </script>
     </body>
