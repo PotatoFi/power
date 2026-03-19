@@ -613,8 +613,6 @@
         </div>
 
         <script>
-            // Vendor data
-            //
             // How it works:
             //   - "Per-Chain Conducted" / "Total Conducted" vendors: UI = conducted power.
             //     EIRP = Total Conducted + Antenna Gain
@@ -625,15 +623,16 @@
             //
             //   - Hamina (planning tool): UI = Total Conducted power.
             //     EIRP = Total Conducted + Antenna Gain. No MIMO gain.
-            //
-            // MIMO Gain values: 1x1=0, 2x2=3, 3x3=4.77, 4x4=6 dB
-            //
+
             const MIMO_GAIN = {
                 "1x1": 0, // 10*log10(1)
                 "2x2": 3, // 10*log10(2)
                 "3x3": 4.77, // 10*log10(3)
                 "4x4": 6, // 10*log10(4)
             };
+
+            // URL template
+            // <a href='aaa' target='_blank'
 
             const vendors = {
                 hamina: {
@@ -643,6 +642,14 @@
                     usesMimo: false,
                     confidence: "High",
                     notes: "Sourced from <a href='https://docs.hamina.com/hamina/simulation/access-points#transmit-power' target='_blank'>Hamina Network Planner documentation</a>. Hamina simulates and measures the signal strength of beacons, and does not factor in MIMO gain.",
+                },
+
+                openintent: {
+                    name: "OpenIntent",
+                    uiInputType: "Per-Chain Conducted",
+                    usesMimo: true,
+                    confidence: "High",
+                    notes: "Sourced from <a href='https://github.com/google/openintent/blob/main/release/2.0.0/models/src/openintent-wifi.yaml#L351' target='_blank'>OpenIntent Schema</a>.",
                 },
 
                 cisco: {
@@ -666,7 +673,7 @@
                     uiInputType: "Per-Chain Conducted",
                     usesMimo: true,
                     confidence: "High",
-                    notes: "Sourced from Juniper Mist Documentation. Validated by Juniper Mist.",
+                    notes: "Sourced from <a href='https://www.juniper.net/documentation/us/en/software/mist/mist-wireless/topics/ref/mist-power-notation.html' target='_blank'>HPE Juniper Documentation</a>.",
                 },
 
                 fortinet: {
@@ -698,15 +705,15 @@
                     uiInputType: "Total Conducted",
                     usesMimo: true,
                     confidence: "Low",
-                    notes: "Sourced from Ruckus technical guides. Not validated by Ruckus.",
+                    notes: "No documentation found.",
                 },
 
                 ubiquiti: {
                     name: "Ubiquiti UniFi",
                     uiInputType: "Total Conducted",
                     usesMimo: true,
-                    confidence: "Low",
-                    notes: "Sourced from Ubiquiti UniFi Controller Documentation and commnunity guides. Not validated by Ubiquiti.",
+                    confidence: "Medium",
+                    notes: "No documentation found. Using a <a href='https://techspecs.ui.com/unifi/wifi/uap-iw-hd' target='_blank'>UniFi In-Wall HD</a> (4x4, 5 GHz, 4 dBi gain), UniFi shows <b>17 dBm / 20 dBm (EIRP)</b>. If 17 dBm is Total Conducted, it should be 21 dBm EIRP, but this could be a simple rounding error issue.",
                 },
 
                 cambium: {
