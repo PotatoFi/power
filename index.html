@@ -531,8 +531,15 @@
                         <div class="chain-row" id="out-row-chains">
                             <div class="chain-row-label">Radio Chains</div>
                             <div class="chain-row-right">
-                                <select id="out-chains-select" class="chain-select"></select>
-                                <span class="chain-unit" style="visibility: hidden">dBm</span>
+                                <select
+                                    id="out-chains-select"
+                                    class="chain-select"
+                                ></select>
+                                <span
+                                    class="chain-unit"
+                                    style="visibility: hidden"
+                                    >dBm</span
+                                >
                             </div>
                         </div>
                         <div class="chain-row" id="out-row-mimo">
@@ -629,6 +636,15 @@
             };
 
             const vendors = {
+                hamina: {
+                    name: "Hamina",
+                    uiInputType: "Total Conducted",
+                    usesAntennaGain: true,
+                    usesMimo: false,
+                    confidence: "High",
+                    notes: "Sourced from <a href='https://docs.hamina.com/hamina/simulation/access-points#transmit-power' target='_blank'>Hamina Network Planner documentation</a>. Hamina simulates and measures the signal strength of beacons, and does not factor in MIMO gain.",
+                },
+
                 cisco: {
                     name: "Cisco",
                     uiInputType: "Per-Chain Conducted",
@@ -657,8 +673,8 @@
                     name: "Fortinet",
                     uiInputType: "EIRP",
                     usesMimo: true,
-                    confidence: "Low",
-                    notes: "Fortinet FortiAP Datasheets, Limited UI Documentation (Not validated)",
+                    confidence: "Medium",
+                    notes: "Sourced from <a href='https://docs.fortinet.com/document/fortigate/7.0.0/new-features/799495/radio-transmit-power-range-in-dbm' target='_blank'>FortiOS 7 documentation</a>. Pending validation from Fortinet.",
                 },
 
                 extreme: {
@@ -708,15 +724,6 @@
                     confidence: "Low",
                     notes: "Sourced from datasheets only, not validated by Alcatel-Lucent Enterprise.",
                 },
-
-                hamina: {
-                    name: "Hamina",
-                    uiInputType: "Total Conducted",
-                    usesAntennaGain: true,
-                    usesMimo: false,
-                    confidence: "High",
-                    notes: "Sourced from Hamina Network Planner documentation.",
-                },
             };
 
             // URL params
@@ -738,8 +745,14 @@
             // State
             const urlParams = getUrlParams();
             let state = {
-                inputVendor: (urlParams.from && vendors[urlParams.from]) ? urlParams.from : "hamina",
-                outputVendor: (urlParams.to && vendors[urlParams.to]) ? urlParams.to : "juniper",
+                inputVendor:
+                    urlParams.from && vendors[urlParams.from]
+                        ? urlParams.from
+                        : "hamina",
+                outputVendor:
+                    urlParams.to && vendors[urlParams.to]
+                        ? urlParams.to
+                        : "juniper",
                 chains: "4x4",
                 inputPower: 10,
                 antennaGain: 0,
@@ -785,11 +798,15 @@
                 outRowEirp: document.getElementById("out-row-eirp"),
 
                 // Output chain displays (all read-only)
-                outPerchainDisplay: document.getElementById("out-perchain-display"),
+                outPerchainDisplay: document.getElementById(
+                    "out-perchain-display",
+                ),
                 outStreamsSelect: document.getElementById("out-chains-select"),
                 outMimoDisplay: document.getElementById("out-mimo-display"),
                 outTotalDisplay: document.getElementById("out-total-display"),
-                outAntennaDisplay: document.getElementById("out-antenna-display"),
+                outAntennaDisplay: document.getElementById(
+                    "out-antenna-display",
+                ),
                 outEirpDisplay: document.getElementById("out-eirp-display"),
 
                 // Info sections
@@ -1041,15 +1058,23 @@
                 );
 
                 // Update input panel displays
-                dom.inPerchainDisplay.textContent = inVendor.usesMimo ? round(inChain.perChain) : "N/A";
-                dom.inMimoDisplay.textContent = inVendor.usesMimo ? round(mimoGain) : "N/A";
+                dom.inPerchainDisplay.textContent = inVendor.usesMimo
+                    ? round(inChain.perChain)
+                    : "N/A";
+                dom.inMimoDisplay.textContent = inVendor.usesMimo
+                    ? round(mimoGain)
+                    : "N/A";
                 dom.inTotalDisplay.textContent = round(inChain.total);
                 dom.inEirpDisplay.textContent = round(inChain.eirp);
 
                 // Update output panel displays
                 dom.outStreamsSelect.value = state.chains;
-                dom.outPerchainDisplay.textContent = outVendor.usesMimo ? round(outChain.perChain) : "N/A";
-                dom.outMimoDisplay.textContent = outVendor.usesMimo ? round(mimoGain) : "N/A";
+                dom.outPerchainDisplay.textContent = outVendor.usesMimo
+                    ? round(outChain.perChain)
+                    : "N/A";
+                dom.outMimoDisplay.textContent = outVendor.usesMimo
+                    ? round(mimoGain)
+                    : "N/A";
                 dom.outTotalDisplay.textContent = round(outChain.total);
                 dom.outAntennaDisplay.textContent = state.antennaGain;
                 dom.outEirpDisplay.textContent = round(outChain.eirp);
@@ -1059,8 +1084,8 @@
                 dom.outputUiPower.textContent = outVendor.uiInputType;
                 setConfidence(dom.inputConfidence, inVendor);
                 setConfidence(dom.outputConfidence, outVendor);
-                dom.inputNotes.textContent = inVendor.notes;
-                dom.outputNotes.textContent = outVendor.notes;
+                dom.inputNotes.innerHTML = inVendor.notes;
+                dom.outputNotes.innerHTML = outVendor.notes;
             }
 
             function setConfidence(el, vendor) {
