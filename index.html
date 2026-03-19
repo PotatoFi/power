@@ -168,7 +168,9 @@
                 background: var(--accent-bg);
             }
 
-            .chain-row.muted-row {
+            .chain-row.muted-row .chain-row-label,
+            .chain-row.muted-row .chain-display,
+            .chain-row.muted-row .chain-unit {
                 opacity: 0.35;
             }
 
@@ -407,11 +409,11 @@
                                 <span class="chain-unit">dBm</span>
                             </div>
                         </div>
-                        <div class="chain-row" id="in-row-streams">
-                            <div class="chain-row-label">Spatial Streams</div>
+                        <div class="chain-row" id="in-row-chains">
+                            <div class="chain-row-label">Radio Chains</div>
                             <div class="chain-row-right">
                                 <select
-                                    id="streams-select"
+                                    id="chains-select"
                                     class="chain-select"
                                 ></select>
                                 <span
@@ -526,20 +528,11 @@
                                 <span class="chain-unit">dBm</span>
                             </div>
                         </div>
-                        <div class="chain-row" id="out-row-streams">
-                            <div class="chain-row-label">Spatial Streams</div>
+                        <div class="chain-row" id="out-row-chains">
+                            <div class="chain-row-label">Radio Chains</div>
                             <div class="chain-row-right">
-                                <div
-                                    id="out-streams-display"
-                                    class="chain-display"
-                                >
-                                    —
-                                </div>
-                                <span
-                                    class="chain-unit"
-                                    style="visibility: hidden"
-                                    >dBm</span
-                                >
+                                <select id="out-chains-select" class="chain-select"></select>
+                                <span class="chain-unit" style="visibility: hidden">dBm</span>
                             </div>
                         </div>
                         <div class="chain-row" id="out-row-mimo">
@@ -730,7 +723,7 @@
             let state = {
                 inputVendor: "hamina",
                 outputVendor: "juniper",
-                streams: "4x4",
+                chains: "4x4",
                 inputPower: 10,
                 antennaGain: 0,
             };
@@ -739,7 +732,7 @@
             const dom = {
                 inputVendor: document.getElementById("input-vendor"),
                 outputVendor: document.getElementById("output-vendor"),
-                streamsSelect: document.getElementById("streams-select"),
+                chainsSelect: document.getElementById("chains-select"),
                 outStreamsDisplay: document.getElementById(
                     "out-streams-display",
                 ),
@@ -747,6 +740,7 @@
 
                 // Input chain rows
                 inRowPerchain: document.getElementById("in-row-perchain"),
+                inRowChains: document.getElementById("in-row-chains"),
                 inRowMimo: document.getElementById("in-row-mimo"),
                 inRowTotal: document.getElementById("in-row-total"),
                 inRowAntenna: document.getElementById("in-row-antenna"),
@@ -767,20 +761,18 @@
 
                 // Output chain rows
                 outRowPerchain: document.getElementById("out-row-perchain"),
+                outRowChains: document.getElementById("out-row-chains"),
                 outRowMimo: document.getElementById("out-row-mimo"),
                 outRowTotal: document.getElementById("out-row-total"),
                 outRowAntenna: document.getElementById("out-row-antenna"),
                 outRowEirp: document.getElementById("out-row-eirp"),
 
                 // Output chain displays (all read-only)
-                outPerchainDisplay: document.getElementById(
-                    "out-perchain-display",
-                ),
+                outPerchainDisplay: document.getElementById("out-perchain-display"),
+                outStreamsSelect: document.getElementById("out-chains-select"),
                 outMimoDisplay: document.getElementById("out-mimo-display"),
                 outTotalDisplay: document.getElementById("out-total-display"),
-                outAntennaDisplay: document.getElementById(
-                    "out-antenna-display",
-                ),
+                outAntennaDisplay: document.getElementById("out-antenna-display"),
                 outEirpDisplay: document.getElementById("out-eirp-display"),
 
                 // Info sections
@@ -803,13 +795,21 @@
                 dom.inputVendor.value = state.inputVendor;
                 dom.outputVendor.value = state.outputVendor;
 
-                // Populate streams dropdown
+                // Populate chains dropdowns (both panels, kept in sync)
                 for (const key of Object.keys(MIMO_GAIN)) {
-                    dom.streamsSelect.appendChild(new Option(key, key));
+                    dom.chainsSelect.appendChild(new Option(key, key));
+                    dom.outStreamsSelect.appendChild(new Option(key, key));
                 }
-                dom.streamsSelect.value = state.streams;
-                dom.streamsSelect.addEventListener("change", (e) => {
-                    state.streams = e.target.value;
+                dom.chainsSelect.value = state.chains;
+                dom.outStreamsSelect.value = state.chains;
+                dom.chainsSelect.addEventListener("change", (e) => {
+                    state.chains = e.target.value;
+                    dom.outStreamsSelect.value = state.chains;
+                    calculate();
+                });
+                dom.outStreamsSelect.addEventListener("change", (e) => {
+                    state.chains = e.target.value;
+                    dom.chainsSelect.value = state.chains;
                     calculate();
                 });
 
@@ -902,8 +902,11 @@
                 activeInput.style.display = "";
                 activeInput.value = state.inputPower;
 
-                // Grey out MIMO row if vendor doesn't use MIMO
-                dom.inRowMimo.classList.toggle("muted-row", !vendor.usesMimo);
+                // Grey out MIMO tier (Per-Chain, Radio Chains, MIMO Gain) if vendor doesn't use MIMO
+                const muteMimo = !vendor.usesMimo;
+                dom.inRowPerchain.classList.toggle("muted-row", muteMimo);
+                dom.inRowChains.classList.toggle("muted-row", muteMimo);
+                dom.inRowMimo.classList.toggle("muted-row", muteMimo);
             }
 
             function updateOutputRows() {
@@ -925,8 +928,11 @@
                     dom.outRowEirp.classList.add("active-row");
                 }
 
-                // Grey out MIMO row if vendor doesn't use MIMO
-                dom.outRowMimo.classList.toggle("muted-row", !vendor.usesMimo);
+                // Grey out MIMO tier (Per-Chain, Radio Chains, MIMO Gain) if vendor doesn't use MIMO
+                const muteMimo = !vendor.usesMimo;
+                dom.outRowPerchain.classList.toggle("muted-row", muteMimo);
+                dom.outRowChains.classList.toggle("muted-row", muteMimo);
+                dom.outRowMimo.classList.toggle("muted-row", muteMimo);
             }
 
             // Chain helpers
@@ -966,7 +972,7 @@
 
             // Swap
             function swap() {
-                const mimoGain = MIMO_GAIN[state.streams];
+                const mimoGain = MIMO_GAIN[state.chains];
                 const eirp = expandChain(
                     vendors[state.inputVendor],
                     state.inputPower,
@@ -998,7 +1004,7 @@
             function calculate() {
                 const inVendor = vendors[state.inputVendor];
                 const outVendor = vendors[state.outputVendor];
-                const mimoGain = MIMO_GAIN[state.streams];
+                const mimoGain = MIMO_GAIN[state.chains];
 
                 const inChain = expandChain(
                     inVendor,
@@ -1014,19 +1020,15 @@
                 );
 
                 // Update input panel displays
-                dom.inPerchainDisplay.textContent = round(inChain.perChain);
-                dom.inMimoDisplay.textContent = inVendor.usesMimo
-                    ? round(mimoGain)
-                    : "N/A";
+                dom.inPerchainDisplay.textContent = inVendor.usesMimo ? round(inChain.perChain) : "N/A";
+                dom.inMimoDisplay.textContent = inVendor.usesMimo ? round(mimoGain) : "N/A";
                 dom.inTotalDisplay.textContent = round(inChain.total);
                 dom.inEirpDisplay.textContent = round(inChain.eirp);
 
                 // Update output panel displays
-                dom.outStreamsDisplay.textContent = state.streams;
-                dom.outPerchainDisplay.textContent = round(outChain.perChain);
-                dom.outMimoDisplay.textContent = outVendor.usesMimo
-                    ? round(mimoGain)
-                    : "N/A";
+                dom.outStreamsSelect.value = state.chains;
+                dom.outPerchainDisplay.textContent = outVendor.usesMimo ? round(outChain.perChain) : "N/A";
+                dom.outMimoDisplay.textContent = outVendor.usesMimo ? round(mimoGain) : "N/A";
                 dom.outTotalDisplay.textContent = round(outChain.total);
                 dom.outAntennaDisplay.textContent = state.antennaGain;
                 dom.outEirpDisplay.textContent = round(outChain.eirp);
