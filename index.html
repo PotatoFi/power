@@ -719,10 +719,27 @@
                 },
             };
 
+            // URL params
+            function getUrlParams() {
+                const p = new URLSearchParams(window.location.search);
+                return {
+                    from: p.get("from"),
+                    to: p.get("to"),
+                };
+            }
+
+            function updateUrl() {
+                const p = new URLSearchParams();
+                p.set("from", state.inputVendor);
+                p.set("to", state.outputVendor);
+                history.replaceState(null, "", "?" + p.toString());
+            }
+
             // State
+            const urlParams = getUrlParams();
             let state = {
-                inputVendor: "hamina",
-                outputVendor: "juniper",
+                inputVendor: (urlParams.from && vendors[urlParams.from]) ? urlParams.from : "hamina",
+                outputVendor: (urlParams.to && vendors[urlParams.to]) ? urlParams.to : "juniper",
                 chains: "4x4",
                 inputPower: 10,
                 antennaGain: 0,
@@ -822,11 +839,13 @@
                     updateInputRows();
                     updateOutputRows();
                     calculate();
+                    updateUrl();
                 });
                 dom.outputVendor.addEventListener("change", (e) => {
                     state.outputVendor = e.target.value;
                     updateOutputRows();
                     calculate();
+                    updateUrl();
                 });
                 dom.antennaGain.addEventListener("input", (e) => {
                     state.antennaGain = parseFloat(e.target.value) || 0;
@@ -863,6 +882,7 @@
                 updateInputRows();
                 updateOutputRows();
                 calculate();
+                updateUrl();
             }
 
             // Row visibility
@@ -998,6 +1018,7 @@
                 updateInputRows();
                 updateOutputRows();
                 calculate();
+                updateUrl();
             }
 
             // Conversion logic
