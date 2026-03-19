@@ -84,13 +84,13 @@
             .container {
                 max-width: 960px;
                 width: 100%;
-                padding: 0 16px 16px;
+                padding: 16px 16px;
             }
 
             select.chain-select {
                 width: 84px;
-                padding: 4px 28px 4px 8px;
-                font-size: 13px;
+                padding: 7px 28px 7px 8px;
+                font-size: 15px;
                 border: 2px solid var(--accent);
                 border-radius: 6px;
                 background-position: right 8px center;
@@ -125,7 +125,7 @@
             select {
                 width: 100%;
                 padding: 10px 12px;
-                font-size: 13px;
+                font-size: 15px;
                 border: 1px solid var(--border);
                 border-radius: 6px;
                 background: var(--input-bg);
@@ -181,12 +181,12 @@
 
             .chain-row-right {
                 display: flex;
-                align-items: baseline;
+                align-items: center;
                 gap: 6px;
             }
 
             .chain-display {
-                font-size: 13px;
+                font-size: 20px;
                 font-weight: 300;
                 width: 84px;
                 text-align: right;
@@ -203,7 +203,7 @@
             input[type="number"].chain-input {
                 width: 84px;
                 padding: 4px 8px;
-                font-size: 13px;
+                font-size: 20px;
                 font-weight: 300;
                 border: 2px solid var(--accent);
                 border-radius: 6px;
@@ -218,9 +218,9 @@
             }
 
             .chain-unit {
-                font-size: 13px;
+                font-size: 12px;
                 color: var(--text-muted);
-                width: 32px;
+                min-width: 24px;
             }
 
             /* Arrow */
@@ -646,7 +646,7 @@
                 },
 
                 juniper: {
-                    name: "HPE Juniper",
+                    name: "Juniper Networks (Mist)",
                     uiInputType: "Per-Chain Conducted",
                     usesMimo: true,
                     confidence: "High",
@@ -654,7 +654,7 @@
                 },
 
                 fortinet: {
-                    name: "Fortinet",
+                    name: "Fortinet (FortiAP)",
                     uiInputType: "EIRP",
                     usesMimo: true,
                     confidence: "Low",
@@ -719,27 +719,10 @@
                 },
             };
 
-            // URL params
-            function getUrlParams() {
-                const p = new URLSearchParams(window.location.search);
-                return {
-                    from: p.get("from"),
-                    to: p.get("to"),
-                };
-            }
-
-            function updateUrl() {
-                const p = new URLSearchParams();
-                p.set("from", state.inputVendor);
-                p.set("to", state.outputVendor);
-                history.replaceState(null, "", "?" + p.toString());
-            }
-
             // State
-            const urlParams = getUrlParams();
             let state = {
-                inputVendor: (urlParams.from && vendors[urlParams.from]) ? urlParams.from : "hamina",
-                outputVendor: (urlParams.to && vendors[urlParams.to]) ? urlParams.to : "juniper",
+                inputVendor: "hamina",
+                outputVendor: "juniper",
                 chains: "4x4",
                 inputPower: 10,
                 antennaGain: 0,
@@ -839,13 +822,11 @@
                     updateInputRows();
                     updateOutputRows();
                     calculate();
-                    updateUrl();
                 });
                 dom.outputVendor.addEventListener("change", (e) => {
                     state.outputVendor = e.target.value;
                     updateOutputRows();
                     calculate();
-                    updateUrl();
                 });
                 dom.antennaGain.addEventListener("input", (e) => {
                     state.antennaGain = parseFloat(e.target.value) || 0;
@@ -882,7 +863,6 @@
                 updateInputRows();
                 updateOutputRows();
                 calculate();
-                updateUrl();
             }
 
             // Row visibility
@@ -1018,7 +998,6 @@
                 updateInputRows();
                 updateOutputRows();
                 calculate();
-                updateUrl();
             }
 
             // Conversion logic
