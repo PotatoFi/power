@@ -563,10 +563,10 @@
                         <div class="chain-row" id="out-row-chains">
                             <div class="chain-row-label">Radio Chains</div>
                             <div class="chain-row-right">
-                                <select
-                                    id="out-chains-select"
-                                    class="chain-select"
-                                ></select>
+                                <div
+                                    id="out-chains-display"
+                                    class="chain-display"
+                                ></div>
                                 <span
                                     class="chain-unit"
                                     style="visibility: hidden"
@@ -840,7 +840,7 @@
                 outPerchainDisplay: document.getElementById(
                     "out-perchain-display",
                 ),
-                outStreamsSelect: document.getElementById("out-chains-select"),
+                outChainsDisplay: document.getElementById("out-chains-display"),
                 outMimoDisplay: document.getElementById("out-mimo-display"),
                 outTotalDisplay: document.getElementById("out-total-display"),
                 outAntennaDisplay: document.getElementById(
@@ -868,21 +868,13 @@
                 dom.inputVendor.value = state.inputVendor;
                 dom.outputVendor.value = state.outputVendor;
 
-                // Populate chains dropdowns (both panels, kept in sync)
+                // Populate input chains dropdown
                 for (const key of Object.keys(MIMO_GAIN)) {
                     dom.chainsSelect.appendChild(new Option(key, key));
-                    dom.outStreamsSelect.appendChild(new Option(key, key));
                 }
                 dom.chainsSelect.value = state.chains;
-                dom.outStreamsSelect.value = state.chains;
                 dom.chainsSelect.addEventListener("change", (e) => {
                     state.chains = e.target.value;
-                    dom.outStreamsSelect.value = state.chains;
-                    calculate();
-                });
-                dom.outStreamsSelect.addEventListener("change", (e) => {
-                    state.chains = e.target.value;
-                    dom.chainsSelect.value = state.chains;
                     calculate();
                 });
 
@@ -1107,7 +1099,7 @@
                 dom.inEirpDisplay.textContent = round(inChain.eirp);
 
                 // Update output panel displays
-                dom.outStreamsSelect.value = state.chains;
+                dom.outChainsDisplay.textContent = state.chains;
                 dom.outPerchainDisplay.textContent = outVendor.usesMimo
                     ? round(outChain.perChain)
                     : "N/A";
