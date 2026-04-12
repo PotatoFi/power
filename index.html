@@ -4,6 +4,10 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Power Calculator</title>
+        <link
+            href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+            rel="stylesheet"
+        />
         <style>
             :root {
                 --bg: #f5f5f5;
@@ -21,7 +25,7 @@
                 --arrow: #bbbbbb;
                 --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
                 --shadow: rgba(0, 0, 0, 0.12);
-                --accent: #1a73e8;
+                --accent: #0284c7;
                 --accent-bg: rgba(26, 115, 232, 0.06);
             }
 
@@ -43,6 +47,10 @@
                     --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
                     --shadow: rgba(0, 0, 0, 0.4);
                     --accent-bg: rgba(26, 115, 232, 0.12);
+                }
+
+                a {
+                    color: #4f46e5;
                 }
             }
 
@@ -228,34 +236,45 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 24px;
-                color: var(--arrow);
                 padding: 0 4px;
                 align-self: stretch;
-                position: relative;
             }
 
             .swap-btn {
-                position: absolute;
-                top: 20px;
                 background: none;
                 border: none;
-                font-size: 20px;
-                color: var(--arrow);
                 cursor: pointer;
+                font-size: 24px;
+                color: var(--arrow);
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 padding: 4px;
-                line-height: 1;
-                border-radius: 4px;
-                transition: color 0.15s;
+                position: relative;
             }
 
-            .swap-btn:hover {
+            .swap-btn .icon-default,
+            .swap-btn .icon-hover {
+                position: absolute;
+                transition: opacity 0.1s;
+                line-height: 1;
+            }
+
+            .swap-btn .icon-hover {
+                opacity: 0;
                 color: var(--text);
+            }
+
+            .swap-btn:hover .icon-default {
+                opacity: 0;
+            }
+
+            .swap-btn:hover .icon-hover {
+                opacity: 1;
             }
 
             /* Info section */
             .info-section {
-                border-top: 1px solid var(--border-subtle);
                 padding-top: 14px;
                 display: flex;
                 flex-direction: column;
@@ -283,19 +302,22 @@
             }
 
             .warning-banner {
+                --warning-bg: #eab308;
+                --warning-text: #ffffff;
+                --warning-link: #ffffff;
+                --warning-secondary: #ffffff;
                 position: relative;
-                background: #fef9c3;
-                border: 1px solid #fde047;
-                border-radius: 8px;
+                background: var(--warning-bg);
+                border-radius: 6px;
                 padding: 12px 40px 12px 16px;
                 margin-bottom: 20px;
                 font-size: 13px;
-                color: #713f12;
+                color: var(--warning-text);
                 line-height: 1.5;
             }
 
             .warning-banner a {
-                color: #713f12;
+                color: var(--warning-link);
             }
 
             .warning-dismiss {
@@ -305,7 +327,7 @@
                 background: none;
                 border: none;
                 font-size: 16px;
-                color: #713f12;
+                color: var(--warning-secondary);
                 cursor: pointer;
                 line-height: 1;
                 padding: 0;
@@ -318,37 +340,45 @@
 
             @media (prefers-color-scheme: dark) {
                 .warning-banner {
-                    background: #422006;
-                    border-color: #854d0e;
-                    color: #fef08a;
-                }
-                .warning-banner a {
-                    color: #fef08a;
-                }
-                .warning-dismiss {
-                    color: #fef08a;
+                    --warning-bg: #b8920c;
+                    --warning-text: #ffffff;
+                    --warning-link: #ffffff;
+                    --warning-secondary: #ffffff;
                 }
             }
 
-            .confidence-badge {
+            .confidence-tag {
                 display: inline-block;
                 padding: 2px 8px;
                 border-radius: 4px;
                 font-size: 12px;
                 font-weight: 600;
                 color: #ffffff;
+                margin-top: 3px;
             }
 
             .confidence-high {
-                background: #1e8e3e;
+                background: #16a34a;
             }
 
             .confidence-medium {
-                background: #e8710a;
+                background: #eab308;
             }
 
             .confidence-low {
-                background: #d93025;
+                background: #dc2626;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                .confidence-high {
+                    background: #1a7a42;
+                }
+                .confidence-medium {
+                    background: #b8920c;
+                }
+                .confidence-low {
+                    background: #b84040;
+                }
             }
 
             @media (max-width: 700px) {
@@ -356,7 +386,6 @@
                     flex-direction: column;
                 }
                 .arrow-divider {
-                    transform: rotate(90deg);
                     align-self: center;
                     padding: 8px 0;
                 }
@@ -504,8 +533,10 @@
 
                 <!-- Arrow + Swap -->
                 <div class="arrow-divider">
-                    &rarr;
-                    <button class="swap-btn" id="swap-btn">&#x21C4;</button>
+                    <button class="swap-btn" id="swap-btn">
+                        <i class="bx bx-right-arrow-alt icon-default"></i>
+                        <i class="bx bx-transfer icon-hover"></i>
+                    </button>
                 </div>
 
                 <!-- Right panel: Output -->
@@ -1098,7 +1129,7 @@
             function setConfidence(el, vendor) {
                 const level = vendor.confidence.toLowerCase();
                 el.className = "info-value";
-                el.innerHTML = `<span class="confidence-badge confidence-${level}">${vendor.confidence}</span>`;
+                el.innerHTML = `<span class="confidence-tag confidence-${level}">${vendor.confidence}</span>`;
             }
 
             function round(val) {
