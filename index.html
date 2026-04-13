@@ -684,12 +684,20 @@
                     notes: "Sourced from <a href='https://github.com/google/openintent/blob/main/release/2.0.0/models/src/openintent-wifi.yaml#L351' target='_blank'>OpenIntent Schema</a>.",
                 },
 
-                cisco: {
-                    name: "Cisco",
-                    uiInputType: "Per-Chain Conducted",
+                alcatel: {
+                    name: "Alcatel-Lucent Enterprise",
+                    uiInputType: "Total Conducted",
                     usesMimo: true,
-                    confidence: "Medium",
-                    notes: "Documentation needs to be found and added here.",
+                    confidence: "Low",
+                    notes: "Pending documentation.",
+                },
+
+                arista: {
+                    name: "Arista",
+                    uiInputType: "EIRP",
+                    usesMimo: true,
+                    confidence: "High",
+                    notes: "Sourced from <a href='https://arista.my.site.com/AristaCommunity/s/article/Configure-Transmit-Power-on-an-Arista-Access-Point' target='_blank'>Arista documentation</a>.",
                 },
 
                 aruba: {
@@ -700,20 +708,20 @@
                     notes: "Pending documentation from Aruba, but this is pretty well-known.",
                 },
 
-                juniper: {
-                    name: "HPE Juniper",
-                    uiInputType: "Per-Chain Conducted",
+                cambium: {
+                    name: "Cambium Networks",
+                    uiInputType: "Total Conducted",
                     usesMimo: true,
-                    confidence: "High",
-                    notes: "Sourced from <a href='https://www.juniper.net/documentation/us/en/software/mist/mist-wireless/topics/ref/mist-power-notation.html' target='_blank'>HPE Juniper Documentation</a>.",
+                    confidence: "Low",
+                    notes: "Pending documentation.",
                 },
 
-                fortinet: {
-                    name: "Fortinet",
-                    uiInputType: "EIRP",
+                cisco: {
+                    name: "Cisco",
+                    uiInputType: "Per-Chain Conducted",
                     usesMimo: true,
                     confidence: "Medium",
-                    notes: "Sourced from <a href='https://docs.fortinet.com/document/fortigate/7.0.0/new-features/799495/radio-transmit-power-range-in-dbm' target='_blank'>FortiOS 7 documentation</a>. Pending validation from Fortinet.",
+                    notes: "Documentation needs to be found and added here.",
                 },
 
                 extreme: {
@@ -724,12 +732,28 @@
                     notes: "According to <a href='https://documentation.extremenetworks.com/XIQC/10.08.01/UG/GUID-3D07AA36-2A0D-42EC-B781-D489FB53BA3B.shtml' target='_blank'>documentation from Extreme</a>, both Total Conducted and Per-Chain Conducted are supported. The Radio Profile configuration page in ExtremeCloud IQ appears to use Total Conducted.",
                 },
 
+                fortinet: {
+                    name: "Fortinet",
+                    uiInputType: "EIRP",
+                    usesMimo: true,
+                    confidence: "Medium",
+                    notes: "Sourced from <a href='https://docs.fortinet.com/document/fortigate/7.0.0/new-features/799495/radio-transmit-power-range-in-dbm' target='_blank'>FortiOS 7 documentation</a>. Pending validation from Fortinet.",
+                },
+
                 huawei: {
                     name: "Huawei",
                     uiInputType: "EIRP",
                     usesMimo: true,
                     confidence: "Low",
                     notes: "Pending documentation.",
+                },
+
+                juniper: {
+                    name: "HPE Juniper",
+                    uiInputType: "Per-Chain Conducted",
+                    usesMimo: true,
+                    confidence: "High",
+                    notes: "Sourced from <a href='https://www.juniper.net/documentation/us/en/software/mist/mist-wireless/topics/ref/mist-power-notation.html' target='_blank'>HPE Juniper Documentation</a>.",
                 },
 
                 ruckus: {
@@ -746,22 +770,6 @@
                     usesMimo: true,
                     confidence: "Medium",
                     notes: "No documentation found. Using a <a href='https://techspecs.ui.com/unifi/wifi/uap-iw-hd' target='_blank'>UniFi In-Wall HD</a> (4x4, 5 GHz, 4 dBi gain), UniFi shows <b>17 dBm / 20 dBm (EIRP)</b>. If 17 dBm is Total Conducted, it should be 21 dBm EIRP, but this could be a simple rounding error issue.",
-                },
-
-                cambium: {
-                    name: "Cambium Networks",
-                    uiInputType: "Total Conducted",
-                    usesMimo: true,
-                    confidence: "Low",
-                    notes: "Pending documentation.",
-                },
-
-                alcatel: {
-                    name: "Alcatel-Lucent Enterprise",
-                    uiInputType: "Total Conducted",
-                    usesMimo: true,
-                    confidence: "Low",
-                    notes: "Pending documentation.",
                 },
             };
 
