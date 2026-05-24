@@ -28,38 +28,63 @@ There should be a JavaScript object that defines everything for each vendor that
 * Vendor UI setting for 4x4
 * Confidence (text field)
 
-Here's the data for Cisco:
-
-Vendor
-
-UI Input Type
-
-Vendor EIRP Math
-
-Vendor UI Setting for 2x2 (10 dBm Conducted)
-
-Vendor UI Setting for 4x4 (10 dBm Conducted)
-
-Hamina UI Setting (to achieve 14 dBm EIRP)
-
-Confidence (Sources)
-
-Cisco
-
-Conducted
-
-Conducted + Antenna Gain + MIMO Gain (10log(Ntx))
-
-Set conducted to 10 dBm (EIRP = 10 + 4 + 3 = 17 dBm)
-
-Set conducted to 10 dBm (EIRP = 10 + 4 + 6 = 20 dBm)
-
-Set conducted to 10 dBm (EIRP = 10 + 4 = 14 dBm; Difference: Vendor EIRP includes MIMO, so 17 dBm (2x2) or 20 dBm (4x4) exceeds Hamina’s 14 dBm)
-
-High (Cisco Wireless Controller Configuration Guide, Meraki Documentation)
-
 # EIRP
 
 In most cases, the vendor UI transmit power does not include EIRP. In other cases, the vendor transmit power is EIRP.
 
 All vendors should display EIRP (in addtion to the UI Vendor Power) as a non-editable field, except for Aruba, which should do the reverse. This should be defined in const vendors.
+
+# Multiple Radios
+
+Most APs have multiple radios. The typical config is a 2.4 GHz radio, 5 GHz radio, and 6 GHz radio, although some access points differ.
+
+The tool must support multiple radios per AP, each as it's own column (on each side of the calculator). The name (header) of each radio must come from the AP model database. Examples:
+
+* 2.4 GHz, 5 GHz, 6 GHz
+* 5 GHz, 6 GHz
+* Radio 1, Radio 2
+
+# AP Database
+
+For each vendor, there must be a database of access points that pre-populate:
+
+1. How many columns there are (based on each radio)
+2. The name of each column (radio name)
+3. The antenna gain
+
+## Internal and external antennas
+
+Radios can have three types of antenna:
+
+1. Internal (the user cannot edit the gain)
+2. Detachable (internal default is used, but the user can edit the gain)
+3. External (the user must enter a gain value)
+
+## AP Database fields
+
+This should be a JavaScript object with:
+
+* make
+* model
+* radio
+  * radio Name
+  * antenna Type
+    * internal
+    * detachable
+    * external
+  * gain
+  * radio chains
+  * max power in EIRP (leave empty for now, will utilize later)
+
+Note: We might need to do max power in EIRP, total conducted, etc. as each vendor's datasheets suggest that they all record this differently. 🤦‍♂️
+
+# Regulatory domain database
+
+Some APs configure max TxPower based on the max EIRP for the channel in the regulatory domain. Thus, the tool must allow the user to select a regulatory domain (United States, Europe, United Kingdom, Australia) and a channel for each radio.
+
+If the AP has a max power defined, it should be shown in the UI in the list as a non-editable field. This is primarily going to be used for Ruckus, who defines transmit power as:
+
+* Start with the max TxPower on the channel, or max TxPower that the radio can do (whichever is less)
+* Subtract a certain amount of dBm (e.g. -3 for half power to the radio)
+
+This hasn't been built in the tool yet but should be coming soon.

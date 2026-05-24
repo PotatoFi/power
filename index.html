@@ -96,161 +96,65 @@
                 padding: 0 16px 16px;
             }
 
-            select.chain-select {
-                width: 84px;
-                padding: 4px 28px 4px 8px;
-                font-size: 13px;
-                border: 2px solid var(--accent);
-                border-radius: 6px;
-                background-position: right 8px center;
-                text-align-last: right;
-            }
-
-            .translator {
+            /* ── Top controls bar ── */
+            .global-controls {
                 display: flex;
-                gap: 16px;
-                align-items: stretch;
-            }
-
-            .panel {
-                flex: 1;
+                gap: 12px;
+                align-items: flex-end;
+                margin-bottom: 16px;
                 background: var(--surface);
                 border-radius: 8px;
                 box-shadow: 0 1px 3px var(--shadow);
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 16px;
+                padding: 14px 20px;
             }
 
-            .panel-header {
+            .control {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                flex: 1;
+                min-width: 0;
+            }
+
+            .control-label {
                 font-size: 11px;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
                 color: var(--text-muted);
                 font-weight: 600;
-            }
-
-            select {
-                width: 100%;
-                padding: 10px 12px;
-                font-size: 13px;
-                border: 1px solid var(--border);
-                border-radius: 6px;
-                background: var(--input-bg);
-                color: var(--input-color);
-                cursor: pointer;
-                appearance: none;
-                background-image: var(--select-arrow);
-                background-repeat: no-repeat;
-                background-position: right 12px center;
-            }
-
-            select:focus {
-                outline: none;
-                border-color: var(--accent);
-            }
-
-            /* Chain */
-            .chain {
-                display: flex;
-                flex-direction: column;
-                border: 1px solid var(--border-subtle);
-                border-radius: 8px;
+                white-space: nowrap;
                 overflow: hidden;
+                text-overflow: ellipsis;
             }
 
-            .chain-row {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 14px;
-                border-bottom: 1px solid var(--border-subtle);
-                transition: background 0.1s;
-            }
-
-            .chain-row:last-child {
-                border-bottom: none;
-            }
-
-            .chain-row.active-row {
-                background: var(--accent-bg);
-            }
-
-            .chain-row.muted-row .chain-row-label,
-            .chain-row.muted-row .chain-display,
-            .chain-row.muted-row .chain-unit {
-                opacity: 0.35;
-            }
-
-            .chain-row-label {
-                font-size: 13px;
-                color: var(--text-secondary);
-            }
-
-            .chain-row-right {
-                display: flex;
-                align-items: baseline;
-                gap: 6px;
-            }
-
-            .chain-display {
-                font-size: 13px;
-                font-weight: 300;
-                width: 84px;
-                text-align: right;
-                color: var(--text);
-                border: 2px solid transparent;
-                padding: 4px 8px;
-            }
-
-            .active-row .chain-display {
-                color: var(--accent);
-                font-weight: 400;
-            }
-
-            input[type="number"].chain-input {
-                width: 84px;
-                padding: 4px 8px;
-                font-size: 13px;
-                font-weight: 300;
-                border: 2px solid var(--accent);
-                border-radius: 6px;
-                text-align: right;
-                background: var(--input-bg);
-                color: var(--input-color);
-            }
-
-            input[type="number"].chain-input:focus {
-                outline: none;
-                box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
-            }
-
-            .chain-unit {
-                font-size: 13px;
-                color: var(--text-muted);
-                width: 32px;
-            }
-
-            /* Arrow */
-            .arrow-divider {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 0 4px;
+            .control-divider {
+                width: 1px;
+                background: var(--border-subtle);
                 align-self: stretch;
+                margin: 0 4px;
+            }
+
+            /* Swap button in the top bar */
+            .swap-wrap {
+                display: flex;
+                align-items: center;
+                padding-bottom: 2px;
             }
 
             .swap-btn {
                 background: none;
                 border: none;
                 cursor: pointer;
-                font-size: 24px;
+                font-size: 22px;
                 color: var(--arrow);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 4px;
+                padding: 6px;
+                border-radius: 6px;
+                transition:
+                    background 0.1s,
+                    color 0.1s;
                 position: relative;
             }
 
@@ -274,9 +178,211 @@
                 opacity: 1;
             }
 
-            /* Info section */
+            /* ── Panels ── */
+            .translator {
+                display: flex;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .panel {
+                flex: 1;
+                min-width: 0;
+                background: var(--surface);
+                border-radius: 8px;
+                box-shadow: 0 1px 3px var(--shadow);
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            /* Arrow divider between panels */
+            .arrow-divider {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 4px;
+                align-self: stretch;
+            }
+
+            .panel-header {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: var(--text-muted);
+                font-weight: 600;
+                margin-bottom: 0;
+            }
+
+            select {
+                width: 100%;
+                padding: 9px 12px;
+                font-size: 13px;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                background: var(--input-bg);
+                color: var(--input-color);
+                cursor: pointer;
+                appearance: none;
+                background-image: var(--select-arrow);
+                background-repeat: no-repeat;
+                background-position: right 12px center;
+            }
+
+            select:focus {
+                outline: none;
+                border-color: var(--accent);
+            }
+
+            /* ── Chain table ── */
+            .table-wrap {
+                border: 1px solid var(--border-subtle);
+                border-radius: 8px;
+                overflow: hidden;
+                margin-bottom: 0;
+            }
+
+            .chain-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 12px;
+            }
+
+            /* Column headers (radio band names) */
+            .chain-table thead th {
+                padding: 8px 10px;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--text-secondary);
+                background: var(--bg);
+                border-bottom: 1px solid var(--border);
+                text-align: center;
+            }
+
+            .chain-table thead th.label-col {
+                text-align: left;
+                color: var(--text-muted);
+                font-weight: 500;
+            }
+
+            /* Missing column header (band not on output AP) */
+            .chain-table thead th.missing-col {
+                color: var(--text-muted);
+                opacity: 0.6;
+            }
+
+            /* Body cells */
+            .chain-table tbody td {
+                padding: 4px 10px;
+                height: 38px;
+                border-bottom: 1px solid var(--border-subtle);
+                text-align: right;
+                color: var(--text);
+                vertical-align: middle;
+            }
+
+            .chain-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            /* Label column */
+            .chain-table .label-col {
+                text-align: left;
+                color: var(--text-secondary);
+                font-size: 9px;
+                text-transform: uppercase;
+                letter-spacing: 0.2px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            /* Unit column (far right of each row) */
+            .chain-table thead th.unit-col {
+                text-align: left;
+                color: var(--text-muted);
+                font-weight: 500;
+                white-space: nowrap;
+                width: 1%;
+            }
+
+            .chain-table tbody td.unit-col {
+                text-align: left;
+                color: var(--text-muted);
+                font-size: 11px;
+                white-space: nowrap;
+                padding-left: 2px;
+                width: 1%;
+            }
+
+            /* Tighten the gap between the last data column and the unit column */
+            .chain-table thead th:nth-last-child(2),
+            .chain-table tbody td:nth-last-child(2) {
+                padding-right: 4px;
+            }
+
+            .chain-table tbody tr.active-row td.unit-col {
+                color: var(--accent);
+                opacity: 0.7;
+            }
+
+            /* Active row (vendor's UI value) */
+            .chain-table tbody tr.active-row td {
+                background: var(--accent-bg);
+                color: var(--accent);
+            }
+
+            .chain-table tbody tr.active-row td.label-col {
+                color: var(--text-secondary);
+            }
+
+            /* Muted row (MIMO rows when vendor doesn't use MIMO) */
+            .chain-table tbody tr.muted-row td {
+                opacity: 0.35;
+            }
+
+            /* Missing cell (radio not on this AP) */
+            .chain-table .missing-cell {
+                color: var(--text-muted);
+                opacity: 0.5;
+            }
+
+            /* Number input inside table cells */
+            .chain-table input[type="number"] {
+                width: 100%;
+                padding: 3px 6px;
+                font-size: 12px;
+                font-weight: 400;
+                border: 2px solid var(--accent);
+                border-radius: 4px;
+                text-align: right;
+                background: var(--input-bg);
+                color: var(--input-color);
+            }
+
+            .chain-table input[type="number"]:disabled {
+                border-color: var(--border-subtle);
+                background: transparent;
+                color: var(--text-muted);
+            }
+
+            .chain-table input[type="number"]:focus {
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+            }
+
+            /* Channel select inside table cells */
+            .chain-table select.channel-select {
+                padding: 3px 22px 3px 6px;
+                font-size: 12px;
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                background-position: right 4px center;
+            }
+
+            /* ── Info section ── */
             .info-section {
-                padding-top: 14px;
+                padding-top: 16px;
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
@@ -302,6 +408,7 @@
                 line-height: 1.4;
             }
 
+            /* ── Warning banner ── */
             .warning-banner {
                 --warning-bg: #eab308;
                 --warning-text: #ffffff;
@@ -348,6 +455,7 @@
                 }
             }
 
+            /* ── Confidence tags ── */
             .confidence-tag {
                 display: inline-block;
                 padding: 2px 8px;
@@ -361,11 +469,9 @@
             .confidence-high {
                 background: #16a34a;
             }
-
             .confidence-medium {
                 background: #eab308;
             }
-
             .confidence-low {
                 background: #dc2626;
             }
@@ -382,13 +488,16 @@
                 }
             }
 
+            /* ── Responsive ── */
             @media (max-width: 700px) {
                 .translator {
                     flex-direction: column;
                 }
-                .arrow-divider {
-                    align-self: center;
-                    padding: 8px 0;
+                .global-controls {
+                    flex-wrap: wrap;
+                }
+                .control-divider {
+                    display: none;
                 }
             }
         </style>
@@ -406,8 +515,35 @@
                     &times;
                 </button>
                 This calculator is currently under development, and is very
-                likely to be wrong. Don't trust it. You can send feedback to
+                likely to be wrong. The channel table (which stores the maximum
+                transmit power per channel) is particularly likely to be wrong,
+                as it currently contains placeholder data. Access point models
+                should be correct, but don't trust anything here. You can send
+                feedback to
                 <a href="mailto:joel@potatofi.com">joel@potatofi.com</a>.
+            </div>
+
+            <!-- AP hardware + regulatory domain -->
+            <div class="global-controls">
+                <div class="control">
+                    <div class="control-label">Regulatory Domain</div>
+                    <select id="regulatory-domain"></select>
+                </div>
+
+                <div class="control-divider"></div>
+
+                <div class="control">
+                    <div class="control-label">AP Vendor</div>
+                    <select id="ap-vendor"></select>
+                </div>
+                <div class="control">
+                    <div class="control-label">AP Model</div>
+                    <select id="ap-model"></select>
+                </div>
+                <div class="control" id="ap-mode-control" style="display: none">
+                    <div class="control-label">AP Mode</div>
+                    <select id="ap-mode"></select>
+                </div>
             </div>
 
             <div class="translator">
@@ -415,105 +551,7 @@
                 <div class="panel">
                     <div class="panel-header">Input Vendor</div>
                     <select id="input-vendor"></select>
-
-                    <div class="chain">
-                        <div class="chain-row" id="in-row-perchain">
-                            <div class="chain-row-label">
-                                Per-Chain Conducted
-                            </div>
-                            <div class="chain-row-right">
-                                <input
-                                    type="number"
-                                    id="in-perchain-input"
-                                    class="chain-input"
-                                    value="10"
-                                    step="1"
-                                    style="display: none"
-                                />
-                                <div
-                                    id="in-perchain-display"
-                                    class="chain-display"
-                                >
-                                    —
-                                </div>
-                                <span class="chain-unit">dBm</span>
-                            </div>
-                        </div>
-                        <div class="chain-row" id="in-row-chains">
-                            <div class="chain-row-label">Radio Chains</div>
-                            <div class="chain-row-right">
-                                <select
-                                    id="chains-select"
-                                    class="chain-select"
-                                ></select>
-                                <span
-                                    class="chain-unit"
-                                    style="visibility: hidden"
-                                    >dBm</span
-                                >
-                            </div>
-                        </div>
-                        <div class="chain-row" id="in-row-mimo">
-                            <div class="chain-row-label">MIMO Gain</div>
-                            <div class="chain-row-right">
-                                <div id="in-mimo-display" class="chain-display">
-                                    —
-                                </div>
-                                <span class="chain-unit">dB</span>
-                            </div>
-                        </div>
-                        <div class="chain-row" id="in-row-total">
-                            <div class="chain-row-label">Total Conducted</div>
-                            <div class="chain-row-right">
-                                <input
-                                    type="number"
-                                    id="in-total-input"
-                                    class="chain-input"
-                                    value="10"
-                                    step="1"
-                                    style="display: none"
-                                />
-                                <div
-                                    id="in-total-display"
-                                    class="chain-display"
-                                >
-                                    —
-                                </div>
-                                <span class="chain-unit">dBm</span>
-                            </div>
-                        </div>
-                        <div class="chain-row" id="in-row-antenna">
-                            <div class="chain-row-label">Antenna Gain</div>
-                            <div class="chain-row-right">
-                                <input
-                                    type="number"
-                                    id="antenna-gain"
-                                    class="chain-input"
-                                    value="0"
-                                    step="0.5"
-                                />
-                                <span class="chain-unit">dBi</span>
-                            </div>
-                        </div>
-                        <div class="chain-row" id="in-row-eirp">
-                            <div class="chain-row-label">EIRP</div>
-                            <div class="chain-row-right">
-                                <input
-                                    type="number"
-                                    id="in-eirp-input"
-                                    class="chain-input"
-                                    value="10"
-                                    step="1"
-                                    style="display: none"
-                                />
-                                <div id="in-eirp-display" class="chain-display">
-                                    —
-                                </div>
-                                <span class="chain-unit">dBm</span>
-                            </div>
-                        </div>
-                    </div>
-
+                    <div id="input-table-container" class="table-wrap"></div>
                     <div class="info-section">
                         <div class="info-row">
                             <div class="info-label">Vendor UI Power</div>
@@ -544,86 +582,7 @@
                 <div class="panel">
                     <div class="panel-header">Output Vendor</div>
                     <select id="output-vendor"></select>
-
-                    <div class="chain">
-                        <div class="chain-row" id="out-row-perchain">
-                            <div class="chain-row-label">
-                                Per-Chain Conducted
-                            </div>
-                            <div class="chain-row-right">
-                                <div
-                                    id="out-perchain-display"
-                                    class="chain-display"
-                                >
-                                    —
-                                </div>
-                                <span class="chain-unit">dBm</span>
-                            </div>
-                        </div>
-                        <div class="chain-row" id="out-row-chains">
-                            <div class="chain-row-label">Radio Chains</div>
-                            <div class="chain-row-right">
-                                <div
-                                    id="out-chains-display"
-                                    class="chain-display"
-                                ></div>
-                                <span
-                                    class="chain-unit"
-                                    style="visibility: hidden"
-                                    >dBm</span
-                                >
-                            </div>
-                        </div>
-                        <div class="chain-row" id="out-row-mimo">
-                            <div class="chain-row-label">MIMO Gain</div>
-                            <div class="chain-row-right">
-                                <div
-                                    id="out-mimo-display"
-                                    class="chain-display"
-                                >
-                                    —
-                                </div>
-                                <span class="chain-unit">dB</span>
-                            </div>
-                        </div>
-                        <div class="chain-row" id="out-row-total">
-                            <div class="chain-row-label">Total Conducted</div>
-                            <div class="chain-row-right">
-                                <div
-                                    id="out-total-display"
-                                    class="chain-display"
-                                >
-                                    —
-                                </div>
-                                <span class="chain-unit">dBm</span>
-                            </div>
-                        </div>
-                        <div class="chain-row" id="out-row-antenna">
-                            <div class="chain-row-label">Antenna Gain</div>
-                            <div class="chain-row-right">
-                                <div
-                                    id="out-antenna-display"
-                                    class="chain-display"
-                                >
-                                    —
-                                </div>
-                                <span class="chain-unit">dBi</span>
-                            </div>
-                        </div>
-                        <div class="chain-row" id="out-row-eirp">
-                            <div class="chain-row-label">EIRP</div>
-                            <div class="chain-row-right">
-                                <div
-                                    id="out-eirp-display"
-                                    class="chain-display"
-                                >
-                                    —
-                                </div>
-                                <span class="chain-unit">dBm</span>
-                            </div>
-                        </div>
-                    </div>
-
+                    <div id="output-table-container" class="table-wrap"></div>
                     <div class="info-section">
                         <div class="info-row">
                             <div class="info-label">Vendor UI Power</div>
@@ -645,22 +604,12 @@
         </div>
 
         <script>
-            // How it works:
-            //   - "Per-Chain Conducted" / "Total Conducted" vendors: UI = conducted power.
-            //     EIRP = Total Conducted + Antenna Gain
-            //     Total Conducted = Per-Chain Conducted + MIMO Gain (10·log(N))
-            //
-            //   - "EIRP" vendors: The user sets EIRP directly in the UI.
-            //     The EIRP value already includes Total Conducted + Antenna Gain + MIMO Gain.
-            //
-            //   - Hamina (planning tool): UI = Total Conducted power.
-            //     EIRP = Total Conducted + Antenna Gain. No MIMO gain.
-
             const MIMO_GAIN = {
-                "1x1": 0, // 10*log10(1)
-                "2x2": 3, // 10*log10(2)
-                "3x3": 4.77, // 10*log10(3)
-                "4x4": 6, // 10*log10(4)
+                1: 0, // 10*log10(1)
+                2: 3, // 10*log10(2)
+                3: 4.77, // 10*log10(3)
+                4: 6, // 10*log10(4)
+                8: 9, // 10*log10(8)
             };
 
             // URL template
@@ -768,17 +717,1278 @@
                     name: "Ubiquiti UniFi",
                     uiInputType: "Total Conducted",
                     usesMimo: true,
-                    confidence: "Medium",
-                    notes: "No documentation found. Using a <a href='https://techspecs.ui.com/unifi/wifi/uap-iw-hd' target='_blank'>UniFi In-Wall HD</a> (4x4, 5 GHz, 4 dBi gain), UniFi shows <b>17 dBm / 20 dBm (EIRP)</b>. If 17 dBm is Total Conducted, it should be 21 dBm EIRP, but this could be a simple rounding error issue.",
+                    confidence: "Low",
+                    notes: "No documentation found. Using a <a href='https://techspecs.ui.com/unifi/wifi/uap-iw-hd' target='_blank'>UniFi In-Wall HD</a> (4x4, 5 GHz, 4 dBi gain), UniFi shows <b>17 dBm / 20 dBm (EIRP)</b>. If 17 dBm is Total Conducted, it should be 21 dBm EIRP, but this could be a simple rounding error issue. UniFi Design Center appears to use EIRP. This needs some work to figure out.",
                 },
             };
 
-            // URL params
+            //   antennaType: "internal" (locked), "detachable" (default but editable), "external" (user-entered)
+            //   gain: dBi (default; for "external" use 0 since the antenna is unknown)
+            //   chains: spatial streams
+            //   maxEirp: optional maximum transmit power
+            const aps = {
+                generic: {
+                    name: "Generic",
+                    models: [
+                        {
+                            model: "2x2 AP",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "detachable",
+                                    gain: 4,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "detachable",
+                                    gain: 4,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "detachable",
+                                    gain: 4,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "3x3 AP",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "detachable",
+                                    gain: 4,
+                                    chains: 3,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "detachable",
+                                    gain: 4,
+                                    chains: 3,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "detachable",
+                                    gain: 4,
+                                    chains: 3,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "4x4 AP",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "detachable",
+                                    gain: 4,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "detachable",
+                                    gain: 4,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "detachable",
+                                    gain: 4,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                alcatel: {
+                    name: "Alcatel-Lucent Enterprise",
+                    models: [
+                        {
+                            model: "AP1311",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 3.3,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 3.3,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "AP1361",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "external",
+                                    gain: 0,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "external",
+                                    gain: 0,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                arista: {
+                    name: "Arista",
+                    models: [
+                        {
+                            model: "C-360",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4.2,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 6.3,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 6.3,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "C-260",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4.92,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 6.1,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                aruba: {
+                    name: "HPE Aruba", // Datasheets refer to "MIMO with peak gain" and "peak gain for the combined, average pattern". This uses the latter on the basis that it excludes MIMO gain.
+                    models: [
+                        {
+                            model: "AP-635",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 2.9,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 4.9,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 4.3,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "AP-655",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 3.3,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 2.9,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                cambium: {
+                    name: "Cambium Networks",
+                    models: [
+                        {
+                            model: "XV3-8",
+                            modes: [
+                                {
+                                    mode: "Single 5 GHz",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 5,
+                                            chains: 4,
+                                            maxEirp: 31,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 6.7,
+                                            chains: 8,
+                                            maxEirp: 36,
+                                        },
+                                    ],
+                                },
+                                {
+                                    mode: "Dual 5 GHz",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 5,
+                                            chains: 4,
+                                            maxEirp: 31,
+                                        },
+                                        {
+                                            name: "5 GHz Low",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 6.7,
+                                            chains: 4,
+                                            maxEirp: 36,
+                                        },
+                                        {
+                                            name: "5 GHz High",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 6.7,
+                                            chains: 4,
+                                            maxEirp: 36,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                cisco: {
+                    name: "Cisco",
+                    models: [
+                        {
+                            model: "9120AXI",
+                            modes: [
+                                {
+                                    mode: "Standard",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 0,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 5,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                    ],
+                                },
+                                {
+                                    mode: "Dual 5 GHz",
+                                    radios: [
+                                        {
+                                            name: "5 GHz Low",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 5,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "5 GHz High",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 5,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            model: "9130AXI",
+                            modes: [
+                                {
+                                    mode: "Dual-Radio",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 4,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 6,
+                                            chains: 8,
+                                            maxEirp: null,
+                                        },
+                                    ],
+                                },
+                                {
+                                    mode: "Tri-Radio",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 4,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "5 GHz Low",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 6,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "5 GHz High",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 6,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            model: "9130AXE",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "external",
+                                    gain: 0,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "external",
+                                    gain: 0,
+                                    chains: 8,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "9136I",
+                            modes: [
+                                {
+                                    mode: "Tri-Radio",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 4,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 5,
+                                            chains: 8,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "6 GHz",
+                                            band: "6",
+                                            antennaType: "internal",
+                                            gain: 6,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                    ],
+                                },
+                                {
+                                    mode: "Quad-Radio",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 4,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "5 GHz Low",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 5,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "5 GHz High",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 5,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "6 GHz",
+                                            band: "6",
+                                            antennaType: "internal",
+                                            gain: 6,
+                                            chains: 4,
+                                            maxEirp: null,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                extreme: {
+                    name: "Extreme Networks",
+                    models: [
+                        {
+                            model: "AP4000",
+                            modes: [
+                                {
+                                    mode: "Mode 1",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 3.9,
+                                            chains: 2,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 5.1,
+                                            chains: 2,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "6 GHz",
+                                            band: "6",
+                                            antennaType: "internal",
+                                            gain: 5.3,
+                                            chains: 2,
+                                            maxEirp: null,
+                                        },
+                                    ],
+                                },
+                                {
+                                    mode: "Mode 2",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 3.9,
+                                            chains: 2,
+                                            maxEirp: null,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 5.1,
+                                            chains: 2,
+                                            maxEirp: null,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                fortinet: {
+                    name: "Fortinet",
+                    models: [
+                        {
+                            model: "241K",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4.5,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 5.7,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 5.25,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                huawei: {
+                    name: "Huawei",
+                    models: [
+                        {
+                            model: "5576-26",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 2,
+                                    maxEirp: null, // "23 dBm (combined power)", is that EIRP?
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 5,
+                                    chains: 4,
+                                    maxEirp: null, // 26 dBm (combined power)
+                                },
+                            ],
+                        },
+                        {
+                            model: "6576-56TP",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 2,
+                                    maxEirp: null, // "23 dBm (combined power)", is that EIRP?
+                                },
+                                {
+                                    name: "5 GHz-1",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 5,
+                                    chains: 2,
+                                    maxEirp: null, // 23 dBm (combined power)
+                                },
+                                {
+                                    name: "5 GHz-2",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 5,
+                                    chains: 4,
+                                    maxEirp: null, // 26 dBm (combined power)
+                                },
+                            ],
+                        },
+                    ],
+                },
+                juniper: {
+                    name: "HPE Juniper",
+                    models: [
+                        {
+                            model: "AP12",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 3,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 6,
+                                    chains: 2,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "AP47",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 6,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 6,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "AP47D",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 6,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 8,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 8,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "AP47E",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "external",
+                                    gain: 0,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "external",
+                                    gain: 0,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "external",
+                                    gain: 0,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "AP63",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 6,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "AP63E",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "external",
+                                    gain: 0,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "external",
+                                    gain: 0,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                ruckus: {
+                    name: "Ruckus",
+                    models: [
+                        {
+                            model: "R350",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 3,
+                                    chains: 2,
+                                    maxEirp: 23, // Datasheet says "Peak Transmit Power (aggregate across MIMO chains). Do I need to subtract antenna gain so that this isn't EIRP?
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 3,
+                                    chains: 2,
+                                    maxEirp: 23, // Datasheet says "Peak Transmit Power (aggregate across MIMO chains). Do I need to subtract antenna gain so that this isn't EIRP?
+                                },
+                            ],
+                        },
+                        {
+                            model: "R350e",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 3,
+                                    chains: 2,
+                                    maxEirp: 23, // Datasheet says "Peak Transmit Power (aggregate across MIMO chains). Do I need to subtract antenna gain so that this isn't EIRP?
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 3,
+                                    chains: 2,
+                                    maxEirp: 23, // Datasheet says "Peak Transmit Power (aggregate across MIMO chains). Do I need to subtract antenna gain so that this isn't EIRP?
+                                },
+                            ],
+                        },
+                        {
+                            model: "R760",
+                            modes: [
+                                {
+                                    mode: "Dual-band",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 4,
+                                            chains: 4,
+                                            maxEirp: 22,
+                                        },
+                                        {
+                                            name: "5 GHz One",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 6,
+                                            chains: 4,
+                                            maxEirp: 22,
+                                        },
+                                        {
+                                            name: "5 GHz Two",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 6,
+                                            chains: 4,
+                                            maxEirp: 22,
+                                        },
+                                    ],
+                                },
+                                {
+                                    mode: "Tri-band",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 4,
+                                            chains: 4,
+                                            maxEirp: 22,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 6,
+                                            chains: 4,
+                                            maxEirp: 22,
+                                        },
+                                        {
+                                            name: "6 GHz",
+                                            band: "6",
+                                            antennaType: "internal",
+                                            gain: 6,
+                                            chains: 4,
+                                            maxEirp: 22,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                ubiquiti: {
+                    name: "Ubiquiti UniFi",
+                    models: [
+                        {
+                            model: "U7 Lite",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 2,
+                                    maxEirp: 23, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 5,
+                                    chains: 2,
+                                    maxEirp: 24, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                                },
+                            ],
+                        },
+                        {
+                            model: "U7 Pro",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 2,
+                                    maxEirp: 23, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 6,
+                                    chains: 2,
+                                    maxEirp: 26, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 5.8,
+                                    chains: 2,
+                                    maxEirp: 23, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                                },
+                            ],
+                        },
+                        {
+                            model: "U7 Pro Wall",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 2,
+                                    maxEirp: 22, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 5,
+                                    chains: 2,
+                                    maxEirp: 26, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 6,
+                                    chains: 2,
+                                    maxEirp: 23, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                                },
+                            ],
+                        },
+                    ],
+                },
+            };
+
+            // Regulatory domain database. Values are max EIRP in dBm per channel.
+            // Numbers are approximate / illustrative — refine with authoritative
+            // sources before publishing.
+            const regulatoryDomains = {
+                us: {
+                    name: "United States",
+                    bands: {
+                        "2.4 GHz": { channels: { 1: 30, 6: 30, 11: 30 } },
+                        "5 GHz": {
+                            channels: {
+                                36: 30,
+                                40: 30,
+                                44: 30,
+                                48: 30,
+                                52: 24,
+                                56: 24,
+                                60: 24,
+                                64: 24,
+                                100: 24,
+                                104: 24,
+                                108: 24,
+                                112: 24,
+                                116: 24,
+                                120: 24,
+                                124: 24,
+                                128: 24,
+                                132: 24,
+                                136: 24,
+                                140: 24,
+                                144: 24,
+                                149: 30,
+                                153: 30,
+                                157: 30,
+                                161: 30,
+                                165: 30,
+                            },
+                        },
+                        "6 GHz": {
+                            channels: {
+                                "1E": 30,
+                                "5E": 30,
+                                "9E": 30,
+                                "13E": 30,
+                                "17E": 30,
+                                "21E": 30,
+                                "25E": 30,
+                                "29E": 30,
+                                "33E": 30,
+                                "37E": 30,
+                                "41E": 30,
+                                "45E": 30,
+                                "49E": 30,
+                                "53E": 30,
+                                "57E": 30,
+                                "61E": 30,
+                                "65E": 30,
+                                "69E": 30,
+                                "73E": 30,
+                                "77E": 30,
+                            },
+                        },
+                    },
+                },
+                eu: {
+                    name: "Europe",
+                    bands: {
+                        "2.4 GHz": {
+                            channels: { 1: 20, 6: 20, 11: 20, 13: 20 },
+                        },
+                        "5 GHz": {
+                            channels: {
+                                36: 23,
+                                40: 23,
+                                44: 23,
+                                48: 23,
+                                52: 23,
+                                56: 23,
+                                60: 23,
+                                64: 23,
+                                100: 30,
+                                104: 30,
+                                108: 30,
+                                112: 30,
+                                116: 30,
+                                120: 30,
+                                124: 30,
+                                128: 30,
+                                132: 30,
+                                136: 30,
+                                140: 30,
+                            },
+                        },
+                        "6 GHz": {
+                            channels: {
+                                "1E": 23,
+                                "5E": 23,
+                                "9E": 23,
+                                "13E": 23,
+                                "17E": 23,
+                                "21E": 23,
+                                "25E": 23,
+                                "29E": 23,
+                                "33E": 23,
+                                "37E": 23,
+                                "41E": 23,
+                                "45E": 23,
+                                "49E": 23,
+                                "53E": 23,
+                                "57E": 23,
+                                "61E": 23,
+                                "65E": 23,
+                                "69E": 23,
+                                "73E": 23,
+                                "77E": 23,
+                            },
+                        },
+                    },
+                },
+                uk: {
+                    name: "United Kingdom",
+                    bands: {
+                        "2.4 GHz": {
+                            channels: { 1: 20, 6: 20, 11: 20, 13: 20 },
+                        },
+                        "5 GHz": {
+                            channels: {
+                                36: 23,
+                                40: 23,
+                                44: 23,
+                                48: 23,
+                                52: 23,
+                                56: 23,
+                                60: 23,
+                                64: 23,
+                                100: 30,
+                                104: 30,
+                                108: 30,
+                                112: 30,
+                                116: 30,
+                                120: 30,
+                                124: 30,
+                                128: 30,
+                                132: 30,
+                                136: 30,
+                                140: 30,
+                            },
+                        },
+                        "6 GHz": {
+                            channels: {
+                                "1E": 23,
+                                "5E": 23,
+                                "9E": 23,
+                                "13E": 23,
+                                "17E": 23,
+                                "21E": 23,
+                                "25E": 23,
+                                "29E": 23,
+                                "33E": 23,
+                                "37E": 23,
+                                "41E": 23,
+                                "45E": 23,
+                                "49E": 23,
+                                "53E": 23,
+                                "57E": 23,
+                                "61E": 23,
+                                "65E": 23,
+                                "69E": 23,
+                                "73E": 23,
+                                "77E": 23,
+                            },
+                        },
+                    },
+                },
+                au: {
+                    name: "Australia", // Need to cross-check with https://wifiwizardofoz.com/wp-content/uploads/australian_802.11_eirp_transmit_power_limits.pdf
+                    bands: {
+                        "2.4 GHz": {
+                            channels: { 1: 36, 6: 36, 11: 36 },
+                        },
+                        "5 GHz": {
+                            channels: {
+                                36: 23,
+                                40: 23,
+                                44: 23,
+                                48: 23,
+                                52: 24,
+                                56: 24,
+                                60: 24,
+                                64: 24,
+                                100: 24,
+                                104: 24,
+                                108: 24,
+                                112: 24,
+                                116: 24,
+                                120: 24,
+                                124: 24,
+                                128: 24,
+                                132: 24,
+                                136: 24,
+                                140: 24,
+                                144: 24,
+                                149: 36,
+                                153: 36,
+                                157: 36,
+                                161: 36,
+                                165: 36,
+                            },
+                        },
+                        "6 GHz": {
+                            channels: {
+                                "1E": 24,
+                                "5E": 24,
+                                "9E": 24,
+                                "13E": 24,
+                                "17E": 24,
+                                "21E": 24,
+                                "25E": 24,
+                                "29E": 24,
+                                "33E": 24,
+                                "37E": 24,
+                                "41E": 24,
+                                "45E": 24,
+                                "49E": 24,
+                                "53E": 24,
+                                "57E": 24,
+                                "61E": 24,
+                                "65E": 24,
+                                "69E": 24,
+                                "73E": 24,
+                                "77E": 24,
+                            },
+                        },
+                    },
+                },
+            };
+
+            // ── URL params ──
             function getUrlParams() {
                 const p = new URLSearchParams(window.location.search);
                 return {
                     from: p.get("from"),
                     to: p.get("to"),
+                    apVendor: p.get("apVendor"),
+                    apModel: p.get("apModel"),
+                    apMode: p.get("apMode"),
+                    domain: p.get("domain"),
                 };
             }
 
@@ -786,234 +1996,514 @@
                 const p = new URLSearchParams();
                 p.set("from", state.inputVendor);
                 p.set("to", state.outputVendor);
+                p.set("apVendor", state.apVendor);
+                p.set("apModel", state.apModel);
+                if (state.apMode != null) p.set("apMode", state.apMode);
+                p.set("domain", state.regulatoryDomain);
                 history.replaceState(null, "", "?" + p.toString());
             }
 
-            // State
-            const urlParams = getUrlParams();
+            // ── Lookups ──
+            function getAp(vendorKey, model) {
+                const list = aps[vendorKey]?.models || [];
+                return list.find((a) => a.model === model) || list[0];
+            }
+
+            function getRadiosForAp(ap, mode) {
+                if (!ap) return [];
+                if (!ap.modes) return ap.radios;
+                const m = ap.modes.find((m) => m.mode === mode) || ap.modes[0];
+                return m ? m.radios : [];
+            }
+
+            function getRadio(ap, radioName) {
+                return (
+                    getRadiosForAp(ap, state.apMode).find(
+                        (r) => r.name === radioName,
+                    ) || null
+                );
+            }
+
+            const BAND_KEYS = { 2.4: "2.4 GHz", 5: "5 GHz", 6: "6 GHz" };
+
+            function getBand(radio) {
+                const b = radio.band ?? radio.name;
+                return BAND_KEYS[b] ?? b;
+            }
+
+            function defaultChannel(band, domain) {
+                const bandData = regulatoryDomains[domain]?.bands?.[band];
+                if (!bandData) return null;
+                const keys = Object.keys(bandData.channels);
+                return keys.length ? keys[0] : null;
+            }
+
+            function maxEirpForChannel(band, channel, domain) {
+                if (channel == null) return null;
+                return (
+                    regulatoryDomains[domain]?.bands?.[band]?.channels?.[
+                        channel
+                    ] ?? null
+                );
+            }
+
+            // Gain is a physical property of the shared AP — same for both panels.
+            // Editable only on the input side; output mirrors the same value.
+            function effectiveGain(radioName) {
+                const ap = getAp(state.apVendor, state.apModel);
+                const radio = getRadio(ap, radioName);
+                if (!radio) return 0;
+                if (radio.antennaType === "internal") return radio.gain;
+                const override = state.radios[radioName]?.gainOverride;
+                return override != null ? override : radio.gain;
+            }
+
+            function mimoGainFor(chains, vendor) {
+                if (!vendor.usesMimo) return 0;
+                return MIMO_GAIN[chains] ?? 0;
+            }
+
+            // ── State ──
             let state = {
-                inputVendor:
-                    urlParams.from && vendors[urlParams.from]
-                        ? urlParams.from
-                        : "hamina",
-                outputVendor:
-                    urlParams.to && vendors[urlParams.to]
-                        ? urlParams.to
-                        : "juniper",
-                chains: "4x4",
-                inputPower: 10,
-                antennaGain: 0,
+                inputVendor: "cisco",
+                outputVendor: "juniper",
+                apVendor: "cisco",
+                apModel: null,
+                apMode: null,
+                regulatoryDomain: "us",
+                radios: {},
             };
 
-            // DOM refs
+            // Per-side table refs. Each entry: { radioNames, sideRadios, cells, rows }
+            const tableRefs = { input: null, output: null };
+
+            // ── DOM refs ──
             const dom = {
+                regulatoryDomain: document.getElementById("regulatory-domain"),
+                apVendor: document.getElementById("ap-vendor"),
+                apModel: document.getElementById("ap-model"),
+                apMode: document.getElementById("ap-mode"),
+                apModeControl: document.getElementById("ap-mode-control"),
                 inputVendor: document.getElementById("input-vendor"),
                 outputVendor: document.getElementById("output-vendor"),
-                chainsSelect: document.getElementById("chains-select"),
-                outStreamsDisplay: document.getElementById(
-                    "out-streams-display",
+                inputTableContainer: document.getElementById(
+                    "input-table-container",
                 ),
-                antennaGain: document.getElementById("antenna-gain"),
-
-                // Input chain rows
-                inRowPerchain: document.getElementById("in-row-perchain"),
-                inRowChains: document.getElementById("in-row-chains"),
-                inRowMimo: document.getElementById("in-row-mimo"),
-                inRowTotal: document.getElementById("in-row-total"),
-                inRowAntenna: document.getElementById("in-row-antenna"),
-                inRowEirp: document.getElementById("in-row-eirp"),
-
-                // Input chain inputs (shown for the active vendor UI row)
-                inPerchainInput: document.getElementById("in-perchain-input"),
-                inTotalInput: document.getElementById("in-total-input"),
-                inEirpInput: document.getElementById("in-eirp-input"),
-
-                // Input chain displays (shown for non-active rows)
-                inPerchainDisplay: document.getElementById(
-                    "in-perchain-display",
+                outputTableContainer: document.getElementById(
+                    "output-table-container",
                 ),
-                inMimoDisplay: document.getElementById("in-mimo-display"),
-                inTotalDisplay: document.getElementById("in-total-display"),
-                inEirpDisplay: document.getElementById("in-eirp-display"),
-
-                // Output chain rows
-                outRowPerchain: document.getElementById("out-row-perchain"),
-                outRowChains: document.getElementById("out-row-chains"),
-                outRowMimo: document.getElementById("out-row-mimo"),
-                outRowTotal: document.getElementById("out-row-total"),
-                outRowAntenna: document.getElementById("out-row-antenna"),
-                outRowEirp: document.getElementById("out-row-eirp"),
-
-                // Output chain displays (all read-only)
-                outPerchainDisplay: document.getElementById(
-                    "out-perchain-display",
-                ),
-                outChainsDisplay: document.getElementById("out-chains-display"),
-                outMimoDisplay: document.getElementById("out-mimo-display"),
-                outTotalDisplay: document.getElementById("out-total-display"),
-                outAntennaDisplay: document.getElementById(
-                    "out-antenna-display",
-                ),
-                outEirpDisplay: document.getElementById("out-eirp-display"),
-
-                // Info sections
                 inputUiPower: document.getElementById("input-ui-power"),
                 outputUiPower: document.getElementById("output-ui-power"),
                 inputConfidence: document.getElementById("input-confidence"),
                 outputConfidence: document.getElementById("output-confidence"),
                 inputNotes: document.getElementById("input-notes"),
                 outputNotes: document.getElementById("output-notes"),
+                warningBanner: document.getElementById("warning-banner"),
+                warningDismiss: document.getElementById("warning-dismiss"),
+                swapBtn: document.getElementById("swap-btn"),
             };
 
-            // Init
-            function init() {
-                // Populate vendor dropdowns
+            // ── Radio state sync ──
+            function syncRadioState() {
+                const ap = getAp(state.apVendor, state.apModel);
+                const next = {};
+                for (const radio of getRadiosForAp(ap, state.apMode)) {
+                    const prev = state.radios[radio.name] || {};
+                    next[radio.name] = {
+                        inputPower: prev.inputPower ?? 10,
+                        channel:
+                            prev.channel ??
+                            defaultChannel(
+                                getBand(radio),
+                                state.regulatoryDomain,
+                            ),
+                        gainOverride: prev.gainOverride ?? null,
+                    };
+                    // Reset channel if it no longer exists in the current domain.
+                    const bandData =
+                        regulatoryDomains[state.regulatoryDomain]?.bands?.[
+                            getBand(radio)
+                        ];
+                    if (
+                        bandData &&
+                        next[radio.name].channel != null &&
+                        bandData.channels[next[radio.name].channel] == null
+                    ) {
+                        next[radio.name].channel = defaultChannel(
+                            getBand(radio),
+                            state.regulatoryDomain,
+                        );
+                    }
+                }
+                state.radios = next;
+            }
+
+            // ── Dropdown helpers ──
+            function populateVendorDropdown(el, selected) {
+                el.innerHTML = "";
                 for (const key of Object.keys(vendors)) {
-                    const v = vendors[key];
-                    dom.inputVendor.appendChild(new Option(v.name, key));
-                    dom.outputVendor.appendChild(new Option(v.name, key));
+                    el.appendChild(new Option(vendors[key].name, key));
                 }
-                dom.inputVendor.value = state.inputVendor;
-                dom.outputVendor.value = state.outputVendor;
-
-                // Populate input chains dropdown
-                for (const key of Object.keys(MIMO_GAIN)) {
-                    dom.chainsSelect.appendChild(new Option(key, key));
-                }
-                dom.chainsSelect.value = state.chains;
-                dom.chainsSelect.addEventListener("change", (e) => {
-                    state.chains = e.target.value;
-                    calculate();
-                });
-
-                // Set antenna gain from state
-                dom.antennaGain.value = state.antennaGain;
-
-                // Event listeners
-                dom.inputVendor.addEventListener("change", (e) => {
-                    state.inputVendor = e.target.value;
-                    updateInputRows();
-                    updateOutputRows();
-                    calculate();
-                    updateUrl();
-                });
-                dom.outputVendor.addEventListener("change", (e) => {
-                    state.outputVendor = e.target.value;
-                    updateOutputRows();
-                    calculate();
-                    updateUrl();
-                });
-                dom.antennaGain.addEventListener("input", (e) => {
-                    state.antennaGain = parseFloat(e.target.value) || 0;
-                    calculate();
-                });
-
-                // Warning dismiss
-                document
-                    .getElementById("warning-dismiss")
-                    .addEventListener("click", () => {
-                        document.getElementById(
-                            "warning-banner",
-                        ).style.display = "none";
-                    });
-
-                // Swap button
-                document
-                    .getElementById("swap-btn")
-                    .addEventListener("click", swap);
-
-                // Power input listeners (only one is visible at a time)
-                for (const inputEl of [
-                    dom.inPerchainInput,
-                    dom.inTotalInput,
-                    dom.inEirpInput,
-                ]) {
-                    inputEl.addEventListener("input", (e) => {
-                        state.inputPower = parseFloat(e.target.value) || 0;
-                        calculate();
-                    });
-                }
-
-                // Initial row setup and calculation
-                updateInputRows();
-                updateOutputRows();
-                calculate();
-                updateUrl();
+                el.value = selected;
             }
 
-            // Row visibility
-            function updateInputRows() {
-                const vendor = vendors[state.inputVendor];
-                const uiType = vendor.uiInputType;
+            function populateApVendorDropdown(el, selected) {
+                el.innerHTML = "";
+                for (const key of Object.keys(aps)) {
+                    el.appendChild(new Option(aps[key].name, key));
+                }
+                el.value = selected;
+            }
 
-                // Hide all power inputs, show all power displays
-                dom.inPerchainInput.style.display = "none";
-                dom.inTotalInput.style.display = "none";
-                dom.inEirpInput.style.display = "none";
-                dom.inPerchainDisplay.style.display = "";
-                dom.inTotalDisplay.style.display = "";
-                dom.inEirpDisplay.style.display = "";
+            function populateApDropdown(el, vendorKey, selected) {
+                el.innerHTML = "";
+                const list = aps[vendorKey]?.models || [];
+                for (const ap of list)
+                    el.appendChild(new Option(ap.model, ap.model));
+                if (selected && list.some((a) => a.model === selected)) {
+                    el.value = selected;
+                } else if (list.length) {
+                    el.value = list[0].model;
+                }
+            }
 
-                // Remove active-row from power rows
-                dom.inRowPerchain.classList.remove("active-row");
-                dom.inRowTotal.classList.remove("active-row");
-                dom.inRowEirp.classList.remove("active-row");
+            function populateApModeDropdown(el, modes, selected) {
+                el.innerHTML = "";
+                for (const m of modes)
+                    el.appendChild(new Option(m.mode, m.mode));
+                el.value = selected;
+            }
 
-                // Show the active input, hide its display, mark row active
-                let activeInput;
-                if (uiType === "Per-Chain Conducted") {
-                    activeInput = dom.inPerchainInput;
-                    dom.inPerchainDisplay.style.display = "none";
-                    dom.inRowPerchain.classList.add("active-row");
-                } else if (uiType === "Total Conducted") {
-                    activeInput = dom.inTotalInput;
-                    dom.inTotalDisplay.style.display = "none";
-                    dom.inRowTotal.classList.add("active-row");
+            function updateApModeVisibility() {
+                const ap = getAp(state.apVendor, state.apModel);
+                if (ap?.modes?.length) {
+                    const valid = ap.modes.some((m) => m.mode === state.apMode);
+                    if (!valid) state.apMode = ap.modes[0].mode;
+                    populateApModeDropdown(dom.apMode, ap.modes, state.apMode);
+                    dom.apModeControl.style.display = "";
                 } else {
-                    // EIRP
-                    activeInput = dom.inEirpInput;
-                    dom.inEirpDisplay.style.display = "none";
-                    dom.inRowEirp.classList.add("active-row");
+                    state.apMode = null;
+                    dom.apModeControl.style.display = "none";
                 }
-                activeInput.style.display = "";
-                activeInput.value = state.inputPower;
-
-                // Grey out MIMO tier (Per-Chain, Radio Chains, MIMO Gain) if vendor doesn't use MIMO
-                const muteMimo = !vendor.usesMimo;
-                dom.inRowPerchain.classList.toggle("muted-row", muteMimo);
-                dom.inRowChains.classList.toggle("muted-row", muteMimo);
-                dom.inRowMimo.classList.toggle("muted-row", muteMimo);
             }
 
-            function updateOutputRows() {
-                const vendor = vendors[state.outputVendor];
-                const uiType = vendor.uiInputType;
-
-                // Remove active-row from power rows
-                dom.outRowPerchain.classList.remove("active-row");
-                dom.outRowTotal.classList.remove("active-row");
-                dom.outRowEirp.classList.remove("active-row");
-
-                // Mark the vendor UI row as active
-                if (uiType === "Per-Chain Conducted") {
-                    dom.outRowPerchain.classList.add("active-row");
-                } else if (uiType === "Total Conducted") {
-                    dom.outRowTotal.classList.add("active-row");
-                } else {
-                    // EIRP
-                    dom.outRowEirp.classList.add("active-row");
+            function populateDomainDropdown(el, selected) {
+                el.innerHTML = "";
+                for (const key of Object.keys(regulatoryDomains)) {
+                    el.appendChild(
+                        new Option(regulatoryDomains[key].name, key),
+                    );
                 }
-
-                // Grey out MIMO tier (Per-Chain, Radio Chains, MIMO Gain) if vendor doesn't use MIMO
-                const muteMimo = !vendor.usesMimo;
-                dom.outRowPerchain.classList.toggle("muted-row", muteMimo);
-                dom.outRowChains.classList.toggle("muted-row", muteMimo);
-                dom.outRowMimo.classList.toggle("muted-row", muteMimo);
+                el.value = selected;
             }
 
-            // Chain helpers
-            //
-            // expandChain: given a vendor's UI value, derive the full chain.
+            // ── Table building ──
+            function makeNumberInput(value, step) {
+                const inp = document.createElement("input");
+                inp.type = "number";
+                inp.step = step != null ? String(step) : "1";
+                inp.value = String(value);
+                return inp;
+            }
+
+            // Build the chain <table> for one side. Returns the table element and
+            // populates tableRefs[side] with content-element refs for calculate().
+            // Both sides use the same shared AP (state.apVendor / state.apModel).
+            function buildTable(side) {
+                const vendor = vendors[state[side + "Vendor"]];
+                const ap = getAp(state.apVendor, state.apModel);
+                const isInput = side === "input";
+                const isPerChain = vendor.uiInputType === "Per-Chain Conducted";
+                const isTotal = vendor.uiInputType === "Total Conducted";
+                const isEirpUI = vendor.uiInputType === "EIRP";
+                const muteMimo = !vendor.usesMimo;
+
+                const apRadios = getRadiosForAp(ap, state.apMode);
+                const radioNames = apRadios.map((r) => r.name);
+                const radioBands = apRadios.map((r) => getBand(r));
+                const n = radioNames.length;
+
+                const refs = {
+                    radioNames,
+                    radioBands,
+                    cells: {
+                        channel: Array(n).fill(null),
+                        maxEirp: Array(n).fill(null),
+                        perChain: Array(n).fill(null),
+                        chains: Array(n).fill(null),
+                        mimo: Array(n).fill(null),
+                        total: Array(n).fill(null),
+                        antenna: Array(n).fill(null),
+                        eirp: Array(n).fill(null),
+                    },
+                    rows: {},
+                };
+                tableRefs[side] = refs;
+
+                const table = document.createElement("table");
+                table.className = "chain-table";
+
+                // ── Header row ──
+                const thead = document.createElement("thead");
+                const hTr = document.createElement("tr");
+                const hTh = document.createElement("th");
+                hTh.className = "label-col";
+                hTr.appendChild(hTh);
+                for (let i = 0; i < n; i++) {
+                    const th = document.createElement("th");
+                    th.textContent = radioNames[i];
+                    hTr.appendChild(th);
+                }
+                const unitTh = document.createElement("th");
+                unitTh.className = "unit-col";
+                hTr.appendChild(unitTh);
+                thead.appendChild(hTr);
+                table.appendChild(thead);
+
+                const tbody = document.createElement("tbody");
+
+                // Helper: build one row. buildCell(td, i, radio) → content element
+                // stored in refs.cells[key][i] for later updates by calculate().
+                function buildRow(key, label, unit, buildCell) {
+                    const tr = document.createElement("tr");
+                    const labelTd = document.createElement("td");
+                    labelTd.className = "label-col";
+                    labelTd.textContent = label;
+                    tr.appendChild(labelTd);
+                    for (let i = 0; i < n; i++) {
+                        const td = document.createElement("td");
+                        const cellEl = buildCell(td, i, apRadios[i]);
+                        refs.cells[key][i] = cellEl;
+                        tr.appendChild(td);
+                    }
+                    const unitTd = document.createElement("td");
+                    unitTd.className = "unit-col";
+                    unitTd.textContent = unit ?? "";
+                    tr.appendChild(unitTd);
+                    refs.rows[key] = tr;
+                    return tr;
+                }
+
+                // ── Channel row (only when at least one band is in the domain) ──
+                const hasBand = radioBands.some(
+                    (b) =>
+                        regulatoryDomains[state.regulatoryDomain]?.bands?.[b] !=
+                        null,
+                );
+                if (hasBand) {
+                    const channelTr = buildRow(
+                        "channel",
+                        "Channel",
+                        "",
+                        (td, i) => {
+                            const nm = radioNames[i];
+                            const band =
+                                regulatoryDomains[state.regulatoryDomain]
+                                    ?.bands?.[radioBands[i]];
+                            if (!band) {
+                                const s = document.createElement("span");
+                                s.textContent = "—";
+                                td.appendChild(s);
+                                return null;
+                            }
+                            if (isInput) {
+                                const sel = document.createElement("select");
+                                sel.className = "channel-select";
+                                for (const ch of Object.keys(band.channels)) {
+                                    sel.appendChild(new Option(ch, ch));
+                                }
+                                sel.value = String(
+                                    state.radios[nm]?.channel ?? "",
+                                );
+                                sel.addEventListener("change", (e) => {
+                                    state.radios[nm].channel = e.target.value;
+                                    calculate();
+                                });
+                                td.appendChild(sel);
+                                return sel;
+                            } else {
+                                const sp = document.createElement("span");
+                                sp.textContent =
+                                    state.radios[nm]?.channel ?? "—";
+                                td.appendChild(sp);
+                                return sp;
+                            }
+                        },
+                    );
+                    tbody.appendChild(channelTr);
+
+                    const maxEirpTr = buildRow(
+                        "maxEirp",
+                        "Max EIRP",
+                        "dBm",
+                        (td, i) => {
+                            const band =
+                                regulatoryDomains[state.regulatoryDomain]
+                                    ?.bands?.[radioBands[i]];
+                            const sp = document.createElement("span");
+                            sp.textContent = "—";
+                            td.appendChild(sp);
+                            return band ? sp : null;
+                        },
+                    );
+                    tbody.appendChild(maxEirpTr);
+                }
+
+                // ── Per-Chain row ──
+                const perChainTr = buildRow(
+                    "perChain",
+                    "Per-Chain Conducted",
+                    "dBm",
+                    (td, i) => {
+                        const nm = radioNames[i];
+                        if (isInput && isPerChain) {
+                            const inp = makeNumberInput(
+                                state.radios[nm]?.inputPower ?? 10,
+                            );
+                            inp.addEventListener("input", (e) => {
+                                state.radios[nm].inputPower =
+                                    parseFloat(e.target.value) || 0;
+                                calculate();
+                            });
+                            td.appendChild(inp);
+                            return inp;
+                        }
+                        const sp = document.createElement("span");
+                        sp.textContent = "—";
+                        td.appendChild(sp);
+                        return sp;
+                    },
+                );
+                if (isPerChain) perChainTr.classList.add("active-row");
+                if (muteMimo) perChainTr.classList.add("muted-row");
+                tbody.appendChild(perChainTr);
+
+                // ── Radio Chains row ──
+                const chainsTr = buildRow(
+                    "chains",
+                    "Radio Chains",
+                    "",
+                    (td, i, radio) => {
+                        const sp = document.createElement("span");
+                        sp.textContent = `${radio.chains}×${radio.chains}`;
+                        td.appendChild(sp);
+                        return sp;
+                    },
+                );
+                if (muteMimo) chainsTr.classList.add("muted-row");
+                tbody.appendChild(chainsTr);
+
+                // ── MIMO Gain row ──
+                const mimoTr = buildRow("mimo", "MIMO Gain", "dB", (td) => {
+                    const sp = document.createElement("span");
+                    sp.textContent = "—";
+                    td.appendChild(sp);
+                    return sp;
+                });
+                if (muteMimo) mimoTr.classList.add("muted-row");
+                tbody.appendChild(mimoTr);
+
+                // ── Total Conducted row ──
+                const totalTr = buildRow(
+                    "total",
+                    "Total Conducted",
+                    "dBm",
+                    (td, i) => {
+                        const nm = radioNames[i];
+                        if (isInput && isTotal) {
+                            const inp = makeNumberInput(
+                                state.radios[nm]?.inputPower ?? 10,
+                            );
+                            inp.addEventListener("input", (e) => {
+                                state.radios[nm].inputPower =
+                                    parseFloat(e.target.value) || 0;
+                                calculate();
+                            });
+                            td.appendChild(inp);
+                            return inp;
+                        }
+                        const sp = document.createElement("span");
+                        sp.textContent = "—";
+                        td.appendChild(sp);
+                        return sp;
+                    },
+                );
+                if (isTotal) totalTr.classList.add("active-row");
+                tbody.appendChild(totalTr);
+
+                // ── Antenna Gain row ──
+                // Gain override is edited on the input side only; the output side
+                // always shows the same computed value as a read-only span.
+                const antennaTr = buildRow(
+                    "antenna",
+                    "Antenna Gain",
+                    "dBi",
+                    (td, i, radio) => {
+                        const nm = radioNames[i];
+                        const editable =
+                            isInput &&
+                            (radio.antennaType === "detachable" ||
+                                radio.antennaType === "external");
+                        if (editable) {
+                            const cur = state.radios[nm]?.gainOverride;
+                            const inp = makeNumberInput(
+                                cur != null ? cur : radio.gain,
+                                0.5,
+                            );
+                            inp.addEventListener("input", (e) => {
+                                state.radios[nm].gainOverride =
+                                    parseFloat(e.target.value) || 0;
+                                calculate();
+                            });
+                            if (radio.antennaType === "external")
+                                inp.placeholder = "ext";
+                            td.appendChild(inp);
+                            return inp;
+                        }
+                        const sp = document.createElement("span");
+                        sp.textContent = radio.gain;
+                        td.appendChild(sp);
+                        return sp;
+                    },
+                );
+                tbody.appendChild(antennaTr);
+
+                // ── EIRP row ──
+                const eirpTr = buildRow("eirp", "EIRP", "dBm", (td, i) => {
+                    const nm = radioNames[i];
+                    if (isInput && isEirpUI) {
+                        const inp = makeNumberInput(
+                            state.radios[nm]?.inputPower ?? 10,
+                        );
+                        inp.addEventListener("input", (e) => {
+                            state.radios[nm].inputPower =
+                                parseFloat(e.target.value) || 0;
+                            calculate();
+                        });
+                        td.appendChild(inp);
+                        return inp;
+                    }
+                    const sp = document.createElement("span");
+                    sp.textContent = "—";
+                    td.appendChild(sp);
+                    return sp;
+                });
+                if (isEirpUI) eirpTr.classList.add("active-row");
+                tbody.appendChild(eirpTr);
+
+                table.appendChild(tbody);
+                return table;
+            }
+
+            // Rebuild both panels' tables from scratch.
+            function renderTables() {
+                dom.inputTableContainer.innerHTML = "";
+                dom.outputTableContainer.innerHTML = "";
+                dom.inputTableContainer.appendChild(buildTable("input"));
+                dom.outputTableContainer.appendChild(buildTable("output"));
+            }
+
+            // ── Conversion helpers (unchanged) ──
             function expandChain(vendor, uiPower, mimoGain, antennaGain) {
                 const mimo = vendor.usesMimo ? mimoGain : 0;
                 let eirp;
@@ -1022,13 +2512,11 @@
                 } else if (vendor.uiInputType === "Total Conducted") {
                     eirp = uiPower + antennaGain;
                 } else {
-                    // EIRP
                     eirp = uiPower;
                 }
                 return chainFromEirp(vendor, eirp, mimoGain, antennaGain);
             }
 
-            // chainFromEirp: derive the full chain given a known EIRP.
             function chainFromEirp(vendor, eirp, mimoGain, antennaGain) {
                 const mimo = vendor.usesMimo ? mimoGain : 0;
                 const total = eirp - antennaGain;
@@ -1036,7 +2524,6 @@
                 return { perChain, total, eirp };
             }
 
-            // uiFromEirp: derive the vendor's UI value from a known EIRP.
             function uiFromEirp(vendor, eirp, mimoGain, antennaGain) {
                 const mimo = vendor.usesMimo ? mimoGain : 0;
                 if (vendor.uiInputType === "Per-Chain Conducted")
@@ -1046,79 +2533,112 @@
                 return eirp;
             }
 
-            // Swap
-            function swap() {
-                const mimoGain = MIMO_GAIN[state.chains];
-                const eirp = expandChain(
-                    vendors[state.inputVendor],
-                    state.inputPower,
-                    mimoGain,
-                    state.antennaGain,
-                ).eirp;
-                state.inputPower = round(
-                    uiFromEirp(
-                        vendors[state.outputVendor],
-                        eirp,
-                        mimoGain,
-                        state.antennaGain,
-                    ),
-                );
-                [state.inputVendor, state.outputVendor] = [
-                    state.outputVendor,
-                    state.inputVendor,
-                ];
-
-                dom.inputVendor.value = state.inputVendor;
-                dom.outputVendor.value = state.outputVendor;
-
-                updateInputRows();
-                updateOutputRows();
-                calculate();
-                updateUrl();
+            // ── Calculate ──
+            // Updates all display-only (span) cells; never overwrites user inputs.
+            function updateCell(side, key, i, val) {
+                const el = tableRefs[side]?.cells?.[key]?.[i];
+                if (!el || el.tagName === "INPUT" || el.tagName === "SELECT")
+                    return;
+                el.textContent = String(val);
             }
 
-            // Conversion logic
             function calculate() {
                 const inVendor = vendors[state.inputVendor];
                 const outVendor = vendors[state.outputVendor];
-                const mimoGain = MIMO_GAIN[state.chains];
+                const ap = getAp(state.apVendor, state.apModel);
+                const radios = getRadiosForAp(ap, state.apMode);
+                const inRefs = tableRefs.input;
+                if (!inRefs) return;
 
-                const inChain = expandChain(
-                    inVendor,
-                    state.inputPower,
-                    mimoGain,
-                    state.antennaGain,
-                );
-                const outChain = chainFromEirp(
-                    outVendor,
-                    inChain.eirp,
-                    mimoGain,
-                    state.antennaGain,
-                );
+                for (let i = 0; i < inRefs.radioNames.length; i++) {
+                    const name = inRefs.radioNames[i];
+                    const rState = state.radios[name];
+                    if (!rState) continue;
 
-                // Update input panel displays
-                dom.inPerchainDisplay.textContent = inVendor.usesMimo
-                    ? round(inChain.perChain)
-                    : "N/A";
-                dom.inMimoDisplay.textContent = inVendor.usesMimo
-                    ? round(mimoGain)
-                    : "N/A";
-                dom.inTotalDisplay.textContent = round(inChain.total);
-                dom.inEirpDisplay.textContent = round(inChain.eirp);
+                    const radio = radios[i];
+                    const gain = effectiveGain(name); // same physical AP on both sides
 
-                // Update output panel displays
-                dom.outChainsDisplay.textContent = state.chains;
-                dom.outPerchainDisplay.textContent = outVendor.usesMimo
-                    ? round(outChain.perChain)
-                    : "N/A";
-                dom.outMimoDisplay.textContent = outVendor.usesMimo
-                    ? round(mimoGain)
-                    : "N/A";
-                dom.outTotalDisplay.textContent = round(outChain.total);
-                dom.outAntennaDisplay.textContent = state.antennaGain;
-                dom.outEirpDisplay.textContent = round(outChain.eirp);
+                    // ── Input side ──
+                    const inMimo = mimoGainFor(radio.chains, inVendor);
+                    const inChain = expandChain(
+                        inVendor,
+                        rState.inputPower,
+                        inMimo,
+                        gain,
+                    );
 
-                // Update info sections
+                    updateCell(
+                        "input",
+                        "perChain",
+                        i,
+                        inVendor.usesMimo ? round(inChain.perChain) : "N/A",
+                    );
+                    updateCell(
+                        "input",
+                        "chains",
+                        i,
+                        `${radio.chains}×${radio.chains}`,
+                    );
+                    updateCell(
+                        "input",
+                        "mimo",
+                        i,
+                        inVendor.usesMimo ? round(inMimo) : "N/A",
+                    );
+                    updateCell("input", "total", i, round(inChain.total));
+                    updateCell("input", "antenna", i, round(gain));
+                    updateCell("input", "eirp", i, round(inChain.eirp));
+                    const maxE = maxEirpForChannel(
+                        inRefs.radioBands[i],
+                        rState.channel,
+                        state.regulatoryDomain,
+                    );
+                    updateCell(
+                        "input",
+                        "maxEirp",
+                        i,
+                        maxE != null ? round(maxE) : "—",
+                    );
+
+                    // ── Output side ──
+                    const outMimo = mimoGainFor(radio.chains, outVendor);
+                    const outChain = chainFromEirp(
+                        outVendor,
+                        inChain.eirp,
+                        outMimo,
+                        gain,
+                    );
+
+                    updateCell("output", "channel", i, rState.channel ?? "—");
+                    updateCell(
+                        "output",
+                        "perChain",
+                        i,
+                        outVendor.usesMimo ? round(outChain.perChain) : "N/A",
+                    );
+                    updateCell(
+                        "output",
+                        "chains",
+                        i,
+                        `${radio.chains}×${radio.chains}`,
+                    );
+                    updateCell(
+                        "output",
+                        "mimo",
+                        i,
+                        outVendor.usesMimo ? round(outMimo) : "N/A",
+                    );
+                    updateCell("output", "total", i, round(outChain.total));
+                    updateCell("output", "antenna", i, round(gain));
+                    updateCell("output", "eirp", i, round(outChain.eirp));
+                    updateCell(
+                        "output",
+                        "maxEirp",
+                        i,
+                        maxE != null ? round(maxE) : "—",
+                    );
+                }
+
                 dom.inputUiPower.textContent = inVendor.uiInputType;
                 dom.outputUiPower.textContent = outVendor.uiInputType;
                 setConfidence(dom.inputConfidence, inVendor);
@@ -1137,7 +2657,156 @@
                 return Math.round(val * 100) / 100;
             }
 
-            // Go
+            // ── Swap ──
+            // Only vendors swap; the AP is shared and doesn't change.
+            function swap() {
+                const oldInVendor = vendors[state.inputVendor];
+                const ap = getAp(state.apVendor, state.apModel);
+                const radios = getRadiosForAp(ap, state.apMode);
+
+                // Capture EIRP per radio before mutating state.
+                const eirpByRadio = {};
+                for (const radio of radios) {
+                    const r = state.radios[radio.name];
+                    if (!r) continue;
+                    const mimo = mimoGainFor(radio.chains, oldInVendor);
+                    const gain = effectiveGain(radio.name);
+                    eirpByRadio[radio.name] = expandChain(
+                        oldInVendor,
+                        r.inputPower,
+                        mimo,
+                        gain,
+                    ).eirp;
+                }
+
+                [state.inputVendor, state.outputVendor] = [
+                    state.outputVendor,
+                    state.inputVendor,
+                ];
+
+                // Derive new inputPower from preserved EIRP.
+                const newInVendor = vendors[state.inputVendor];
+                for (const radio of radios) {
+                    const r = state.radios[radio.name];
+                    const eirp = eirpByRadio[radio.name];
+                    if (!r || eirp == null) continue;
+                    const mimo = mimoGainFor(radio.chains, newInVendor);
+                    const gain = effectiveGain(radio.name);
+                    r.inputPower = round(
+                        uiFromEirp(newInVendor, eirp, mimo, gain),
+                    );
+                }
+
+                populateVendorDropdown(dom.inputVendor, state.inputVendor);
+                populateVendorDropdown(dom.outputVendor, state.outputVendor);
+                renderTables();
+                calculate();
+                updateUrl();
+            }
+
+            // ── Init ──
+            function init() {
+                const urlParams = getUrlParams();
+                if (urlParams.from && vendors[urlParams.from])
+                    state.inputVendor = urlParams.from;
+                if (urlParams.to && vendors[urlParams.to])
+                    state.outputVendor = urlParams.to;
+                if (urlParams.domain && regulatoryDomains[urlParams.domain])
+                    state.regulatoryDomain = urlParams.domain;
+                if (urlParams.apVendor && aps[urlParams.apVendor])
+                    state.apVendor = urlParams.apVendor;
+
+                const firstAp = aps[state.apVendor]?.models?.[0]?.model || null;
+                state.apModel =
+                    urlParams.apModel &&
+                    aps[state.apVendor]?.models?.some(
+                        (a) => a.model === urlParams.apModel,
+                    )
+                        ? urlParams.apModel
+                        : firstAp;
+
+                populateDomainDropdown(
+                    dom.regulatoryDomain,
+                    state.regulatoryDomain,
+                );
+                populateApVendorDropdown(dom.apVendor, state.apVendor);
+                populateApDropdown(dom.apModel, state.apVendor, state.apModel);
+                state.apMode = urlParams.apMode || null;
+                updateApModeVisibility();
+                populateVendorDropdown(dom.inputVendor, state.inputVendor);
+                populateVendorDropdown(dom.outputVendor, state.outputVendor);
+
+                syncRadioState();
+                renderTables();
+
+                // ── Event listeners ──
+                dom.regulatoryDomain.addEventListener("change", (e) => {
+                    state.regulatoryDomain = e.target.value;
+                    syncRadioState();
+                    renderTables();
+                    calculate();
+                    updateUrl();
+                });
+
+                dom.apVendor.addEventListener("change", (e) => {
+                    state.apVendor = e.target.value;
+                    state.apModel =
+                        aps[state.apVendor]?.models?.[0]?.model || null;
+                    state.apMode = null;
+                    populateApDropdown(
+                        dom.apModel,
+                        state.apVendor,
+                        state.apModel,
+                    );
+                    updateApModeVisibility();
+                    syncRadioState();
+                    renderTables();
+                    calculate();
+                    updateUrl();
+                });
+
+                dom.apModel.addEventListener("change", (e) => {
+                    state.apModel = e.target.value;
+                    state.apMode = null;
+                    updateApModeVisibility();
+                    syncRadioState();
+                    renderTables();
+                    calculate();
+                    updateUrl();
+                });
+
+                dom.apMode.addEventListener("change", (e) => {
+                    state.apMode = e.target.value;
+                    syncRadioState();
+                    renderTables();
+                    calculate();
+                    updateUrl();
+                });
+
+                dom.inputVendor.addEventListener("change", (e) => {
+                    state.inputVendor = e.target.value;
+                    renderTables();
+                    calculate();
+                    updateUrl();
+                });
+
+                dom.outputVendor.addEventListener("change", (e) => {
+                    state.outputVendor = e.target.value;
+                    renderTables();
+                    calculate();
+                    updateUrl();
+                });
+
+                dom.warningDismiss.addEventListener("click", () => {
+                    dom.warningBanner.style.display = "none";
+                });
+
+                dom.swapBtn.addEventListener("click", swap);
+
+                calculate();
+                updateUrl();
+            }
+
             init();
         </script>
     </body>
