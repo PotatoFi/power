@@ -515,11 +515,7 @@
                     &times;
                 </button>
                 This calculator is currently under development, and is very
-                likely to be wrong. The channel table (which stores the maximum
-                transmit power per channel) is particularly likely to be wrong,
-                as it currently contains placeholder data. Access point models
-                should be correct, but don't trust anything here. You can send
-                feedback to
+                likely to be wrong. Don't trust it. You can send feedback to
                 <a href="mailto:joel@potatofi.com">joel@potatofi.com</a>.
             </div>
 
@@ -2720,45 +2716,43 @@
                 return Math.round(val * 100) / 100;
             }
 
+            // Converts inputPower for all radios from fromVendor's scale to toVendor's
+            // scale, preserving the physical EIRP through the conversion.
+            function rebaseInputPower(fromVendor, toVendor) {
+                const ap = getAp(state.apVendor, state.apModel);
+                for (const radio of getRadiosForAp(ap, state.apMode)) {
+                    const r = state.radios[radio.name];
+                    if (!r) continue;
+                    const gain = effectiveGain(radio.name);
+                    const eirp = expandChain(
+                        fromVendor,
+                        r.inputPower,
+                        mimoGainFor(radio.chains, fromVendor),
+                        gain,
+                    ).eirp;
+                    r.inputPower = round(
+                        uiFromEirp(
+                            toVendor,
+                            eirp,
+                            mimoGainFor(radio.chains, toVendor),
+                            gain,
+                        ),
+                    );
+                }
+            }
+
             // ── Swap ──
             // Only vendors swap; the AP is shared and doesn't change.
             function swap() {
                 const oldInVendor = vendors[state.inputVendor];
-                const ap = getAp(state.apVendor, state.apModel);
-                const radios = getRadiosForAp(ap, state.apMode);
+                const newInVendor = vendors[state.outputVendor];
 
-                // Capture EIRP per radio before mutating state.
-                const eirpByRadio = {};
-                for (const radio of radios) {
-                    const r = state.radios[radio.name];
-                    if (!r) continue;
-                    const mimo = mimoGainFor(radio.chains, oldInVendor);
-                    const gain = effectiveGain(radio.name);
-                    eirpByRadio[radio.name] = expandChain(
-                        oldInVendor,
-                        r.inputPower,
-                        mimo,
-                        gain,
-                    ).eirp;
-                }
+                rebaseInputPower(oldInVendor, newInVendor);
 
                 [state.inputVendor, state.outputVendor] = [
                     state.outputVendor,
                     state.inputVendor,
                 ];
-
-                // Derive new inputPower from preserved EIRP.
-                const newInVendor = vendors[state.inputVendor];
-                for (const radio of radios) {
-                    const r = state.radios[radio.name];
-                    const eirp = eirpByRadio[radio.name];
-                    if (!r || eirp == null) continue;
-                    const mimo = mimoGainFor(radio.chains, newInVendor);
-                    const gain = effectiveGain(radio.name);
-                    r.inputPower = round(
-                        uiFromEirp(newInVendor, eirp, mimo, gain),
-                    );
-                }
 
                 populateVendorDropdown(dom.inputVendor, state.inputVendor);
                 populateVendorDropdown(dom.outputVendor, state.outputVendor);
@@ -2847,7 +2841,9 @@
                 });
 
                 dom.inputVendor.addEventListener("change", (e) => {
+                    const oldVendor = vendors[state.inputVendor];
                     state.inputVendor = e.target.value;
+                    rebaseInputPower(oldVendor, vendors[state.inputVendor]);
                     renderTables();
                     calculate();
                     updateUrl();
