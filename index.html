@@ -380,6 +380,43 @@
                 background-position: right 4px center;
             }
 
+            /* ── Row label info buttons & tooltips ── */
+            .label-info-wrap {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+            .label-info-btn {
+                display: inline-flex;
+                align-items: center;
+                color: #2563eb;
+                font-size: 13px;
+                cursor: default;
+                line-height: 1;
+            }
+
+            #label-info-tooltip {
+                display: none;
+                position: fixed;
+                background: var(--surface);
+                color: var(--text-secondary);
+                font-size: 13px;
+                font-weight: 400;
+                text-transform: none;
+                letter-spacing: 0;
+                line-height: 1.4;
+                padding: 6px 9px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+                width: max-content;
+                max-width: 300px;
+                white-space: normal;
+                z-index: 9999;
+                pointer-events: none;
+                box-shadow: 0 1px 3px var(--shadow);
+            }
+
             /* ── Info section ── */
             .info-section {
                 padding-top: 16px;
@@ -503,6 +540,7 @@
         </style>
     </head>
     <body>
+        <div id="label-info-tooltip"></div>
         <header>
             <div class="header-inner">
                 <h1>Transmit Power Calculator</h1>
@@ -2122,6 +2160,23 @@
                 return MIMO_GAIN[chains] ?? 0;
             }
 
+            const TOOLTIP = {
+                maxEirpTooltip:
+                    "The maximum EIRP that the regulatory domain allows on the selected channel.",
+                maxRadioTooltip:
+                    "The maximum transmit power supported the by the AP radio. This is expressed in <b>Total Conducted Power</b>, also known as <b>Total Power Out</b> (TPO).",
+                powerAdjustTooltip:
+                    "Defines how much power to subtract from the radio, which by defaults operates at either <b>Max EIRP</b> or <b>Max Radio</b> (whichever is less). <i>Warning: This is completely broken right now, because the tool is treating <b>Max EIRP</b> and <b>Max Radio</b> the same. One is EIRP, and the other is not, so this is wrong.</i>",
+                perChainTooltip: "Transmit power, per radio chain.",
+                mimoTooltip:
+                    "Gain added to <b>Per-Chain Conducted Power</b>, based on the amount of radio chains.",
+                totalTooltip:
+                    "The total amount of power leaving the radio before Antenna Gain is added. <b>Total Conducted Power</b> is also known as <b>Total Power Out</b> (TPO).",
+                antennaTooltip: "Passive gain, added by the antenna.",
+                eirpTooltip:
+                    "<b>Effective Isotropic Radiated Power</b>, basically all of the power leaving the entire radio and antenna chain with all sources of gain included.",
+            };
+
             // ── State ──
             let state = {
                 inputVendor: "hamina",
@@ -2332,11 +2387,42 @@
 
                 // Helper: build one row. buildCell(td, i, radio) → content element
                 // stored in refs.cells[key][i] for later updates by calculate().
-                function buildRow(key, label, unit, buildCell) {
+                function buildRow(key, label, unit, buildCell, tooltip) {
                     const tr = document.createElement("tr");
                     const labelTd = document.createElement("td");
                     labelTd.className = "label-col";
-                    labelTd.textContent = label;
+                    if (tooltip) {
+                        const wrap = document.createElement("span");
+                        wrap.className = "label-info-wrap";
+                        wrap.textContent = label;
+                        const btn = document.createElement("span");
+                        btn.className = "label-info-btn";
+                        const icon = document.createElement("i");
+                        icon.className = "bx bx-info-circle";
+                        btn.appendChild(icon);
+                        btn.addEventListener("mouseenter", (e) => {
+                            const tip =
+                                document.getElementById("label-info-tooltip");
+                            tip.innerHTML = tooltip;
+                            const r = icon.getBoundingClientRect();
+                            tip.style.display = "block";
+                            const tw = tip.offsetWidth;
+                            tip.style.left =
+                                Math.round(r.left + r.width / 2 - tw / 2) +
+                                "px";
+                            tip.style.top =
+                                Math.round(r.top - tip.offsetHeight - 6) + "px";
+                        });
+                        btn.addEventListener("mouseleave", () => {
+                            document.getElementById(
+                                "label-info-tooltip",
+                            ).style.display = "none";
+                        });
+                        wrap.appendChild(btn);
+                        labelTd.appendChild(wrap);
+                    } else {
+                        labelTd.textContent = label;
+                    }
                     tr.appendChild(labelTd);
                     for (let i = 0; i < n; i++) {
                         const td = document.createElement("td");
@@ -2413,6 +2499,7 @@
                             td.appendChild(sp);
                             return band ? sp : null;
                         },
+                        TOOLTIP.maxEirpTooltip,
                     );
                     tbody.appendChild(maxEirpTr);
 
@@ -2428,6 +2515,7 @@
                                 td.appendChild(sp);
                                 return sp;
                             },
+                            TOOLTIP.maxRadioTooltip,
                         );
                         tbody.appendChild(maxRadioTr);
 
@@ -2472,6 +2560,7 @@
                                 td.appendChild(sp);
                                 return sp;
                             },
+                            TOOLTIP.powerAdjustTooltip,
                         );
                         if (isPowerAdjust)
                             powerAdjustTr.classList.add("active-row");
@@ -2503,6 +2592,7 @@
                         td.appendChild(sp);
                         return sp;
                     },
+                    TOOLTIP.perChainTooltip,
                 );
                 if (isPerChain) perChainTr.classList.add("active-row");
                 if (muteMimo) perChainTr.classList.add("muted-row");
@@ -2524,12 +2614,18 @@
                 tbody.appendChild(chainsTr);
 
                 // ── MIMO Gain row ──
-                const mimoTr = buildRow("mimo", "MIMO Gain", "dB", (td) => {
-                    const sp = document.createElement("span");
-                    sp.textContent = "—";
-                    td.appendChild(sp);
-                    return sp;
-                });
+                const mimoTr = buildRow(
+                    "mimo",
+                    "MIMO Gain",
+                    "dB",
+                    (td) => {
+                        const sp = document.createElement("span");
+                        sp.textContent = "—";
+                        td.appendChild(sp);
+                        return sp;
+                    },
+                    TOOLTIP.mimoTooltip,
+                );
                 if (muteMimo) mimoTr.classList.add("muted-row");
                 tbody.appendChild(mimoTr);
 
@@ -2557,6 +2653,7 @@
                         td.appendChild(sp);
                         return sp;
                     },
+                    TOOLTIP.totalTooltip,
                 );
                 if (isTotal) totalTr.classList.add("active-row");
                 tbody.appendChild(totalTr);
@@ -2595,29 +2692,36 @@
                         td.appendChild(sp);
                         return sp;
                     },
+                    TOOLTIP.antennaTooltip,
                 );
                 tbody.appendChild(antennaTr);
 
                 // ── EIRP row ──
-                const eirpTr = buildRow("eirp", "EIRP", "dBm", (td, i) => {
-                    const nm = radioNames[i];
-                    if (isInput && isEirpUI) {
-                        const inp = makeNumberInput(
-                            state.radios[nm]?.inputPower ?? 10,
-                        );
-                        inp.addEventListener("input", (e) => {
-                            state.radios[nm].inputPower =
-                                parseFloat(e.target.value) || 0;
-                            calculate();
-                        });
-                        td.appendChild(inp);
-                        return inp;
-                    }
-                    const sp = document.createElement("span");
-                    sp.textContent = "—";
-                    td.appendChild(sp);
-                    return sp;
-                });
+                const eirpTr = buildRow(
+                    "eirp",
+                    "EIRP",
+                    "dBm",
+                    (td, i) => {
+                        const nm = radioNames[i];
+                        if (isInput && isEirpUI) {
+                            const inp = makeNumberInput(
+                                state.radios[nm]?.inputPower ?? 10,
+                            );
+                            inp.addEventListener("input", (e) => {
+                                state.radios[nm].inputPower =
+                                    parseFloat(e.target.value) || 0;
+                                calculate();
+                            });
+                            td.appendChild(inp);
+                            return inp;
+                        }
+                        const sp = document.createElement("span");
+                        sp.textContent = "—";
+                        td.appendChild(sp);
+                        return sp;
+                    },
+                    TOOLTIP.eirpTooltip,
+                );
                 if (isEirpUI) eirpTr.classList.add("active-row");
                 tbody.appendChild(eirpTr);
 
