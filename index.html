@@ -703,10 +703,10 @@
 
                 ruckus: {
                     name: "Ruckus",
-                    uiInputType: "Total Conducted",
+                    uiInputType: "Power Adjustment",
                     usesMimo: true,
                     confidence: "Low",
-                    notes: "No documentation found.",
+                    notes: "I think it's this: <i>min(maxChannelEIRP , perChainConducted + 10*log10 (radioChains)) − powerAdjustment + antennaGain = EIRP</i>, where where <i>maxRadioPower = perChainConducted + 10*log10(radioChains)</i>. I haven't found documentation for this yet, and am relying on the wording in the datasheets. The only rosetta stone that I have to support this is with the T350, which shows 3 dB of combining gain - that's consistent, since it is two-stream.",
                 },
 
                 ubiquiti: {
@@ -2177,6 +2177,7 @@
                                 state.regulatoryDomain,
                             ),
                         gainOverride: prev.gainOverride ?? null,
+                        ruckusPowerAdjust: prev.ruckusPowerAdjust ?? 0,
                     };
                     // Reset channel if it no longer exists in the current domain.
                     const bandData =
@@ -2275,7 +2276,13 @@
                 const isPerChain = vendor.uiInputType === "Per-Chain Conducted";
                 const isTotal = vendor.uiInputType === "Total Conducted";
                 const isEirpUI = vendor.uiInputType === "EIRP";
+                const isPowerAdjust = vendor.uiInputType === "Power Adjustment";
                 const muteMimo = !vendor.usesMimo;
+                const showPowerAdjustRows =
+                    vendors[state.inputVendor].uiInputType ===
+                        "Power Adjustment" ||
+                    vendors[state.outputVendor].uiInputType ===
+                        "Power Adjustment";
 
                 const apRadios = getRadiosForAp(ap, state.apMode);
                 const radioNames = apRadios.map((r) => r.name);
@@ -2288,6 +2295,8 @@
                     cells: {
                         channel: Array(n).fill(null),
                         maxEirp: Array(n).fill(null),
+                        maxRadio: Array(n).fill(null),
+                        powerAdjust: Array(n).fill(null),
                         perChain: Array(n).fill(null),
                         chains: Array(n).fill(null),
                         mimo: Array(n).fill(null),
@@ -2406,6 +2415,68 @@
                         },
                     );
                     tbody.appendChild(maxEirpTr);
+
+                    if (showPowerAdjustRows) {
+                        const maxRadioTr = buildRow(
+                            "maxRadio",
+                            "Max Radio",
+                            "dBm",
+                            (td, i, radio) => {
+                                const sp = document.createElement("span");
+                                sp.textContent =
+                                    radio.maxEirp != null ? radio.maxEirp : "—";
+                                td.appendChild(sp);
+                                return sp;
+                            },
+                        );
+                        tbody.appendChild(maxRadioTr);
+
+                        const powerAdjustOptions = [
+                            { label: "0 (Full)", value: 0 },
+                            { label: "-1", value: -1 },
+                            { label: "-2", value: -2 },
+                            { label: "-3 (1/2)", value: -3 },
+                            { label: "-4", value: -4 },
+                            { label: "-5", value: -5 },
+                            { label: "-6 (1/4)", value: -6 },
+                        ];
+                        const powerAdjustTr = buildRow(
+                            "powerAdjust",
+                            "Power Adjustment",
+                            "dB",
+                            (td, i) => {
+                                const nm = radioNames[i];
+                                if (isInput && isPowerAdjust) {
+                                    const sel =
+                                        document.createElement("select");
+                                    sel.className = "channel-select";
+                                    for (const opt of powerAdjustOptions) {
+                                        sel.appendChild(
+                                            new Option(opt.label, opt.value),
+                                        );
+                                    }
+                                    sel.value = String(
+                                        state.radios[nm]?.ruckusPowerAdjust ??
+                                            0,
+                                    );
+                                    sel.addEventListener("change", (e) => {
+                                        state.radios[nm].ruckusPowerAdjust =
+                                            parseFloat(e.target.value);
+                                        calculate();
+                                    });
+                                    td.appendChild(sel);
+                                    return sel;
+                                }
+                                const sp = document.createElement("span");
+                                sp.textContent = "—";
+                                td.appendChild(sp);
+                                return sp;
+                            },
+                        );
+                        if (isPowerAdjust)
+                            powerAdjustTr.classList.add("active-row");
+                        tbody.appendChild(powerAdjustTr);
+                    }
                 }
 
                 // ── Per-Chain row ──
@@ -2562,14 +2633,40 @@
                 dom.outputTableContainer.appendChild(buildTable("output"));
             }
 
-            // ── Conversion helpers (unchanged) ──
-            function expandChain(vendor, uiPower, mimoGain, antennaGain) {
-                const mimo = vendor.usesMimo ? mimoGain : 0;
+            // ── Conversion helpers ──
+            // ctx carries the extra inputs that "Power Adjustment" vendors
+            // (e.g. Ruckus) need but other vendors ignore: maxChannelEirp,
+            // maxRadio (radio's aggregate max output, in the same scale the
+            // vendor compares the channel cap against), and powerAdjust (the
+            // ≤0 dB offset the user selects).
+            const NULL_CHAIN = { perChain: null, total: null, eirp: null };
+
+            function powerAdjustCap(ctx) {
+                const { maxChannelEirp, maxRadio } = ctx;
+                if (maxRadio == null) return null;
+                return maxChannelEirp != null
+                    ? Math.min(maxChannelEirp, maxRadio)
+                    : maxRadio;
+            }
+
+            function expandChain(
+                vendor,
+                uiPower,
+                mimoGain,
+                antennaGain,
+                ctx = {},
+            ) {
                 let eirp;
                 if (vendor.uiInputType === "Per-Chain Conducted") {
+                    const mimo = vendor.usesMimo ? mimoGain : 0;
                     eirp = uiPower + mimo + antennaGain;
                 } else if (vendor.uiInputType === "Total Conducted") {
                     eirp = uiPower + antennaGain;
+                } else if (vendor.uiInputType === "Power Adjustment") {
+                    const cap = powerAdjustCap(ctx);
+                    if (cap == null || ctx.powerAdjust == null)
+                        return NULL_CHAIN;
+                    eirp = cap + ctx.powerAdjust + antennaGain;
                 } else {
                     eirp = uiPower;
                 }
@@ -2577,18 +2674,24 @@
             }
 
             function chainFromEirp(vendor, eirp, mimoGain, antennaGain) {
+                if (eirp == null) return NULL_CHAIN;
                 const mimo = vendor.usesMimo ? mimoGain : 0;
                 const total = eirp - antennaGain;
                 const perChain = total - mimo;
                 return { perChain, total, eirp };
             }
 
-            function uiFromEirp(vendor, eirp, mimoGain, antennaGain) {
+            function uiFromEirp(vendor, eirp, mimoGain, antennaGain, ctx = {}) {
+                if (eirp == null) return null;
                 const mimo = vendor.usesMimo ? mimoGain : 0;
                 if (vendor.uiInputType === "Per-Chain Conducted")
                     return eirp - antennaGain - mimo;
                 if (vendor.uiInputType === "Total Conducted")
                     return eirp - antennaGain;
+                if (vendor.uiInputType === "Power Adjustment") {
+                    const cap = powerAdjustCap(ctx);
+                    return cap == null ? null : eirp - antennaGain - cap;
+                }
                 return eirp;
             }
 
@@ -2617,6 +2720,17 @@
                     const radio = radios[i];
                     const gain = effectiveGain(name); // same physical AP on both sides
 
+                    const maxE = maxEirpForChannel(
+                        inRefs.radioBands[i],
+                        rState.channel,
+                        state.regulatoryDomain,
+                    );
+                    const ctx = {
+                        maxChannelEirp: maxE,
+                        maxRadio: radio.maxEirp,
+                        powerAdjust: rState.ruckusPowerAdjust,
+                    };
+
                     // ── Input side ──
                     const inMimo = mimoGainFor(radio.chains, inVendor);
                     const inChain = expandChain(
@@ -2624,13 +2738,14 @@
                         rState.inputPower,
                         inMimo,
                         gain,
+                        ctx,
                     );
 
                     updateCell(
                         "input",
                         "perChain",
                         i,
-                        inVendor.usesMimo ? round(inChain.perChain) : "N/A",
+                        inVendor.usesMimo ? fmt(inChain.perChain) : "N/A",
                     );
                     updateCell(
                         "input",
@@ -2644,14 +2759,9 @@
                         i,
                         inVendor.usesMimo ? round(inMimo) : "N/A",
                     );
-                    updateCell("input", "total", i, round(inChain.total));
+                    updateCell("input", "total", i, fmt(inChain.total));
                     updateCell("input", "antenna", i, round(gain));
-                    updateCell("input", "eirp", i, round(inChain.eirp));
-                    const maxE = maxEirpForChannel(
-                        inRefs.radioBands[i],
-                        rState.channel,
-                        state.regulatoryDomain,
-                    );
+                    updateCell("input", "eirp", i, fmt(inChain.eirp));
                     updateCell(
                         "input",
                         "maxEirp",
@@ -2673,7 +2783,7 @@
                         "output",
                         "perChain",
                         i,
-                        outVendor.usesMimo ? round(outChain.perChain) : "N/A",
+                        outVendor.usesMimo ? fmt(outChain.perChain) : "N/A",
                     );
                     updateCell(
                         "output",
@@ -2687,15 +2797,31 @@
                         i,
                         outVendor.usesMimo ? round(outMimo) : "N/A",
                     );
-                    updateCell("output", "total", i, round(outChain.total));
+                    updateCell("output", "total", i, fmt(outChain.total));
                     updateCell("output", "antenna", i, round(gain));
-                    updateCell("output", "eirp", i, round(outChain.eirp));
+                    updateCell("output", "eirp", i, fmt(outChain.eirp));
                     updateCell(
                         "output",
                         "maxEirp",
                         i,
                         maxE != null ? round(maxE) : "—",
                     );
+                    if (outVendor.uiInputType === "Power Adjustment") {
+                        updateCell(
+                            "output",
+                            "powerAdjust",
+                            i,
+                            fmt(
+                                uiFromEirp(
+                                    outVendor,
+                                    inChain.eirp,
+                                    outMimo,
+                                    gain,
+                                    ctx,
+                                ),
+                            ),
+                        );
+                    }
                 }
 
                 dom.inputUiPower.textContent = inVendor.uiInputType;
@@ -2716,9 +2842,19 @@
                 return Math.round(val * 100) / 100;
             }
 
+            // Display helper: null/NaN → "—", otherwise rounded number.
+            function fmt(val) {
+                return val == null || Number.isNaN(val) ? "—" : round(val);
+            }
+
             // Converts inputPower for all radios from fromVendor's scale to toVendor's
             // scale, preserving the physical EIRP through the conversion.
             function rebaseInputPower(fromVendor, toVendor) {
+                if (
+                    fromVendor.uiInputType === "Power Adjustment" ||
+                    toVendor.uiInputType === "Power Adjustment"
+                )
+                    return;
                 const ap = getAp(state.apVendor, state.apModel);
                 for (const radio of getRadiosForAp(ap, state.apMode)) {
                     const r = state.radios[radio.name];
