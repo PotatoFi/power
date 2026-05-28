@@ -421,8 +421,15 @@
             .info-section {
                 padding-top: 16px;
                 display: flex;
-                flex-direction: column;
-                gap: 10px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: flex-start;
+                column-gap: 32px;
+                row-gap: 10px;
+            }
+
+            .info-row:last-child {
+                flex: 0 0 100%;
             }
 
             .info-row {
@@ -527,13 +534,61 @@
 
             /* ── Responsive ── */
             @media (max-width: 700px) {
+                body {
+                    background: var(--surface);
+                }
+
+                header {
+                    background: var(--surface);
+                }
+
+                .container {
+                    padding: 0;
+                }
+
+                .warning-banner {
+                    border-radius: 0;
+                    margin-bottom: 0;
+                }
+
+                .global-controls {
+                    background: none;
+                    box-shadow: none;
+                    border-radius: 0;
+                    padding: 12px 16px;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    margin-bottom: 0;
+                    border-bottom: 1px solid var(--border);
+                }
+
+                .control-divider {
+                    display: none;
+                }
+
                 .translator {
                     flex-direction: column;
+                    gap: 0;
                 }
-                .global-controls {
-                    flex-wrap: wrap;
+
+                .arrow-divider {
+                    display: none;
                 }
-                .control-divider {
+
+                .panel {
+                    background: none;
+                    box-shadow: none;
+                    border-radius: 0;
+                    padding: 16px;
+                    gap: 12px;
+                    border-bottom: 1px solid var(--border);
+                }
+
+                .table-wrap {
+                    border-radius: 4px;
+                }
+
+                .info-row:last-child {
                     display: none;
                 }
             }
