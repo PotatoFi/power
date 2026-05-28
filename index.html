@@ -2166,7 +2166,7 @@
                 maxRadioTooltip:
                     "The maximum transmit power supported the by the AP radio. This is expressed in <b>Total Conducted Power</b>, also known as <b>Total Power Out</b> (TPO).",
                 powerAdjustTooltip:
-                    "Defines how much power to subtract from the radio, which by defaults operates at either <b>Max EIRP</b> or <b>Max Radio</b> (whichever is less). <i>Warning: This is completely broken right now, because the tool is treating <b>Max EIRP</b> and <b>Max Radio</b> the same. One is EIRP, and the other is not, so this is wrong.</i>",
+                    "Defines how much power to subtract from the radio, which by defaults operates at either <b>Max EIRP</b> or <b>Max Radio</b> (whichever is less).",
                 perChainTooltip: "Transmit power, per radio chain.",
                 mimoTooltip:
                     "Gain added to <b>Per-Chain Conducted Power</b>, based on the amount of radio chains.",
@@ -2738,19 +2738,21 @@
             }
 
             // ── Conversion helpers ──
-            // ctx carries the extra inputs that "Power Adjustment" vendors
-            // (e.g. Ruckus) need but other vendors ignore: maxChannelEirp,
-            // maxRadio (radio's aggregate max output, in the same scale the
-            // vendor compares the channel cap against), and powerAdjust (the
-            // ≤0 dB offset the user selects).
+            // ctx provides the extras "Power Adjustment" vendors (e.g. Ruckus)
+            // need: maxChannelEirp (regulatory EIRP cap), maxRadio (radio's
+            // aggregate max conducted output), and powerAdjust (≤0 dB offset).
+            // maxChannelEirp is EIRP and maxRadio is conducted, so the cap
+            // folds antennaGain into maxRadio before comparing — both sides
+            // of the min() are then EIRP, and the result is the EIRP ceiling.
             const NULL_CHAIN = { perChain: null, total: null, eirp: null };
 
-            function powerAdjustCap(ctx) {
+            function powerAdjustCap(ctx, antennaGain) {
                 const { maxChannelEirp, maxRadio } = ctx;
                 if (maxRadio == null) return null;
+                const radioEirp = maxRadio + antennaGain;
                 return maxChannelEirp != null
-                    ? Math.min(maxChannelEirp, maxRadio)
-                    : maxRadio;
+                    ? Math.min(maxChannelEirp, radioEirp)
+                    : radioEirp;
             }
 
             function expandChain(
@@ -2767,10 +2769,10 @@
                 } else if (vendor.uiInputType === "Total Conducted") {
                     eirp = uiPower + antennaGain;
                 } else if (vendor.uiInputType === "Power Adjustment") {
-                    const cap = powerAdjustCap(ctx);
+                    const cap = powerAdjustCap(ctx, antennaGain);
                     if (cap == null || ctx.powerAdjust == null)
                         return NULL_CHAIN;
-                    eirp = cap + ctx.powerAdjust + antennaGain;
+                    eirp = cap + ctx.powerAdjust;
                 } else {
                     eirp = uiPower;
                 }
@@ -2793,8 +2795,8 @@
                 if (vendor.uiInputType === "Total Conducted")
                     return eirp - antennaGain;
                 if (vendor.uiInputType === "Power Adjustment") {
-                    const cap = powerAdjustCap(ctx);
-                    return cap == null ? null : eirp - antennaGain - cap;
+                    const cap = powerAdjustCap(ctx, antennaGain);
+                    return cap == null ? null : eirp - cap;
                 }
                 return eirp;
             }
@@ -2951,33 +2953,49 @@
                 return val == null || Number.isNaN(val) ? "—" : round(val);
             }
 
-            // Converts inputPower for all radios from fromVendor's scale to toVendor's
-            // scale, preserving the physical EIRP through the conversion.
+            // Re-expresses each radio's input for toVendor while preserving the
+            // physical EIRP. Most vendors carry their input in r.inputPower;
+            // "Power Adjustment" vendors (Ruckus) carry it in r.ruckusPowerAdjust
+            // and snap to the discrete dropdown steps (0…-6 dB).
             function rebaseInputPower(fromVendor, toVendor) {
-                if (
-                    fromVendor.uiInputType === "Power Adjustment" ||
-                    toVendor.uiInputType === "Power Adjustment"
-                )
-                    return;
                 const ap = getAp(state.apVendor, state.apModel);
                 for (const radio of getRadiosForAp(ap, state.apMode)) {
                     const r = state.radios[radio.name];
                     if (!r) continue;
                     const gain = effectiveGain(radio.name);
+                    const ctx = {
+                        maxChannelEirp: maxEirpForChannel(
+                            getBand(radio),
+                            r.channel,
+                            state.regulatoryDomain,
+                        ),
+                        maxRadio: radio.maxEirp,
+                        powerAdjust: r.ruckusPowerAdjust,
+                    };
                     const eirp = expandChain(
                         fromVendor,
                         r.inputPower,
                         mimoGainFor(radio.chains, fromVendor),
                         gain,
+                        ctx,
                     ).eirp;
-                    r.inputPower = round(
-                        uiFromEirp(
-                            toVendor,
-                            eirp,
-                            mimoGainFor(radio.chains, toVendor),
-                            gain,
-                        ),
+                    if (eirp == null) continue;
+                    const uiVal = uiFromEirp(
+                        toVendor,
+                        eirp,
+                        mimoGainFor(radio.chains, toVendor),
+                        gain,
+                        ctx,
                     );
+                    if (uiVal == null) continue;
+                    if (toVendor.uiInputType === "Power Adjustment") {
+                        r.ruckusPowerAdjust = Math.max(
+                            -6,
+                            Math.min(0, Math.round(uiVal)),
+                        );
+                    } else {
+                        r.inputPower = round(uiVal);
+                    }
                 }
             }
 
