@@ -823,8 +823,8 @@
                     name: "Ubiquiti UniFi",
                     uiInputType: "Total Conducted",
                     usesMimo: true,
-                    confidence: "Low",
-                    notes: "No documentation found. Using a <a href='https://techspecs.ui.com/unifi/wifi/uap-iw-hd' target='_blank'>UniFi In-Wall HD</a> (4x4, 5 GHz, 4 dBi gain), UniFi shows <b>17 dBm / 20 dBm (EIRP)</b>. If 17 dBm is Total Conducted, it should be 21 dBm EIRP, but this could be a simple rounding error issue. UniFi Design Center appears to use EIRP. This needs some work to figure out.",
+                    confidence: "Medium",
+                    notes: "Still looking for documentation. Using a <a href='https://techspecs.ui.com/unifi/wifi/uap-iw-hd' target='_blank'>UniFi In-Wall HD</a> (4x4, 5 GHz, 4 dBi gain), UniFi shows <b>17 dBm / 20 dBm (EIRP)</b>. If 17 dBm is Total Conducted then it should be 21 dBm EIRP, but Ubiquiti probably rounds off some numbers for simplicity. UniFi Design Center appears to use EIRP.",
                 },
             };
 
@@ -1845,13 +1845,121 @@
                                 },
                             ],
                         },
+                        {
+                            model: "U7 Pro Outdoor (US)",
+                            modes: [
+                                {
+                                    mode: "Internal Antennas",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 8,
+                                            chains: 2,
+                                            maxEirp: 23,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 11,
+                                            chains: 2,
+                                            maxEirp: 26,
+                                        },
+                                        {
+                                            name: "6 GHz",
+                                            band: "6",
+                                            antennaType: "internal",
+                                            gain: 10,
+                                            chains: 2,
+                                            maxEirp: 26, // "Max Tx Power"
+                                        },
+                                    ],
+                                },
+                                {
+                                    mode: "External Antennas",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "external",
+                                            gain: 6,
+                                            chains: 2,
+                                            maxEirp: 23,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "external",
+                                            gain: 8,
+                                            chains: 2,
+                                            maxEirp: 26,
+                                        },
+                                        {
+                                            name: "6 GHz",
+                                            band: "6",
+                                            antennaType: "internal",
+                                            gain: 10,
+                                            chains: 2,
+                                            maxEirp: 26,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            model: "U7 Pro Outdoor (EU)",
+                            modes: [
+                                {
+                                    mode: "Internal Antennas",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 8,
+                                            chains: 2,
+                                            maxEirp: 29,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 11,
+                                            chains: 2, // The technical page says 4, but WiFi Explorer Pro says it's advertising 2
+                                            maxEirp: 26,
+                                        },
+                                    ],
+                                },
+                                {
+                                    mode: "External Antennas",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "external",
+                                            gain: 6,
+                                            chains: 2,
+                                            maxEirp: 23,
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "external",
+                                            gain: 8,
+                                            chains: 2,
+                                            maxEirp: 29,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
                     ],
                 },
             };
 
             // Regulatory domain database. Values are max EIRP in dBm per channel.
-            // Numbers are approximate / illustrative — refine with authoritative
-            // sources before publishing.
             const regulatoryDomains = {
                 us: {
                     name: "United States",
