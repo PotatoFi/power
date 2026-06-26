@@ -811,6 +811,14 @@
                     notes: "Sourced from <a href='https://www.juniper.net/documentation/us/en/software/mist/mist-wireless/topics/ref/mist-power-notation.html' target='_blank'>HPE Juniper Documentation</a>.",
                 },
 
+                nile: {
+                    name: "Nile",
+                    uiInputType: "Total Conducted",
+                    usesMimo: true,
+                    confidence: "Low",
+                    notes: "No documentation available.",
+                },
+
                 ruckus: {
                     name: "Ruckus",
                     uiInputType: "Power Adjustment",
@@ -1646,6 +1654,140 @@
                                     band: "5",
                                     antennaType: "external",
                                     gain: 0,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                nile: {
+                    name: "Nile",
+                    models: [
+                        {
+                            model: "NWA1000",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 2,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 4.8,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "NWA1050",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 5,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 5,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "NWA1100",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 6.2,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 6.7,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 5.2,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "NWA1200",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4.28,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 6.89,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 4.68,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                            ],
+                        },
+                        {
+                            model: "NWA1250", // 60-degree sector antenna
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 7.285,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 8.02,
+                                    chains: 4,
+                                    maxEirp: null,
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 7.53,
                                     chains: 4,
                                     maxEirp: null,
                                 },
