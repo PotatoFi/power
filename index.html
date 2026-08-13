@@ -2024,6 +2024,35 @@
                                 },
                             ],
                         },
+                        {
+                            model: "R770",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 2,
+                                    maxEirp: 26, // Datasheet says "Peak Transmit Power". Do I need to subtract antenna gain so that this isn't EIRP?
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 4,
+                                    maxEirp: 28, // Datasheet says "Peak Transmit Power". Do I need to subtract antenna gain so that this isn't EIRP?
+                                },
+                                {
+                                    name: "6 GHz",
+                                    band: "6",
+                                    antennaType: "internal",
+                                    gain: 4,
+                                    chains: 2,
+                                    maxEirp: 25, // // Datasheet says "Peak Transmit Power". Do I need to subtract antenna gain so that this isn't EIRP?
+                                },
+                            ],
+                        },
                     ],
                 },
                 ubiquiti: {
