@@ -76,6 +76,8 @@ This should be a JavaScript object with:
   * radio chains
   * max power in EIRP (leave empty for now, will utilize later)
 
+APs should always be ordered alphanumerically, except in cases where the first letter indicates the type of AP, followed by numbers denoting the series. For example, the Arista W-318 should become just before the Arista C-330. Another example is Ruckus R vs T-series APs.
+
 Note: We might need to do max power in EIRP, total conducted, etc. as each vendor's datasheets suggest that they all record this differently. 🤦‍♂️
 
 # Regulatory domain database
