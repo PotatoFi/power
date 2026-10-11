@@ -3610,6 +3610,53 @@
                             ],
                         },
                         {
+                            model: "U7 Outdoor",
+                            modes: [
+                                {
+                                    mode: "Directional antenna",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "internal",
+                                            gain: 8,
+                                            chains: 2,
+                                            maxEirp: 23, // "Max TxPower". Not sure if Total Conducted or EIRP
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "internal",
+                                            gain: 12.5,
+                                            chains: 2,
+                                            maxEirp: 26, // "Max TxPower". Not sure if Total Conducted or EIRP
+                                        },
+                                    ],
+                                },
+                                {
+                                    mode: "External omni",
+                                    radios: [
+                                        {
+                                            name: "2.4 GHz",
+                                            band: "2.4",
+                                            antennaType: "external",
+                                            gain: 3,
+                                            chains: 2,
+                                            maxEirp: 23, // "Max TxPower". Not sure if Total Conducted or EIRP
+                                        },
+                                        {
+                                            name: "5 GHz",
+                                            band: "5",
+                                            antennaType: "external",
+                                            gain: 4,
+                                            chains: 2,
+                                            maxEirp: 26, // "Max TxPower". Not sure if Total Conducted or EIRP
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
                             model: "U7 Pro",
                             radios: [
                                 {
