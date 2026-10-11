@@ -3437,6 +3437,27 @@
                             ],
                         },
                         {
+                            model: "R650",
+                            radios: [
+                                {
+                                    name: "2.4 GHz",
+                                    band: "2.4",
+                                    antennaType: "internal",
+                                    gain: 3,
+                                    chains: 2,
+                                    maxEirp: 26, // Datasheet calls this "Peak Transmit Power (Tx port/chain + Combining gain)"
+                                },
+                                {
+                                    name: "5 GHz",
+                                    band: "5",
+                                    antennaType: "internal",
+                                    gain: 3,
+                                    chains: 4,
+                                    maxEirp: 28, // Datasheet calls this "Peak Transmit Power (Tx port/chain + Combining gain)"
+                                },
+                            ],
+                        },
+                        {
                             model: "R670",
                             modes: [
                                 {
