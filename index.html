@@ -759,8 +759,8 @@
                     name: "HPE Aruba",
                     uiInputType: "EIRP",
                     usesMimo: true,
-                    confidence: "Medium",
-                    notes: "Pending documentation from Aruba, but this is pretty well-known.",
+                    confidence: "High",
+                    notes: "This is very well-known. A link to Aruba documentation would be good to have, here.",
                 },
 
                 cambium: {
@@ -776,7 +776,7 @@
                     uiInputType: "Per-Chain Conducted",
                     usesMimo: true,
                     confidence: "Medium",
-                    notes: "Documentation needs to be found and added here.",
+                    notes: "From the controller side, Cisco serves Power Levels, which vary per AP model, so saying “Per-Chain Conducted“ isn't always accurate. It is used here, because indexing Cisco Power Levels is outside of the scope of this tool.",
                 },
 
                 extreme: {
@@ -791,8 +791,8 @@
                     name: "Fortinet",
                     uiInputType: "EIRP",
                     usesMimo: true,
-                    confidence: "Medium",
-                    notes: "Sourced from <a href='https://docs.fortinet.com/document/fortigate/7.0.0/new-features/799495/radio-transmit-power-range-in-dbm' target='_blank'>FortiOS 7 documentation</a>. Pending validation from Fortinet.",
+                    confidence: "High",
+                    notes: "Sourced from <a href='https://docs.fortinet.com/document/fortigate/7.0.0/new-features/799495/radio-transmit-power-range-in-dbm' target='_blank'>FortiOS 7 documentation</a>.",
                 },
 
                 huawei: {
@@ -809,6 +809,14 @@
                     usesMimo: true,
                     confidence: "High",
                     notes: "Sourced from <a href='https://www.juniper.net/documentation/us/en/software/mist/mist-wireless/topics/ref/mist-power-notation.html' target='_blank'>HPE Juniper Documentation</a>.",
+                },
+
+                meraki: {
+                    name: "Cisco Meraki",
+                    uiInputType: "Total Conducted",
+                    usesMimo: true,
+                    confidence: "High",
+                    notes: "Confirmed by Cisco Meraki: “We always display conducted power without the antenna. This is Total Power Out (TPO)“.",
                 },
 
                 nile: {
@@ -1960,6 +1968,11 @@
                                 },
                             ],
                         },
+                    ],
+                },
+                meraki: {
+                    name: "Cisco Meraki",
+                    models: [
                         {
                             model: "MR45",
                             radios: [
@@ -3870,6 +3883,10 @@
                 },
             };
 
+            // Meraki shares hardware with Cisco, so list the Cisco models
+            // (by reference, to avoid duplicating radio data) before Meraki's own.
+            aps.meraki.models = [...aps.cisco.models, ...aps.meraki.models];
+
             // Regulatory domain database. Values are max EIRP in dBm per channel.
             const regulatoryDomains = {
                 us: {
@@ -4346,9 +4363,20 @@
             }
 
             // ── Dropdown helpers ──
+            // Alphanumeric by display name, with one key pinned to the top.
+            function sortedKeys(obj, pinned) {
+                return Object.keys(obj).sort((a, b) => {
+                    if (a === pinned) return -1;
+                    if (b === pinned) return 1;
+                    return obj[a].name.localeCompare(obj[b].name, undefined, {
+                        numeric: true,
+                    });
+                });
+            }
+
             function populateVendorDropdown(el, selected) {
                 el.innerHTML = "";
-                for (const key of Object.keys(vendors)) {
+                for (const key of sortedKeys(vendors, "hamina")) {
                     el.appendChild(new Option(vendors[key].name, key));
                 }
                 el.value = selected;
@@ -4356,7 +4384,7 @@
 
             function populateApVendorDropdown(el, selected) {
                 el.innerHTML = "";
-                for (const key of Object.keys(aps)) {
+                for (const key of sortedKeys(aps, "generic")) {
                     el.appendChild(new Option(aps[key].name, key));
                 }
                 el.value = selected;
