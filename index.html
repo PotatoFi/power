@@ -342,12 +342,6 @@
             .chain-table tbody tr.active-row td.label-col {
                 color: var(--text-secondary);
             }
-
-            /* Muted row (MIMO rows when vendor doesn't use MIMO) */
-            .chain-table tbody tr.muted-row td {
-                opacity: 0.35;
-            }
-
             /* Missing cell (radio not on this AP) */
             .chain-table .missing-cell {
                 color: var(--text-muted);
@@ -726,7 +720,6 @@
                     name: "Hamina",
                     uiInputType: "Total Conducted",
                     usesAntennaGain: true,
-                    usesMimo: false,
                     confidence: "High",
                     notes: "Sourced from <a href='https://docs.hamina.com/hamina/simulation/access-points#transmit-power' target='_blank'>Hamina Network Planner documentation</a>. Hamina simulates and measures the signal strength of beacons using Total Conducted Power.",
                 },
@@ -734,7 +727,6 @@
                 openintent: {
                     name: "OpenIntent",
                     uiInputType: "Per-Chain Conducted",
-                    usesMimo: true,
                     confidence: "High",
                     notes: "Sourced from <a href='https://github.com/google/openintent/blob/main/release/2.0.0/models/src/openintent-wifi.yaml#L351' target='_blank'>OpenIntent Schema</a>.",
                 },
@@ -742,7 +734,6 @@
                 alcatel: {
                     name: "Alcatel-Lucent Enterprise",
                     uiInputType: "Total Conducted",
-                    usesMimo: true,
                     confidence: "Low",
                     notes: "No documentation found.",
                 },
@@ -750,7 +741,6 @@
                 arista: {
                     name: "Arista",
                     uiInputType: "EIRP",
-                    usesMimo: true,
                     confidence: "High",
                     notes: "Sourced from <a href='https://arista.my.site.com/AristaCommunity/s/article/Configure-Transmit-Power-on-an-Arista-Access-Point' target='_blank'>Arista documentation</a>.",
                 },
@@ -758,7 +748,6 @@
                 aruba: {
                     name: "HPE Aruba",
                     uiInputType: "EIRP",
-                    usesMimo: true,
                     confidence: "High",
                     notes: "This is very well-known. A link to Aruba documentation would be good to have, here.",
                 },
@@ -766,7 +755,6 @@
                 cambium: {
                     name: "Cambium Networks",
                     uiInputType: "Total Conducted",
-                    usesMimo: true,
                     confidence: "Low",
                     notes: "No documentation found.",
                 },
@@ -774,7 +762,6 @@
                 cisco: {
                     name: "Cisco",
                     uiInputType: "Per-Chain Conducted",
-                    usesMimo: true,
                     confidence: "Medium",
                     notes: "From the controller side, Cisco serves Power Levels, which vary per AP model, so saying “Per-Chain Conducted“ isn't always accurate. It is used here, because indexing Cisco Power Levels is outside of the scope of this tool.",
                 },
@@ -782,7 +769,6 @@
                 extreme: {
                     name: "Extreme Networks",
                     uiInputType: "Total Conducted",
-                    usesMimo: true,
                     confidence: "High",
                     notes: "According to <a href='https://documentation.extremenetworks.com/XIQC/10.08.01/UG/GUID-3D07AA36-2A0D-42EC-B781-D489FB53BA3B.shtml' target='_blank'>documentation from Extreme</a>, both Total Conducted and Per-Chain Conducted are supported. The Radio Profile configuration page in ExtremeCloud IQ appears to use Total Conducted, as does the API.",
                 },
@@ -790,7 +776,6 @@
                 fortinet: {
                     name: "Fortinet",
                     uiInputType: "EIRP",
-                    usesMimo: true,
                     confidence: "High",
                     notes: "Sourced from <a href='https://docs.fortinet.com/document/fortigate/7.0.0/new-features/799495/radio-transmit-power-range-in-dbm' target='_blank'>FortiOS 7 documentation</a>.",
                 },
@@ -798,7 +783,6 @@
                 huawei: {
                     name: "Huawei",
                     uiInputType: "EIRP",
-                    usesMimo: true,
                     confidence: "Low",
                     notes: "No documentation found.",
                 },
@@ -806,7 +790,6 @@
                 juniper: {
                     name: "HPE Juniper",
                     uiInputType: "Per-Chain Conducted",
-                    usesMimo: true,
                     confidence: "High",
                     notes: "Sourced from <a href='https://www.juniper.net/documentation/us/en/software/mist/mist-wireless/topics/ref/mist-power-notation.html' target='_blank'>HPE Juniper Documentation</a>.",
                 },
@@ -814,7 +797,6 @@
                 meraki: {
                     name: "Cisco Meraki",
                     uiInputType: "Total Conducted",
-                    usesMimo: true,
                     confidence: "High",
                     notes: "Confirmed by Cisco Meraki: “We always display conducted power without the antenna. This is Total Power Out (TPO)“.",
                 },
@@ -822,7 +804,6 @@
                 nile: {
                     name: "Nile",
                     uiInputType: "Total Conducted",
-                    usesMimo: true,
                     confidence: "Low",
                     notes: "No documentation found.",
                 },
@@ -830,7 +811,6 @@
                 ruckus: {
                     name: "Ruckus",
                     uiInputType: "Power Adjustment",
-                    usesMimo: true,
                     confidence: "Medium",
                     notes: "Maximum channel power (EIRP) is determined by the regulatory domain, and maximum radio power (Total Conducted Power) comes from the AP firmware. Power Adjustment draws down from the lesser of the two.<br><br>Inferred from AP behavior and wording in datasheets, which heavily imply that the maximum radio power is expressed in Total Conducted Power. Testing mostly confirms behavior, with some examples being 1 or 2 dB off. The discrepancies are most likely due to a different EIRP value in the datasheet (what we can see) as opposed to the EIRP values in the AP code (which are probably more conservative).",
                 },
@@ -838,7 +818,6 @@
                 ubiquiti: {
                     name: "Ubiquiti UniFi",
                     uiInputType: "Total Conducted",
-                    usesMimo: true,
                     confidence: "Medium",
                     notes: "For the given AP, subtracting the datasheet antenna gain from the ”EIRP” field matches the ”Transmit Power” field, inferring that it is expressed as Total Conducted Power.<br><br>Ubiquiti does seem to round to whole numbers, so 0.5 dBm discrepancies are expected."
                 },
@@ -4264,8 +4243,7 @@
                 return override != null ? override : radio.gain;
             }
 
-            function mimoGainFor(chains, vendor) {
-                if (!vendor.usesMimo) return 0;
+            function mimoGainFor(chains) {
                 return MIMO_GAIN[chains] ?? 0;
             }
 
@@ -4452,7 +4430,6 @@
                 const isTotal = vendor.uiInputType === "Total Conducted";
                 const isEirpUI = vendor.uiInputType === "EIRP";
                 const isPowerAdjust = vendor.uiInputType === "Power Adjustment";
-                const muteMimo = !vendor.usesMimo;
                 const showPowerAdjustRows =
                     vendors[state.inputVendor].uiInputType ===
                         "Power Adjustment" ||
@@ -4732,7 +4709,6 @@
                     TOOLTIP.perChainTooltip,
                 );
                 if (isPerChain) perChainTr.classList.add("active-row");
-                if (muteMimo) perChainTr.classList.add("muted-row");
                 tbody.appendChild(perChainTr);
 
                 // ── Radio Chains row ──
@@ -4747,7 +4723,6 @@
                         return sp;
                     },
                 );
-                if (muteMimo) chainsTr.classList.add("muted-row");
                 tbody.appendChild(chainsTr);
 
                 // ── MIMO Gain row ──
@@ -4763,7 +4738,6 @@
                     },
                     TOOLTIP.mimoTooltip,
                 );
-                if (muteMimo) mimoTr.classList.add("muted-row");
                 tbody.appendChild(mimoTr);
 
                 // ── Total Conducted row ──
@@ -4901,8 +4875,7 @@
             ) {
                 let eirp;
                 if (vendor.uiInputType === "Per-Chain Conducted") {
-                    const mimo = vendor.usesMimo ? mimoGain : 0;
-                    eirp = uiPower + mimo + antennaGain;
+                    eirp = uiPower + mimoGain + antennaGain;
                 } else if (vendor.uiInputType === "Total Conducted") {
                     eirp = uiPower + antennaGain;
                 } else if (vendor.uiInputType === "Power Adjustment") {
@@ -4918,17 +4891,15 @@
 
             function chainFromEirp(vendor, eirp, mimoGain, antennaGain) {
                 if (eirp == null) return NULL_CHAIN;
-                const mimo = vendor.usesMimo ? mimoGain : 0;
                 const total = eirp - antennaGain;
-                const perChain = total - mimo;
+                const perChain = total - mimoGain;
                 return { perChain, total, eirp };
             }
 
             function uiFromEirp(vendor, eirp, mimoGain, antennaGain, ctx = {}) {
                 if (eirp == null) return null;
-                const mimo = vendor.usesMimo ? mimoGain : 0;
                 if (vendor.uiInputType === "Per-Chain Conducted")
-                    return eirp - antennaGain - mimo;
+                    return eirp - antennaGain - mimoGain;
                 if (vendor.uiInputType === "Total Conducted")
                     return eirp - antennaGain;
                 if (vendor.uiInputType === "Power Adjustment") {
@@ -4975,7 +4946,7 @@
                     };
 
                     // ── Input side ──
-                    const inMimo = mimoGainFor(radio.chains, inVendor);
+                    const inMimo = mimoGainFor(radio.chains);
                     const inChain = expandChain(
                         inVendor,
                         rState.inputPower,
@@ -4988,7 +4959,7 @@
                         "input",
                         "perChain",
                         i,
-                        inVendor.usesMimo ? fmt(inChain.perChain) : "N/A",
+                        fmt(inChain.perChain),
                     );
                     updateCell(
                         "input",
@@ -5000,7 +4971,7 @@
                         "input",
                         "mimo",
                         i,
-                        inVendor.usesMimo ? round(inMimo) : "N/A",
+                        round(inMimo),
                     );
                     updateCell("input", "total", i, fmt(inChain.total));
                     updateCell("input", "antenna", i, round(gain));
@@ -5013,7 +4984,7 @@
                     );
 
                     // ── Output side ──
-                    const outMimo = mimoGainFor(radio.chains, outVendor);
+                    const outMimo = mimoGainFor(radio.chains);
                     const outChain = chainFromEirp(
                         outVendor,
                         inChain.eirp,
@@ -5026,7 +4997,7 @@
                         "output",
                         "perChain",
                         i,
-                        outVendor.usesMimo ? fmt(outChain.perChain) : "N/A",
+                        fmt(outChain.perChain),
                     );
                     updateCell(
                         "output",
@@ -5038,7 +5009,7 @@
                         "output",
                         "mimo",
                         i,
-                        outVendor.usesMimo ? round(outMimo) : "N/A",
+                        round(outMimo),
                     );
                     updateCell("output", "total", i, fmt(outChain.total));
                     updateCell("output", "antenna", i, round(gain));
@@ -5112,7 +5083,7 @@
                     const eirp = expandChain(
                         fromVendor,
                         r.inputPower,
-                        mimoGainFor(radio.chains, fromVendor),
+                        mimoGainFor(radio.chains),
                         gain,
                         ctx,
                     ).eirp;
@@ -5120,7 +5091,7 @@
                     const uiVal = uiFromEirp(
                         toVendor,
                         eirp,
-                        mimoGainFor(radio.chains, toVendor),
+                        mimoGainFor(radio.chains),
                         gain,
                         ctx,
                     );
