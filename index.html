@@ -5173,6 +5173,11 @@
 
                 dom.apVendor.addEventListener("change", (e) => {
                     state.apVendor = e.target.value;
+                    // Follow the AP vendor on the output side (one-way)
+                    if (vendors[state.apVendor]) {
+                        state.outputVendor = state.apVendor;
+                        dom.outputVendor.value = state.outputVendor;
+                    }
                     state.apModel =
                         aps[state.apVendor]?.models?.[0]?.model || null;
                     state.apMode = null;
