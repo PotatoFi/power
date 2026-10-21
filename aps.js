@@ -375,6 +375,48 @@ const aps = {
         name: "HPE Aruba", // Datasheets refer to "MIMO with peak gain" and "peak gain for the combined, average pattern". This uses the latter on the basis that it excludes MIMO gain.
         models: [
             {
+                model: "AP-503",
+                radios: [
+                    {
+                        name: "2.4 GHz",
+                        band: "2.4",
+                        antennaType: "internal",
+                        gain: 1.5,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                    {
+                        name: "5 GHz",
+                        band: "5",
+                        antennaType: "internal",
+                        gain: 3.9,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                ],
+            },
+            {
+                model: "AP-503H",
+                radios: [
+                    {
+                        name: "2.4 GHz",
+                        band: "2.4",
+                        antennaType: "internal",
+                        gain: 1.7,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                    {
+                        name: "5 GHz",
+                        band: "5",
+                        antennaType: "internal",
+                        gain: 5,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                ],
+            },
+            {
                 model: "AP-505",
                 radios: [
                     {
@@ -455,6 +497,27 @@ const aps = {
                         antennaType: "internal",
                         gain: 3.5,
                         chains: 4,
+                        maxEirp: null,
+                    },
+                ],
+            },
+            {
+                model: "AP-565",
+                radios: [
+                    {
+                        name: "2.4 GHz",
+                        band: "2.4",
+                        antennaType: "internal",
+                        gain: 3.2,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                    {
+                        name: "5 GHz",
+                        band: "5",
+                        antennaType: "internal",
+                        gain: 5.4,
+                        chains: 2,
                         maxEirp: null,
                     },
                 ],
@@ -612,6 +675,74 @@ const aps = {
                         gain: 6.2,
                         chains: 2,
                         maxEirp: null,
+                    },
+                ],
+            },
+            {
+                model: "AP-725",
+                modes: [
+                    {
+                        mode: "2.4 / 5 GHz",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 3.8,
+                                chains: 2,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 4.7,
+                                chains: 2,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                    {
+                        mode: "2.4 / 6 GHz",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 3.8,
+                                chains: 2,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "6 GHz",
+                                band: "6",
+                                antennaType: "internal",
+                                gain: 4.9,
+                                chains: 2,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                    {
+                        mode: "5 / 6 GHz",
+                        radios: [
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 4.7,
+                                chains: 2,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "6 GHz",
+                                band: "6",
+                                antennaType: "internal",
+                                gain: 4.9,
+                                chains: 2,
+                                maxEirp: null,
+                            },
+                        ],
                     },
                 ],
             },
