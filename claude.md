@@ -62,7 +62,7 @@ Radios can have three types of antenna:
 
 ## AP Database fields
 
-This should be a JavaScript object with:
+The AP database lives in `aps.js` (loaded by `index.html` before the main script). This should be a JavaScript object with:
 
 * make
 * model
@@ -82,7 +82,7 @@ Note: We might need to do max power in EIRP, total conducted, etc. as each vendo
 
 # Regulatory domain database
 
-Some APs configure max TxPower based on the max EIRP for the channel in the regulatory domain. Thus, the tool must allow the user to select a regulatory domain (United States, Europe, United Kingdom, Australia) and a channel for each radio.
+Some APs configure max TxPower based on the max EIRP for the channel in the regulatory domain. Thus, the tool must allow the user to select a regulatory domain (United States, Europe, United Kingdom, Australia) and a channel for each radio. The regulatory domain database lives in `regulatory.js`.
 
 If the AP has a max power defined, it should be shown in the UI in the list as a non-editable field. This is primarily going to be used for Ruckus, who defines transmit power as:
 
