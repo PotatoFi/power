@@ -52,6 +52,8 @@ For each vendor, there must be a database of access points that pre-populate:
 2. The name of each column (radio name)
 3. The antenna gain
 
+The APs are sorted alphanumerically, except when the leading letter or letters define different APs in a series. For example, Arista changes the leading letter, but the trailing numbers define how the AP should be sorted.
+
 ## Internal and external antennas
 
 Radios can have three types of antenna:

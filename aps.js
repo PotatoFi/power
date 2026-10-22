@@ -167,6 +167,35 @@ const aps = {
                 ],
             },
             {
+                model: "W-318",
+                radios: [
+                    {
+                        name: "2.4 GHz",
+                        band: "2.4",
+                        antennaType: "internal",
+                        gain: 4.44,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                    {
+                        name: "5 GHz",
+                        band: "5",
+                        antennaType: "internal",
+                        gain: 5.86,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                    {
+                        name: "6 GHz",
+                        band: "6",
+                        antennaType: "internal",
+                        gain: 5.2,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                ],
+            },
+            {
                 model: "C-330",
                 radios: [
                     {
@@ -254,6 +283,35 @@ const aps = {
                 ],
             },
             {
+                model: "O-405",
+                radios: [
+                    {
+                        name: "2.4 GHz",
+                        band: "2.4",
+                        antennaType: "internal",
+                        gain: 5,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                    {
+                        name: "5 GHz",
+                        band: "5",
+                        antennaType: "internal",
+                        gain: 4,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                    {
+                        name: "6 GHz",
+                        band: "6",
+                        antennaType: "internal",
+                        gain: 5,
+                        chains: 2,
+                        maxEirp: null,
+                    },
+                ],
+            },
+            {
                 model: "C-430",
                 radios: [
                     {
@@ -307,64 +365,6 @@ const aps = {
                         antennaType: "internal",
                         gain: 5.75,
                         chains: 4,
-                        maxEirp: null,
-                    },
-                ],
-            },
-            {
-                model: "O-405",
-                radios: [
-                    {
-                        name: "2.4 GHz",
-                        band: "2.4",
-                        antennaType: "internal",
-                        gain: 5,
-                        chains: 2,
-                        maxEirp: null,
-                    },
-                    {
-                        name: "5 GHz",
-                        band: "5",
-                        antennaType: "internal",
-                        gain: 4,
-                        chains: 2,
-                        maxEirp: null,
-                    },
-                    {
-                        name: "6 GHz",
-                        band: "6",
-                        antennaType: "internal",
-                        gain: 5,
-                        chains: 2,
-                        maxEirp: null,
-                    },
-                ],
-            },
-            {
-                model: "W-318",
-                radios: [
-                    {
-                        name: "2.4 GHz",
-                        band: "2.4",
-                        antennaType: "internal",
-                        gain: 4.44,
-                        chains: 2,
-                        maxEirp: null,
-                    },
-                    {
-                        name: "5 GHz",
-                        band: "5",
-                        antennaType: "internal",
-                        gain: 5.86,
-                        chains: 2,
-                        maxEirp: null,
-                    },
-                    {
-                        name: "6 GHz",
-                        band: "6",
-                        antennaType: "internal",
-                        gain: 5.2,
-                        chains: 2,
                         maxEirp: null,
                     },
                 ],
@@ -981,6 +981,27 @@ const aps = {
                 ],
             },
             {
+                model: "9130AXE",
+                radios: [
+                    {
+                        name: "2.4 GHz",
+                        band: "2.4",
+                        antennaType: "external",
+                        gain: 0,
+                        chains: 4,
+                        maxEirp: null,
+                    },
+                    {
+                        name: "5 GHz",
+                        band: "5",
+                        antennaType: "external",
+                        gain: 0,
+                        chains: 8,
+                        maxEirp: null,
+                    },
+                ],
+            },
+            {
                 model: "9130AXI",
                 modes: [
                     {
@@ -1032,27 +1053,6 @@ const aps = {
                                 maxEirp: null,
                             },
                         ],
-                    },
-                ],
-            },
-            {
-                model: "9130AXE",
-                radios: [
-                    {
-                        name: "2.4 GHz",
-                        band: "2.4",
-                        antennaType: "external",
-                        gain: 0,
-                        chains: 4,
-                        maxEirp: null,
-                    },
-                    {
-                        name: "5 GHz",
-                        band: "5",
-                        antennaType: "external",
-                        gain: 0,
-                        chains: 8,
-                        maxEirp: null,
                     },
                 ],
             },
@@ -1128,69 +1128,6 @@ const aps = {
                 ],
             },
             {
-                model: "9166I",
-                modes: [
-                    {
-                        mode: "Standard",
-                        radios: [
-                            {
-                                name: "2.4 GHz",
-                                band: "2.4",
-                                antennaType: "internal",
-                                gain: 3,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                            {
-                                name: "5 GHz",
-                                band: "5",
-                                antennaType: "internal",
-                                gain: 5,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                            {
-                                name: "6 GHz",
-                                band: "6",
-                                antennaType: "internal",
-                                gain: 4,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                        ],
-                    },
-                    {
-                        mode: "Dual 5 GHz",
-                        radios: [
-                            {
-                                name: "2.4 GHz",
-                                band: "2.4",
-                                antennaType: "internal",
-                                gain: 3,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                            {
-                                name: "5 GHz",
-                                band: "5",
-                                antennaType: "internal",
-                                gain: 5,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                            {
-                                name: "5 GHz (XOR)",
-                                band: "5",
-                                antennaType: "internal",
-                                gain: 4,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
                 model: "9166D1",
                 modes: [
                     {
@@ -1246,6 +1183,69 @@ const aps = {
                                 band: "5",
                                 antennaType: "internal",
                                 gain: 8,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                model: "9166I",
+                modes: [
+                    {
+                        mode: "Standard",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 3,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 5,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "6 GHz",
+                                band: "6",
+                                antennaType: "internal",
+                                gain: 4,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                    {
+                        mode: "Dual 5 GHz",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 3,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 5,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz (XOR)",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 4,
                                 chains: 4,
                                 maxEirp: null,
                             },
@@ -1526,6 +1526,69 @@ const aps = {
                 ],
             },
             {
+                model: "AP5022FX",
+                modes: [
+                    {
+                        mode: "Mode 1",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "external",
+                                gain: 0,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "external",
+                                gain: 0,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "6 GHz",
+                                band: "6",
+                                antennaType: "internal",
+                                gain: 5.7, // Not sure, datasheet doesn't say
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                    {
+                        mode: "Mode 2",
+                        radios: [
+                            {
+                                name: "5 GHz Low",
+                                band: "5",
+                                antennaType: "external",
+                                gain: 0,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz High",
+                                band: "5",
+                                antennaType: "external",
+                                gain: 0,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "6 GHz",
+                                band: "6",
+                                antennaType: "internal",
+                                gain: 5.7, // Not sure, datasheet doesn't say
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
                 model: "AP5022S6D",
                 modes: [
                     {
@@ -1610,69 +1673,6 @@ const aps = {
                                 band: "6",
                                 antennaType: "internal",
                                 gain: 7.2,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                model: "AP5022FX",
-                modes: [
-                    {
-                        mode: "Mode 1",
-                        radios: [
-                            {
-                                name: "2.4 GHz",
-                                band: "2.4",
-                                antennaType: "external",
-                                gain: 0,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                            {
-                                name: "5 GHz",
-                                band: "5",
-                                antennaType: "external",
-                                gain: 0,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                            {
-                                name: "6 GHz",
-                                band: "6",
-                                antennaType: "internal",
-                                gain: 5.7, // Not sure, datasheet doesn't say
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                        ],
-                    },
-                    {
-                        mode: "Mode 2",
-                        radios: [
-                            {
-                                name: "5 GHz Low",
-                                band: "5",
-                                antennaType: "external",
-                                gain: 0,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                            {
-                                name: "5 GHz High",
-                                band: "5",
-                                antennaType: "external",
-                                gain: 0,
-                                chains: 4,
-                                maxEirp: null,
-                            },
-                            {
-                                name: "6 GHz",
-                                band: "6",
-                                antennaType: "internal",
-                                gain: 5.7, // Not sure, datasheet doesn't say
                                 chains: 4,
                                 maxEirp: null,
                             },
@@ -2756,6 +2756,69 @@ const aps = {
                 ],
             },
             {
+                model: "T350c",
+                radios: [
+                    {
+                        name: "2.4 GHz",
+                        band: "2.4",
+                        antennaType: "internal",
+                        gain: 3,
+                        chains: 2,
+                        maxEirp: 26, // Datasheet calls this "Peak Transmit Power (Tx port/chain + 3dB Combining gain)"
+                    },
+                    {
+                        name: "5 GHz",
+                        band: "5",
+                        antennaType: "internal",
+                        gain: 3,
+                        chains: 2,
+                        maxEirp: 25, // Datasheet calls this "Peak Transmit Power (Tx port/chain + 3dB Combining gain)"
+                    },
+                ],
+            },
+            {
+                model: "T350d",
+                radios: [
+                    {
+                        name: "2.4 GHz",
+                        band: "2.4",
+                        antennaType: "internal",
+                        gain: 3,
+                        chains: 2,
+                        maxEirp: 26, // Datasheet calls this "Peak Transmit Power (Tx port/chain + 3dB Combining gain)"
+                    },
+                    {
+                        name: "5 GHz",
+                        band: "5",
+                        antennaType: "internal",
+                        gain: 3,
+                        chains: 2,
+                        maxEirp: 25, // Datasheet calls this "Peak Transmit Power (Tx port/chain + 3dB Combining gain)"
+                    },
+                ],
+            },
+            {
+                model: "T350se",
+                radios: [
+                    {
+                        name: "2.4 GHz",
+                        band: "2.4",
+                        antennaType: "detachable", // Internal 120 degree sector, plus N-type connectors for an external antenna
+                        gain: 6,
+                        chains: 2,
+                        maxEirp: 26, // Datasheet calls this "Peak Transmit Power (Tx port/chain + 3dB Combining gain)"
+                    },
+                    {
+                        name: "5 GHz",
+                        band: "5",
+                        antennaType: "detachable", // Internal 120 degree sector, plus N-type connectors for an external antenna
+                        gain: 8,
+                        chains: 2,
+                        maxEirp: 25, // Datasheet calls this "Peak Transmit Power (Tx port/chain + 3dB Combining gain)"
+                    },
+                ],
+            },
+            {
                 model: "R650",
                 radios: [
                     {
@@ -3026,31 +3089,49 @@ const aps = {
                 ],
             },
             {
-                model: "U7 Pro Wall",
-                radios: [
+                model: "U7 Pro Outdoor (EU)",
+                modes: [
                     {
-                        name: "2.4 GHz",
-                        band: "2.4",
-                        antennaType: "internal",
-                        gain: 4,
-                        chains: 2,
-                        maxEirp: 22, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                        mode: "Internal Antennas",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 8,
+                                chains: 2,
+                                maxEirp: 29,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 11,
+                                chains: 2, // The technical page says 4, but WiFi Explorer Pro says it's advertising 2
+                                maxEirp: 26,
+                            },
+                        ],
                     },
                     {
-                        name: "5 GHz",
-                        band: "5",
-                        antennaType: "internal",
-                        gain: 5,
-                        chains: 2,
-                        maxEirp: 26, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
-                    },
-                    {
-                        name: "6 GHz",
-                        band: "6",
-                        antennaType: "internal",
-                        gain: 6,
-                        chains: 2,
-                        maxEirp: 23, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                        mode: "External Antennas",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "external",
+                                gain: 6,
+                                chains: 2,
+                                maxEirp: 23,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "external",
+                                gain: 8,
+                                chains: 2,
+                                maxEirp: 29,
+                            },
+                        ],
                     },
                 ],
             },
@@ -3118,49 +3199,31 @@ const aps = {
                 ],
             },
             {
-                model: "U7 Pro Outdoor (EU)",
-                modes: [
+                model: "U7 Pro Wall",
+                radios: [
                     {
-                        mode: "Internal Antennas",
-                        radios: [
-                            {
-                                name: "2.4 GHz",
-                                band: "2.4",
-                                antennaType: "internal",
-                                gain: 8,
-                                chains: 2,
-                                maxEirp: 29,
-                            },
-                            {
-                                name: "5 GHz",
-                                band: "5",
-                                antennaType: "internal",
-                                gain: 11,
-                                chains: 2, // The technical page says 4, but WiFi Explorer Pro says it's advertising 2
-                                maxEirp: 26,
-                            },
-                        ],
+                        name: "2.4 GHz",
+                        band: "2.4",
+                        antennaType: "internal",
+                        gain: 4,
+                        chains: 2,
+                        maxEirp: 22, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
                     },
                     {
-                        mode: "External Antennas",
-                        radios: [
-                            {
-                                name: "2.4 GHz",
-                                band: "2.4",
-                                antennaType: "external",
-                                gain: 6,
-                                chains: 2,
-                                maxEirp: 23,
-                            },
-                            {
-                                name: "5 GHz",
-                                band: "5",
-                                antennaType: "external",
-                                gain: 8,
-                                chains: 2,
-                                maxEirp: 29,
-                            },
-                        ],
+                        name: "5 GHz",
+                        band: "5",
+                        antennaType: "internal",
+                        gain: 5,
+                        chains: 2,
+                        maxEirp: 26, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
+                    },
+                    {
+                        name: "6 GHz",
+                        band: "6",
+                        antennaType: "internal",
+                        gain: 6,
+                        chains: 2,
+                        maxEirp: 23, // Labeled as "Max. TX Power", so I'm not sure it's EIRP
                     },
                 ],
             },
