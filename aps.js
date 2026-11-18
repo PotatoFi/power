@@ -1253,6 +1253,187 @@ const aps = {
                     },
                 ],
             },
+            {
+                model: "9172I",
+                modes: [
+                    {
+                        mode: "Tri-band",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 4,
+                                chains: 2,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 5,
+                                chains: 2,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "6 GHz",
+                                band: "6",
+                                antennaType: "internal",
+                                gain: 6,
+                                chains: 2,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                    {
+                        mode: "Dual-band",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 4,
+                                chains: 2,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 5,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                model: "9176D1",
+                modes: [
+                    {
+                        mode: "Standard",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 7,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 8,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "6 GHz",
+                                band: "6",
+                                antennaType: "internal",
+                                gain: 8,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                    {
+                        mode: "Dual 5 GHz",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 7,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 8,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz (XOR)",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 8,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                model: "9176I",
+                modes: [
+                    {
+                        mode: "Standard",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 5,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 5,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "6 GHz",
+                                band: "6",
+                                antennaType: "internal",
+                                gain: 6,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                    {
+                        mode: "Dual 5 GHz",
+                        radios: [
+                            {
+                                name: "2.4 GHz",
+                                band: "2.4",
+                                antennaType: "internal",
+                                gain: 5,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 5,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                            {
+                                name: "5 GHz (XOR)",
+                                band: "5",
+                                antennaType: "internal",
+                                gain: 5,
+                                chains: 4,
+                                maxEirp: null,
+                            },
+                        ],
+                    },
+                ],
+            },
         ],
     },
     meraki: {
